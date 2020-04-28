@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-
-
-
 export interface IAuthContext {
     signup_state: {
         step: number,
@@ -15,7 +12,7 @@ export interface IAuthContext {
         email: string,
         password: string
     },
-    setSignInState: Function,
+    setSignInState: Function
 }
 
 /* https://stackoverflow.com/questions/57945481/how-to-declare-the-typescript-types-of-a-react-context-initial-state */

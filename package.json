@@ -11,6 +11,7 @@
     "@aws-amplify/api": "^3.1.7",
     "@aws-amplify/pubsub": "^3.0.8",
     "@react-native-community/netinfo": "^5.7.1",
+    "@use-expo/font": "^2.0.0",
     "aws-amplify": "^3.0.8",
     "aws-amplify-react-native": "^4.0.4",
     "axios": "^0.19.2",
