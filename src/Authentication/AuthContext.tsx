@@ -6,6 +6,9 @@ export interface IAuthContext {
         name: string,
         email: string,
         password: string,
+        show_name_validation: boolean,
+        show_email_validation: boolean,
+        show_password_validation: boolean,
     },
     setSignUpState: Function,
     signin_state: {
@@ -22,6 +25,9 @@ export const AuthContext = React.createContext<IAuthContext>({
         name: '',
         email: '',
         password: '',
+        show_name_validation: false,
+        show_email_validation: false,
+        show_password_validation: false,
     },
     setSignUpState: Function,
     signin_state: {

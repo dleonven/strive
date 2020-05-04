@@ -6,8 +6,8 @@ import { AmplifyTheme, Authenticator } from 'aws-amplify-react-native';
 import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import { AuthContext } from './AuthContext'
 import { Auth } from 'aws-amplify';
-
-
+import { globalStyles } from '../GlobalStyles'
+import Loading from '../Loading'
 
 interface IsignUpData {
     name: string,
@@ -20,8 +20,10 @@ interface IsignUpData {
 
 const SignUp = () => {
     
+    return <Loading />
 
     const auth_context = useContext(AuthContext)
+    
     
     if(auth_context.signup_state.step === 1) return <Step1/>
     else if(auth_context.signup_state.step === 2) return <Step2/>
@@ -34,6 +36,7 @@ export default SignUp
 
 const Step1 = () => {
     const { signup_state, setSignUpState } = useContext(AuthContext)
+    
     return(
         <View style={styles.container}>
             <View style={styles.upperContent}>
@@ -51,13 +54,19 @@ const Step1 = () => {
                         placeholder={'eg. John'}
                         style={styles.input}
                     />
+                    {signup_state.show_name_validation &&
+                        <Text style={globalStyles.inputError}>Enter name</Text>
+                    }
                 </View>
             </View>
             <View style={styles.button}>
                 <Button
                     color="white"
                     title={'CONTINUE'}
-                    onPress={() => setSignUpState((prevState: {}) => ({...prevState, step: 2}))}
+                    onPress={() => {
+                        if(signup_state.name.length === 0) setSignUpState((prevState: {}) => ({...prevState, show_name_validation: true}))
+                        else setSignUpState((prevState: {}) => ({...prevState, step: 2}))
+                    }}
                 />
             </View>
         </View>
@@ -116,13 +125,15 @@ const styles = StyleSheet.create({
 const Step2 = () => {
     const { signup_state, setSignUpState } = useContext(AuthContext)
 
+
     const signUp = async () => {
         try {
             const user = await Auth.signUp({
-                username: signup_state.name,
+                username: signup_state.email,
                 password: signup_state.password,
                 attributes: {
                     email: signup_state.email,
+                    nickname: signup_state.name
                 }
             });
             console.log({ user });
@@ -133,9 +144,22 @@ const Step2 = () => {
         catch (error) {
             console.log('error signing up:', error.message);
             
-            if(error.message.includes("Username cannot be empty")) console.log("asdasdasd")
-            
-            
+            /* this first one should be catched by step1 */
+            if(error.message.includes("Username cannot be empty")) {
+                setSignUpState((prevState: {}) => ({...prevState, show_password_validation: false, show_email_validation: true}))
+            } 
+            else if(error.message.includes("Invalid email address format")) {
+                setSignUpState((prevState: {}) => ({...prevState, show_password_validation: false, show_email_validation: true}))
+            } 
+            else if(error.message.includes("Password cannot be empty")) {
+                setSignUpState((prevState: {}) => ({...prevState, show_email_validation: false, show_password_validation: true}))
+            } 
+            else if(error.message.includes("'password' failed to satisfy constraint")) {
+                setSignUpState((prevState: {}) => ({...prevState, show_email_validation: false, show_password_validation: true}))
+            } 
+            else if(error.message.includes("Password not long enough")) {
+                setSignUpState((prevState: {}) => ({...prevState, show_email_validation: false, show_password_validation: true}))
+            } 
             
             
         }
@@ -159,6 +183,9 @@ const Step2 = () => {
                         placeholder={'eg. john@johnboyle.me'}
                         style={styles.input}
                     />
+                    {signup_state.show_email_validation &&
+                        <Text style={globalStyles.inputError}>Enter a valir email</Text>
+                    }
                 </View>
                     <View>
                         <Text>Choose a password</Text>
@@ -168,6 +195,9 @@ const Step2 = () => {
                             placeholder={'eg. john@johnboyle.me'}
                             style={styles.input}
                         />
+                        {signup_state.show_password_validation &&
+                            <Text style={globalStyles.inputError}>Password should contain XX</Text>
+                        }
                     </View>
             </View>
             <View style={styles.button}>

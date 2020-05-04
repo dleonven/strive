@@ -17,6 +17,9 @@ const initial_signup_state = {
     name: '',
     email: '',
     password: '',
+    show_name_validation: false,
+    show_email_validation: false,
+    show_password_validation: false,
 }
 
 const initial_signin_state = {
@@ -50,7 +53,6 @@ export default AuthWithContext
 const Auth = () => {
 
     const auth_context = useContext(AuthContext)
-    console.log("signup_state asdasd: ", auth_context.signup_state)
 
     
     /* initial value of the animated view is 400 (the height of the view), so it doesn't show */
@@ -195,7 +197,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
         height: 400,
         marginRight: 25,
-        marginLeft: 25
+        marginLeft: 25,
+        overflow: 'hidden',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
     }
 });
-
