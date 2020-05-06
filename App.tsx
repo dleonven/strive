@@ -32,6 +32,12 @@ function App() {
         'Inter-Black': require('./assets/fonts/Inter-Black.otf'),
     });*/
     
+    
+    
+    
+
+    
+    
     if (!fontsLoaded) return <AppLoading />;
     return (
         <Authenticator hideDefault={true} theme={MyTheme}>

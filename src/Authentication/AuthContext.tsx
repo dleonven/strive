@@ -15,7 +15,11 @@ export interface IAuthContext {
         email: string,
         password: string
     },
-    setSignInState: Function
+    setSignInState: Function,
+    loading: boolean,
+    setLoading: Function,
+    confirmation_code: string,
+    setConfirmationCode: Function
 }
 
 /* https://stackoverflow.com/questions/57945481/how-to-declare-the-typescript-types-of-a-react-context-initial-state */
@@ -35,5 +39,9 @@ export const AuthContext = React.createContext<IAuthContext>({
         password: '',
     },
     setSignInState: () => null,
+    loading: false,
+    setLoading: () => null, 
+    confirmation_code: '',
+    setConfirmationCode: () => null
 });
 

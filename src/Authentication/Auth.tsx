@@ -3,14 +3,17 @@ import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
 import { AmplifyTheme, Authenticator } from 'aws-amplify-react-native';
-import { TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
 import { Video } from 'expo-av';
 const { width, height } = Dimensions.get("window");
 import SignIn  from './SignIn'
 import SignUp  from './SignUp'
 import { AuthContext, IAuthContext } from './AuthContext'
+import Loading from '../Loading'
+
 /* declared as variable (not state), as it doesn't require a re render */
 let subViewHidden = true
+
 
 const initial_signup_state = {
     step: 1,
@@ -31,12 +34,19 @@ const AuthWithContext = () => {
     
     const [signup_state, setSignUpState] = useState<IAuthContext['signup_state']>(initial_signup_state)
     const [signin_state, setSignInState] = useState<IAuthContext['signin_state']>(initial_signin_state)
+    const [loading, setLoading] = useState(false)
+    const [confirmation_code, setConfirmationCode] = useState('')
+
 
     const initialAuthContext = {
         signup_state: signup_state,
         setSignUpState: setSignUpState,
         signin_state: signin_state,
-        setSignInState: setSignInState
+        setSignInState: setSignInState,
+        loading: loading,
+        setLoading: setLoading,
+        confirmation_code: confirmation_code,
+        setConfirmationCode: setConfirmationCode
     }
     
     return(
@@ -88,7 +98,10 @@ const Auth = () => {
         subViewHidden = !subViewHidden;
     }
     
+    if(auth_context.loading) return <Loading />
+    
     return(
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-24}>
         <TouchableOpacity activeOpacity={1} onPress={() => {
             if(subViewHidden) return
             auth_context.setSignUpState(initial_signup_state)
@@ -96,7 +109,6 @@ const Auth = () => {
             toggleSubview()
         }}>
             <View style={styles.container}>
-            
                 <View style={styles.authButtons}>
                     <View style={styles.signUpButton}>
                         <Button
@@ -118,7 +130,6 @@ const Auth = () => {
                     >
                         I already have an account
                     </Text>
-                    
                 </View>
 
                 {/* https://docs.expo.io/versions/latest/sdk/video/ */}
@@ -133,7 +144,7 @@ const Auth = () => {
                     style={styles.video}
                 />
                 
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <Animated.View
                         style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
                     >
@@ -143,11 +154,13 @@ const Auth = () => {
                         {auth_state === 'signup' &&
                             <SignUp />
                         }
-
                     </Animated.View>
+                    
+                    
                 </TouchableWithoutFeedback>
             </View>
         </TouchableOpacity>
+        </KeyboardAvoidingView>
     )
 }
 
