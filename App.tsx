@@ -1,4 +1,7 @@
+import 'react-native-gesture-handler';
 import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View } from 'react-native';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
@@ -11,6 +14,8 @@ import AuthWithContext from './src/Authentication/Auth'
 import { AppLoading } from 'expo';
 import { useFonts } from '@use-expo/font';
 /* https://github.com/aws-amplify/amplify-js/blob/master/packages/aws-amplify-react-native/src/AmplifyTheme.js */
+import { Hub } from '@aws-amplify/core';
+import useCurrentUser from './src/useCurrentUser';
 
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
 const MyButton = Object.assign({}, AmplifyTheme.button, { backgroundColor: 'red' });
@@ -26,23 +31,37 @@ Amplify.configure(amplify);
 
 
 function App() {
+    const currentUser = useCurrentUser();
+
     const fontsLoaded = true
     
     /*let [fontsLoaded] = useFonts({
         'Inter-Black': require('./assets/fonts/Inter-Black.otf'),
     });*/
     
-    
-    
-    
+    const Tab = createBottomTabNavigator();
+
+
 
     
     
     if (!fontsLoaded) return <AppLoading />;
     return (
-        <Authenticator hideDefault={true} theme={MyTheme}>
-            <AuthWithContext/>
-        </Authenticator>
+        <NavigationContainer>
+            {currentUser === null ?
+                <Authenticator hideDefault={true} theme={MyTheme}>
+                    <AuthWithContext/>
+                </Authenticator>
+                :
+                <Tab.Navigator>
+                    <Tab.Screen name="Home" component={Home} />
+                    <Tab.Screen name="QWE" component={Home} />
+                    <Tab.Screen name="ASD" component={Home} />
+                </Tab.Navigator>                
+            }
+
+
+        </NavigationContainer>
     );
 }
 
@@ -56,3 +75,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+const Home = () => {
+    return null
+}

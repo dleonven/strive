@@ -5,11 +5,13 @@ import Amplify from 'aws-amplify';
 import { AmplifyTheme, SignUp, Authenticator } from 'aws-amplify-react-native';
 import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import { AuthContext } from './AuthContext'
+import { Auth } from 'aws-amplify';
 
 
 
 const SignIn = () => {
     const { signin_state, setSignInState } = useContext(AuthContext)
+
 
     return(
         <View style={styles.container}>
@@ -40,7 +42,14 @@ const SignIn = () => {
                 <Button
                     color="white"
                     title={'SIGN IN'}
-                    onPress={() => null}
+                    onPress={async () => {
+                        try {
+                            await Auth.signIn(signin_state.email, signin_state.password);
+                        } 
+                        catch (error) {
+                            console.log('error signing in', error);
+                        }
+                    }}
                 />
             </View>
             <Text style={styles.forgottenPassword}>Forgotten password?</Text>
