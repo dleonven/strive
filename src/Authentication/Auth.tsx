@@ -20,6 +20,7 @@ const initial_signup_state = {
     name: '',
     email: '',
     password: '',
+    confirmation_code: '',
     show_name_validation: false,
     show_email_validation: false,
     show_password_validation: false,
@@ -35,7 +36,8 @@ const AuthWithContext = () => {
     const [signup_state, setSignUpState] = useState<IAuthContext['signup_state']>(initial_signup_state)
     const [signin_state, setSignInState] = useState<IAuthContext['signin_state']>(initial_signin_state)
     const [loading, setLoading] = useState(false)
-    const [confirmation_code, setConfirmationCode] = useState('')
+    const [auth_state, setAuthState] = useState<'' | 'signin' | 'signup'>('')
+
 
 
     const initialAuthContext = {
@@ -45,8 +47,8 @@ const AuthWithContext = () => {
         setSignInState: setSignInState,
         loading: loading,
         setLoading: setLoading,
-        confirmation_code: confirmation_code,
-        setConfirmationCode: setConfirmationCode
+        auth_state: auth_state,
+        setAuthState: setAuthState
     }
     
     return(
@@ -68,8 +70,6 @@ const Auth = () => {
     /* initial value of the animated view is 400 (the height of the view), so it doesn't show */
     const [bounce_value, setBounceValue] = useState(new Animated.Value(400))
     
-    const [auth_state, setAuthState] = useState<'' | 'signin' | 'signup'>('')
-
     const _onLogin = () => {
         //Alert.alert('Credentials', `${email} + ${password}`);
     }
@@ -115,7 +115,7 @@ const Auth = () => {
                             color="black"
                             title={'GET STARTED'}
                             onPress={() => {
-                                setAuthState('signup')
+                                auth_context.setAuthState('signup')
                                 toggleSubview()
                             }}
                         />
@@ -124,7 +124,7 @@ const Auth = () => {
                     <Text 
                         style={styles.signInButton}
                         onPress={() => {
-                            setAuthState('signin')
+                            auth_context.setAuthState('signin')
                             toggleSubview()
                         }}
                     >
@@ -148,10 +148,10 @@ const Auth = () => {
                     <Animated.View
                         style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
                     >
-                        {auth_state === 'signin' &&
+                        {auth_context.auth_state === 'signin' &&
                             <SignIn />
                         }
-                        {auth_state === 'signup' &&
+                        {auth_context.auth_state === 'signup' &&
                             <SignUp />
                         }
                     </Animated.View>

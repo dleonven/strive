@@ -14,6 +14,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+
 interface IsignUpData {
     name: string,
     email: string,
@@ -118,6 +119,9 @@ const Step2 = () => {
             } 
             else if(error.message.includes("Password not long enough")) {
                 setSignUpState((prevState: {}) => ({...prevState, show_email_validation: false, show_password_validation: true}))
+            }
+            else if(error.message.includes("An account with the given email already exists")) {
+                setSignUpState((prevState: {}) => ({...prevState, show_email_validation: true, show_password_validation: false}))
             } 
         }
         setLoading(false)
@@ -172,7 +176,7 @@ const Step2 = () => {
 
 
 const Step3 = () => {
-    const { confirmation_code, setConfirmationCode } = useContext(AuthContext)
+    const { setAuthState, signup_state, setSignUpState, setLoading } = useContext(AuthContext)
 
     return(
         <View style={styles.container}>
@@ -187,8 +191,8 @@ const Step3 = () => {
                     <Text>Enter the code</Text>
                     <CodeField
                         accessibilityValue
-                        value={confirmation_code}
-                        onChangeText={(val) => setConfirmationCode(val)}
+                        value={signup_state.confirmation_code}
+                        onChangeText={(val) => setSignUpState((prevState: {}) => ({...prevState, confirmation_code: val}))}
                         cellCount={6}
                         rootStyle={styles.codeFiledRoot}
                         keyboardType="number-pad"
@@ -202,18 +206,30 @@ const Step3 = () => {
                         )}
                     />
                 </View>
-
             </View>
             <View style={styles.button}>
                 <Button
                     color="white"
                     title={'CONTINUE'}
-                    onPress={() => null}
+                    onPress={async () => {
+                        try {
+                            setLoading(true)
+                            await Auth.confirmSignUp(signup_state.email, signup_state.confirmation_code);
+                            setLoading(false)
+                            setAuthState('signin')
+                        } 
+                        catch(error) {
+                            console.log('error confirming sign up', error);
+                        }
+                    }}
                 />
             </View>
         </View>
     )
 }
+
+
+
 
 const styles = StyleSheet.create({
     container: {
