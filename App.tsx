@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
@@ -16,7 +16,8 @@ import { useFonts } from '@use-expo/font';
 /* https://github.com/aws-amplify/amplify-js/blob/master/packages/aws-amplify-react-native/src/AmplifyTheme.js */
 import { Hub } from '@aws-amplify/core';
 import useCurrentUser from './src/useCurrentUser';
-
+import { Auth } from 'aws-amplify';
+import Home from './src/Athletes/Home'
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
 const MyButton = Object.assign({}, AmplifyTheme.button, { backgroundColor: 'red' });
 const MyTheme = Object.assign({}, AmplifyTheme, { 
@@ -40,7 +41,7 @@ function App() {
     });*/
     
     const Tab = createBottomTabNavigator();
-
+    const isLoggedIn = (null !== currentUser);
 
 
     
@@ -48,16 +49,16 @@ function App() {
     if (!fontsLoaded) return <AppLoading />;
     return (
         <NavigationContainer>
-            {currentUser === null ?
-                <Authenticator hideDefault={true} theme={MyTheme}>
-                    <AuthWithContext/>
-                </Authenticator>
-                :
+            {isLoggedIn ?
                 <Tab.Navigator>
                     <Tab.Screen name="Home" component={Home} />
                     <Tab.Screen name="QWE" component={Home} />
                     <Tab.Screen name="ASD" component={Home} />
-                </Tab.Navigator>                
+                </Tab.Navigator>
+                :
+                <Authenticator hideDefault={true} theme={MyTheme}>
+                    <AuthWithContext/>
+                </Authenticator>
             }
 
 
@@ -75,8 +76,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-
-const Home = () => {
-    return null
-}

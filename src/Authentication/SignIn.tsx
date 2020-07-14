@@ -10,8 +10,7 @@ import { Auth } from 'aws-amplify';
 
 
 const SignIn = () => {
-    const { signin_state, setSignInState } = useContext(AuthContext)
-
+    const { setLoading, signin_state, setSignInState } = useContext(AuthContext)
 
     return(
         <View style={styles.container}>
@@ -44,9 +43,11 @@ const SignIn = () => {
                     title={'SIGN IN'}
                     onPress={async () => {
                         try {
+                            setLoading(true)
                             await Auth.signIn(signin_state.email, signin_state.password);
-                        } 
+                        }
                         catch (error) {
+                            setLoading(false)
                             console.log('error signing in', error);
                         }
                     }}
