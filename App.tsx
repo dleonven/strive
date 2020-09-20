@@ -18,6 +18,13 @@ import { Hub } from '@aws-amplify/core';
 import useCurrentUser from './src/useCurrentUser';
 import { Auth } from 'aws-amplify';
 import Home from './src/Athletes/Home'
+import { Container, Content, StyleProvider } from 'native-base';
+import material from './native-base-theme/variables/material';
+import getTheme from './native-base-theme/components';
+
+
+
+
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
 const MyButton = Object.assign({}, AmplifyTheme.button, { backgroundColor: 'red' });
 const MyTheme = Object.assign({}, AmplifyTheme, { 
@@ -48,21 +55,17 @@ function App() {
     
     if (!fontsLoaded) return <AppLoading />;
     return (
-        <NavigationContainer>
-            {isLoggedIn ?
-                <Tab.Navigator>
-                    <Tab.Screen name="Home" component={Home} />
-                    <Tab.Screen name="QWE" component={Home} />
-                    <Tab.Screen name="ASD" component={Home} />
-                </Tab.Navigator>
-                :
-                <Authenticator hideDefault={true} theme={MyTheme}>
-                    <AuthWithContext/>
-                </Authenticator>
-            }
-
-
-        </NavigationContainer>
+        <StyleProvider style={getTheme(material)}>
+            <NavigationContainer>
+                {isLoggedIn ?
+                    <Home/>
+                    :
+                    <Authenticator hideDefault={true} theme={MyTheme}>
+                        <AuthWithContext/>
+                    </Authenticator>
+                }
+            </NavigationContainer>
+        </StyleProvider>    
     );
 }
 
