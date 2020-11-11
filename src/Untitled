@@ -1,0 +1,100 @@
+                <CustomList 
+                    data={DATA_NO_ICON}
+                    font_type={'CopyText'}
+                />
+                
+                <CustomList 
+                    data={DATA_HEART}
+                    font_type={'Subtitle'}
+                    icon_type={'Heart'}
+                />
+                
+                <CustomList 
+                    data={DATA_TEXT_ICON}
+                    font_type={'ContentTitle'}
+                    icon_type={'TextIcon'}
+                />
+                
+                <ListWithImage 
+                    data={DATA_LIST_WITH_IMAGE}
+                />          
+                
+                
+                
+                
+                
+                const DATA_NO_ICON = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    text: 'Basketball',
+    additionalText: '21'
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    text: 'Tennis',
+    additionalText: '3'
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    text: 'Yoga',
+    additionalText: '6'
+  },
+];
+
+const DATA_HEART = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    text: 'Basketball',
+    additionalText: '21'
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    text: 'Tennis',
+    additionalText: '3'
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    text: 'Yoga',
+    additionalText: '6'
+  },
+];
+
+
+const DATA_TEXT_ICON = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    text: 'Name | ',
+    additionalText: 'Diego'
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    text: 'E-mail address | ',
+    additionalText: 'dleonven@gmail.com'
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    text: 'Password | ',
+    additionalText: '*******'
+  },
+];
+
+const DATA_LIST_WITH_IMAGE = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    main_text: '2 Ball In & Outs',
+    sub_text: '100 dribbles each arm',
+    uri: 'https://picsum.photos/200/300?random=1'
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    main_text: "ABC's",
+    sub_text: '5 rounds x 30 seconds',
+    uri: 'https://picsum.photos/200/300?random=1'
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    main_text: 'Pocket Hangs',
+    sub_text: '40 dribbles each arm',
+    uri: 'https://picsum.photos/200/300?random=1'
+  },
+];

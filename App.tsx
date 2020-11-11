@@ -18,11 +18,12 @@ import { Hub } from '@aws-amplify/core';
 import useCurrentUser from './src/useCurrentUser';
 import { Auth } from 'aws-amplify';
 import Home from './src/Athletes/Home'
+import Discover from './src/Athletes/Discover'
 import { Container, Content, StyleProvider } from 'native-base';
 import material from './native-base-theme/variables/material';
 import getTheme from './native-base-theme/components';
-
-
+import { createStackNavigator } from '@react-navigation/stack';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
@@ -36,16 +37,28 @@ const MyTheme = Object.assign({}, AmplifyTheme, {
 Amplify.configure(amplify);
 
 
+const Stack = createStackNavigator();
 
 
 function App() {
     const currentUser = useCurrentUser();
 
-    const fontsLoaded = true
+    //const fontsLoaded = true
     
-    /*let [fontsLoaded] = useFonts({
-        'Inter-Black': require('./assets/fonts/Inter-Black.otf'),
-    });*/
+    let [fontsLoaded] = useFonts({
+        'BioSans-Bold': require('./assets/fonts/BioSans-Bold.otf'),
+        'BioSans-BoldItalic': require('./assets/fonts/BioSans-BoldItalic.otf'),
+        'BioSans-ExtraBold': require('./assets/fonts/BioSans-ExtraBold.otf'),
+        'BioSans-ExtraBoldItalic': require('./assets/fonts/BioSans-ExtraBoldItalic.otf'),
+        'BioSans-ExtraLight': require('./assets/fonts/BioSans-ExtraLight.otf'),
+        'BioSans-ExtraLightItalic': require('./assets/fonts/BioSans-ExtraLightItalic.otf'),
+        'BioSans-Italic': require('./assets/fonts/BioSans-Italic.otf'),
+        'BioSans-Light': require('./assets/fonts/BioSans-Light.otf'),
+        'BioSans-LightItalic': require('./assets/fonts/BioSans-LightItalic.otf'),
+        'BioSans-Regular': require('./assets/fonts/BioSans-Regular.otf'),
+        'BioSans-SemiBold': require('./assets/fonts/BioSans-SemiBold.otf'),
+        'BioSans-SemiBoldItalic': require('./assets/fonts/BioSans-SemiBoldItalic.otf'),
+    });
     
     const Tab = createBottomTabNavigator();
     const isLoggedIn = (null !== currentUser);
@@ -58,7 +71,57 @@ function App() {
         <StyleProvider style={getTheme(material)}>
             <NavigationContainer>
                 {isLoggedIn ?
-                    <Home/>
+                    <Stack.Navigator>
+
+                        <Stack.Screen 
+                            name="Discover" 
+                            component={Discover} 
+                            options={{
+                                title: 'Discover',
+                                headerStyle: {
+                                    height: 125
+                                },
+                                headerTintColor: 'rgb(55,54,54)',
+                                headerTitleStyle: {
+                                    fontFamily: 'BioSans-Bold',
+                                    fontSize: 14
+                                },
+                                headerLeft: () => (
+                                    <MaterialIcons 
+                                        name="keyboard-arrow-left" 
+                                        size={24} 
+                                        color="rgb(55,54,54)"
+                                        onPress={() => alert('This is a button!')}
+                                    />                                
+                                ),                                
+                            }}    
+                        />                        
+                        
+                        <Stack.Screen 
+                            name="Home" 
+                            component={Home} 
+                            options={{
+                                title: 'My home',
+                                headerStyle: {
+                                    height: 125
+                                },
+                                headerTintColor: 'rgb(55,54,54)',
+                                headerTitleStyle: {
+                                    fontFamily: 'BioSans-Bold',
+                                    fontSize: 14
+                                },
+                                headerLeft: () => (
+                                    <MaterialIcons 
+                                        name="keyboard-arrow-left" 
+                                        size={24} 
+                                        color="rgb(55,54,54)"
+                                        onPress={() => alert('This is a button!')}
+                                    />                                
+                                ),                                
+                            }}    
+                        />
+                        
+                    </Stack.Navigator>
                     :
                     <Authenticator hideDefault={true} theme={MyTheme}>
                         <AuthWithContext/>
