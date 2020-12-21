@@ -17,8 +17,6 @@ const Discover = () => {
                     text="Search"
                 />            
             </View>
-        
-
         </View>
     )
 }
@@ -32,6 +30,6 @@ const styles = StyleSheet.create({
     },
     content: {
         marginLeft: 24,
-        merginRight: 24
+        marginRight: 24
     }
 });

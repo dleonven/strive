@@ -5,26 +5,48 @@ import {font_type} from '../GlobalTypes'
 
 interface FontProps {
     text: string
-    image_type?: string
+    image_type?: string,
+    color?: string
 }
 
 const CustomFont = (props: { 
     font_type: font_type 
     text: string, 
-    image_type?: string
+    image_type?: string,
+    color?: string
 }) => {
     
     switch(props.font_type) {
         case 'BigTitle':
-            return <BigTitle text={props.text} image_type={props.image_type}/>
+            return <BigTitle 
+                        text={props.text} 
+                        image_type={props.image_type}
+                        color={props.color}
+                    />
         case 'Subtitle':
-            return <Subtitle text={props.text} image_type={props.image_type}/>
+            return <Subtitle 
+                        text={props.text} 
+                        image_type={props.image_type}
+                        color={props.color}
+                    />
         case 'ContentTitle':
-            return <ContentTitle text={props.text} image_type={props.image_type}/>
+            return <ContentTitle 
+                        text={props.text} 
+                        image_type={props.image_type}
+                        color={props.color}
+                    />
         case 'CopyText':
-            return <CopyText text={props.text} image_type={props.image_type}/>
+            return <CopyText 
+                        text={props.text} 
+                        image_type={props.image_type}
+                        color={props.color}
+                    />
         case 'CopySmall':
-            return <CopySmall text={props.text} image_type={props.image_type}/>
+            return <CopySmall 
+                        text={props.text} 
+                        image_type={props.image_type}
+                        color={props.color}
+                    />
     }
 }
 
@@ -97,7 +119,10 @@ const CopySmall = (props: FontProps) => {
             style={props.image_type === 'HeroImage' ?
                 {fontSize: 14, fontFamily: 'BioSans-Regular', color: 'white'}
                 :
-                {fontSize: 14, fontFamily: 'BioSans-Regular'}
+                !!props.color ?
+                    {fontSize: 14, fontFamily: 'BioSans-Regular', color: props.color}
+                    :
+                    {fontSize: 14, fontFamily: 'BioSans-Regular'}
             }
         >
             {props.text}

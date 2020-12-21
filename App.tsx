@@ -18,6 +18,7 @@ import { Hub } from '@aws-amplify/core';
 import useCurrentUser from './src/useCurrentUser';
 import { Auth } from 'aws-amplify';
 import Home from './src/Athletes/Home'
+import MyCoach from './src/Athletes/MyCoach/MyCoach'
 import Discover from './src/Athletes/Discover'
 import { Container, Content, StyleProvider } from 'native-base';
 import material from './native-base-theme/variables/material';
@@ -72,6 +73,37 @@ function App() {
             <NavigationContainer>
                 {isLoggedIn ?
                     <Stack.Navigator>
+
+
+                        <Stack.Screen 
+                            name="MyCoach" 
+                            component={MyCoach} 
+                            options={{
+                                title: 'My Coach',
+                                headerStyle: {
+                                    height: 125,
+                                    shadowColor: 'transparent'
+                                },
+                                headerTintColor: 'rgb(55,54,54)',
+                                headerTitleStyle: {
+                                    fontFamily: 'BioSans-Bold',
+                                    fontSize: 14
+                                },
+                                headerLeft: () => (
+                                    <MaterialIcons 
+                                        name="keyboard-arrow-left" 
+                                        size={24} 
+                                        color="rgb(55,54,54)"
+                                        onPress={() => alert('This is a button!')}
+                                    />                                
+                                ),                                
+                            }}    
+                        /> 
+
+
+
+
+
 
                         <Stack.Screen 
                             name="Discover" 
