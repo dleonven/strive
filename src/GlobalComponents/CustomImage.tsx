@@ -7,7 +7,7 @@ import { Col, Row, Grid, Container, Header, Left, Body, Right, Icon, Title, Butt
 
 
 
-const Imagee = (props: { image_type: string, uri: string }) => {
+const CustomImage = (props: { image_type: string, uri: string }) => {
     if(props.image_type === 'SmallImage') return <SmallImage uri={props.uri} />
     else if(props.image_type === 'MediumImage') return <MediumImage uri={props.uri}/>
     else if(props.image_type === 'LargeImage') return <LargeImage uri={props.uri}/>
@@ -15,7 +15,7 @@ const Imagee = (props: { image_type: string, uri: string }) => {
     else if(props.image_type === 'HeroImage') return <HeroImage uri={props.uri}/>
 } 
 
-export default Imagee
+export default CustomImage
 
 const SmallImage = (props: {uri: string}) => {
     return(

@@ -6,7 +6,7 @@ import {image_type, detail_type} from '../GlobalTypes'
 
 
 import { FullCard } from '../GlobalComponents/FullCard'
-import Imagee from '../GlobalComponents/Images'
+import CustomImage from '../GlobalComponents/CustomImage'
 import DetailsCard from '../GlobalComponents/DetailsCards'
 
 
@@ -39,16 +39,12 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
     const [carouselItems, setCarouselItems] = useState<ItemProps[]>(props.input);
     const ref = useRef(null);
     
-    //const renderItem = useCallback(({ item, index }: RenderItemProps) => {
     const renderItem = useCallback( (props: {item: ItemProps, index: number}) => {
         
 
         return (
             <View
                 style={{
-                    //height: 369,
-                    //width: '90%',
-                    //marginLeft: 24,
                     marginRight: 0,
                     marginTop: 22,
                     backgroundColor: 'white'
@@ -60,7 +56,7 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
                     link_text={props.item.link_text}
                     
                     ImageComponent={
-                        <Imagee
+                        <CustomImage
                             image_type={image_type}
                             uri={props.item.uri}
                         />
@@ -86,24 +82,22 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
     }, []);
 
     return (
-        <SafeAreaView style={{ flex: 1, paddingTop: 50 }}>
             <View style={{ 
-                flex: 1, 
                 flexDirection: "row", 
-                justifyContent: "center",
                 backgroundColor: 'white'
             }}>
-                <Carousel
-                    layout={"default"}
-                    ref={ref}
-                    data={carouselItems}
-                    sliderWidth={80}
-                    itemWidth={280}
-                    renderItem={renderItem}
-                    onSnapToItem={(index: number) => setActiveIndex(index)}
-                />
-            </View>
-        </SafeAreaView>
+
+        <Carousel
+            layout={"default"}
+            ref={ref}
+            data={carouselItems}
+            sliderWidth={300}
+            itemWidth={315}
+            renderItem={renderItem}
+            onSnapToItem={(index: number) => setActiveIndex(index)}
+        />
+                </View>
+
     );
 };
 

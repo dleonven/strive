@@ -5,20 +5,20 @@ import { Fontisto, Feather } from '@expo/vector-icons';
 
 import { Col, Row, Grid, Container, Header, Left, Body, Right, Icon, Title, Button, Content, Card, CardItem } from 'native-base';
 import CustomFont from './CustomFont'
- 
- 
+
+
 
 const DetailsCard = (props: { 
     details_card_type: string, 
     image_type: string, 
-    text: string,
-    level: number,
-    workouts: number,
-    minutes: number,
-    title_text: string,
-    content_text: string,
-    sport: string,
-    coaches: number
+    text?: string,
+    level?: number,
+    workouts?: number,
+    minutes?: number,
+    title_text?: string,
+    content_text?: string,
+    sport?: string,
+    coaches?: number
 }) => {
     if(props.details_card_type === 'SeriesDetails') return(
         <SeriesDetails
@@ -27,7 +27,7 @@ const DetailsCard = (props: {
             level={props.level}
             workouts={props.workouts}
         />
-    ) 
+    )
     else if(props.details_card_type === 'WorkoutDetails') return(
         <WorkoutDetails
             image_type={props.image_type}

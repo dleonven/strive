@@ -9,11 +9,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
 
-const Series = () => (
+const TabWorkouts = () => (
     <ScrollView style={{
         flex: 1, 
         marginLeft: 24,
-        //marginRight: 24
     }}>
         <FullCardCarousel
             image_type='XLargeImage'
@@ -28,7 +27,7 @@ const Series = () => (
     </ScrollView>
 );
 
-export default Series
+export default TabWorkouts
 
 
 

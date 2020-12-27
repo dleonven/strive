@@ -7,8 +7,10 @@ import ListWithImage from '../../GlobalComponents/ListWithImage'
 import CustomFormField from '../../GlobalComponents/CustomFormField'
 import { NavigationContainer } from '@react-navigation/native';
 import { TabBar, TabView, SceneMap } from 'react-native-tab-view';
-import Series from './Series'
+import MyCoachTabs from './MyCoachTabs'
 import CustomFont from '../../GlobalComponents/CustomFont'
+
+
 
 const MyCoach = () => {
     return(
@@ -17,7 +19,6 @@ const MyCoach = () => {
             backgroundColor: '#fff',
             //marginRight: 41
         }}>
-        
             <CoachDetails/>
             <MyCoachTabs/>
         </View>
@@ -31,8 +32,8 @@ const CoachDetails = () => {
     return(
         <View style={{
             marginLeft: 24,
-            //marginRight: 41,
-            flexDirection: 'row'
+            //marginRight: 100,
+            flexDirection: 'row',
         }}>
             <Image
                 style={{ width: 66, height: 66, borderRadius: 4 }}
@@ -41,11 +42,12 @@ const CoachDetails = () => {
                 }}
             />            
         
-            <View style={{ marginLeft: 16 }}>
+            <View style={{ flex: 1, marginLeft: 16 }}>
                 <CustomFont
                     font_type="ContentTitle"
                     text="GARY MAITLAND"
                 /> 
+                
                 <CustomFont
                     font_type="CopySmall"
                     text="Gary Maitland is a NBA Skills Coach and the founder of CoachMaitland..."
@@ -57,57 +59,8 @@ const CoachDetails = () => {
 }
 
 
-const MyCoachTabs = () => {
-    
-    const [index, setIndex] = React.useState(0);
-    
-    const [routes] = React.useState([
-        { key: 'series', title: 'Series' },
-        { key: 'workouts', title: 'Workouts' },
-    ]);
-    
-    const renderScene = SceneMap({
-        series: Series,
-        workouts: Workouts,
-    });
-    
-    return (
-        <TabView
-            navigationState={{ index, routes }}
-            renderScene={renderScene}
-            onIndexChange={setIndex}
-            initialLayout={initialLayout}
-            renderTabBar={renderTabBar}
-
-        />
-    );
-}
-
-const renderTabBar = props => (
-    <TabBar
-        {...props}
-        indicatorStyle={{ backgroundColor: 'rgb(0,77,86)'}}
-        style={{ backgroundColor: 'white' }}
-        labelStyle={{ 
-            fontFamily: 'BioSans-SemiBold',
-            fontSize: 16,
-            color: 'rgb(0,77,86)' 
-        }}
-    />
-);
-
-const initialLayout = { 
-    width: Dimensions.get('window').width 
-};
 
 
-const Workouts = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
-);
 
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
-});
+
 

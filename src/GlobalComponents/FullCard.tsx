@@ -1,7 +1,6 @@
 import React from "react";
 
 import { View, Text } from "react-native";
-import Imagee from '../GlobalComponents/Images'
 
 
 interface FullCardProps {
@@ -20,6 +19,8 @@ export const FullCard = (props: FullCardProps) => {
                 alignItems: 'center',
                 marginBottom: 24
             }}>
+            
+                {/* TITLE */}
                 <Text style={{ 
                     fontSize: 23, 
                     fontFamily: 'BioSans-SemiBold',
@@ -28,6 +29,8 @@ export const FullCard = (props: FullCardProps) => {
                     {props.title}
                 </Text>
                 
+                
+                {/* LINK TEXT */}
                 <Text style={{ 
                     fontFamily: 'BioSans-Regular', 
                     fontSize: 16, 

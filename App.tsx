@@ -69,98 +69,96 @@ function App() {
     
     if (!fontsLoaded) return <AppLoading />;
     return (
-        <StyleProvider style={getTheme(material)}>
-            <NavigationContainer>
-                {isLoggedIn ?
-                    <Stack.Navigator>
+        <NavigationContainer>
+            {isLoggedIn ?
+                <Stack.Navigator>
 
 
-                        <Stack.Screen 
-                            name="MyCoach" 
-                            component={MyCoach} 
-                            options={{
-                                title: 'My Coach',
-                                headerStyle: {
-                                    height: 125,
-                                    shadowColor: 'transparent'
-                                },
-                                headerTintColor: 'rgb(55,54,54)',
-                                headerTitleStyle: {
-                                    fontFamily: 'BioSans-Bold',
-                                    fontSize: 14
-                                },
-                                headerLeft: () => (
-                                    <MaterialIcons 
-                                        name="keyboard-arrow-left" 
-                                        size={24} 
-                                        color="rgb(55,54,54)"
-                                        onPress={() => alert('This is a button!')}
-                                    />                                
-                                ),                                
-                            }}    
-                        /> 
-
-
+                    <Stack.Screen 
+                        name="MyCoach" 
+                        component={MyCoach} 
+                        options={{
+                            title: 'My Coach',
+                            headerStyle: {
+                                height: 125,
+                                shadowColor: 'transparent'
+                            },
+                            headerTintColor: 'rgb(55,54,54)',
+                            headerTitleStyle: {
+                                fontFamily: 'BioSans-Bold',
+                                fontSize: 14
+                            },
+                            headerLeft: () => (
+                                <MaterialIcons 
+                                    name="keyboard-arrow-left" 
+                                    size={24} 
+                                    color="rgb(55,54,54)"
+                                    onPress={() => alert('This is a button!')}
+                                />                                
+                            ),                                
+                        }}    
+                    /> 
 
 
 
 
-                        <Stack.Screen 
-                            name="Discover" 
-                            component={Discover} 
-                            options={{
-                                title: 'Discover',
-                                headerStyle: {
-                                    height: 125
-                                },
-                                headerTintColor: 'rgb(55,54,54)',
-                                headerTitleStyle: {
-                                    fontFamily: 'BioSans-Bold',
-                                    fontSize: 14
-                                },
-                                headerLeft: () => (
-                                    <MaterialIcons 
-                                        name="keyboard-arrow-left" 
-                                        size={24} 
-                                        color="rgb(55,54,54)"
-                                        onPress={() => alert('This is a button!')}
-                                    />                                
-                                ),                                
-                            }}    
-                        />                        
-                        
-                        <Stack.Screen 
-                            name="Home" 
-                            component={Home} 
-                            options={{
-                                title: 'My home',
-                                headerStyle: {
-                                    height: 125
-                                },
-                                headerTintColor: 'rgb(55,54,54)',
-                                headerTitleStyle: {
-                                    fontFamily: 'BioSans-Bold',
-                                    fontSize: 14
-                                },
-                                headerLeft: () => (
-                                    <MaterialIcons 
-                                        name="keyboard-arrow-left" 
-                                        size={24} 
-                                        color="rgb(55,54,54)"
-                                        onPress={() => alert('This is a button!')}
-                                    />                                
-                                ),                                
-                            }}    
-                        />
-                        
-                    </Stack.Navigator>
-                    :
-                    <Authenticator hideDefault={true} theme={MyTheme}>
-                        <AuthWithContext/>
-                    </Authenticator>
-                }
-            </NavigationContainer>
-        </StyleProvider>    
+
+
+                    <Stack.Screen 
+                        name="Discover" 
+                        component={Discover} 
+                        options={{
+                            title: 'Discover',
+                            headerStyle: {
+                                height: 125
+                            },
+                            headerTintColor: 'rgb(55,54,54)',
+                            headerTitleStyle: {
+                                fontFamily: 'BioSans-Bold',
+                                fontSize: 14
+                            },
+                            headerLeft: () => (
+                                <MaterialIcons 
+                                    name="keyboard-arrow-left" 
+                                    size={24} 
+                                    color="rgb(55,54,54)"
+                                    onPress={() => alert('This is a button!')}
+                                />                                
+                            ),                                
+                        }}    
+                    />                        
+                    
+                    <Stack.Screen 
+                        name="Home" 
+                        component={Home} 
+                        options={{
+                            title: 'My home',
+                            headerStyle: {
+                                height: 125
+                            },
+                            headerTintColor: 'rgb(55,54,54)',
+                            headerTitleStyle: {
+                                fontFamily: 'BioSans-Bold',
+                                fontSize: 14
+                            },
+                            headerLeft: () => (
+                                <MaterialIcons 
+                                    name="keyboard-arrow-left" 
+                                    size={24} 
+                                    color="rgb(55,54,54)"
+                                    onPress={() => alert('This is a button!')}
+                                />                                
+                            ),                                
+                        }}    
+                    />
+                    
+                </Stack.Navigator>
+                :
+                <Authenticator hideDefault={true} theme={MyTheme}>
+                    <AuthWithContext/>
+                </Authenticator>
+            }
+        </NavigationContainer>
     );
 }
 
