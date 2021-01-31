@@ -15,13 +15,13 @@ const TabWorkouts = () => (
         marginLeft: 24,
     }}>
         <FullCardCarousel
-            image_type='LargeImage'
-            detail_type='WorkoutDetails'
+            image_type='XXLargeImage'
+            //detail_type='WorkoutDetails'
             input={input}
         />
         <FullCardCarousel
-            image_type='LargeImage'
-            detail_type='WorkoutDetails'
+            image_type='XXLargeImage'
+            //detail_type='WorkoutDetails'
             input={input}
         />
     </ScrollView>

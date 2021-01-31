@@ -13,6 +13,8 @@ const CustomImage = (props: { image_type: string, uri: string }) => {
     else if(props.image_type === 'LargeImage') return <LargeImage uri={props.uri}/>
     else if(props.image_type === 'XLargeImage') return <XLargeImage uri={props.uri}/>
     else if(props.image_type === 'HeroImage') return <HeroImage uri={props.uri}/>
+    else if(props.image_type === 'XXLargeImage') return <XXLargeImage uri={props.uri}/>
+    
 } 
 
 export default CustomImage
@@ -94,6 +96,31 @@ const HeroImage = (props: {uri: string}) => {
                     uri: props.uri,
                 }}
             />
+        </View>
+    )
+}
+
+const XXLargeImage = (props: {uri: string}) => {
+    return(
+        <View>
+            <Image
+                style={{ width: 327, height: 296, borderRadius: 12 }}
+                source={{
+                    uri: props.uri,
+                }}
+            />
+            
+            <View style={{ position: 'absolute', marginLeft: 16, bottom: 23 }}>            
+                <Text style={{ 
+                    fontSize: 28, 
+                    fontFamily: 'BioSans-ExtraBoldItalic',
+                    color: 'rgb(255,255,255)',
+                    textShadowColor: 'rgba(0,0,0,0.8)',
+                    textShadowOffset: {width: 2, height: 2}
+                }}>
+                    #StaticTextForNow
+                </Text>
+            </View>    
         </View>
     )
 }

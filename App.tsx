@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, Image } from 'react-native';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
@@ -70,6 +70,7 @@ function App() {
     if (!fontsLoaded) return <AppLoading />;
     return (
         <NavigationContainer>
+
             {isLoggedIn ?
                 <Stack.Navigator>
 
@@ -78,7 +79,7 @@ function App() {
                         name="MyCoach" 
                         component={MyCoach} 
                         options={{
-                            title: 'My Coach',
+                            title: 'MY COACH',
                             headerStyle: {
                                 height: 125,
                                 shadowColor: 'transparent'
@@ -89,19 +90,13 @@ function App() {
                                 fontSize: 14
                             },
                             headerLeft: () => (
-                                <MaterialIcons 
-                                    name="keyboard-arrow-left" 
-                                    size={24} 
-                                    color="rgb(55,54,54)"
-                                    onPress={() => alert('This is a button!')}
-                                />                                
+                                <Image 
+                                    source={require('./assets/round-logo.png')} 
+                                    style={{ width: 32, height: 32, marginLeft: 24 }}
+                                />
                             ),                                
-                        }}    
+                        }}
                     /> 
-
-
-
-
 
 
                     <Stack.Screen 
@@ -154,9 +149,11 @@ function App() {
                     
                 </Stack.Navigator>
                 :
-                <Authenticator hideDefault={true} theme={MyTheme}>
-                    <AuthWithContext/>
-                </Authenticator>
+                            <Authenticator hideDefault={true} theme={MyTheme}>
+
+                <AuthWithContext/>
+                            </Authenticator>
+
             }
         </NavigationContainer>
     );

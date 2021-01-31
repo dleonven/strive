@@ -9,13 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { TabBar, TabView, SceneMap } from 'react-native-tab-view';
 import TabSeries from './TabSeries'
 import TabWorkouts from './TabWorkouts'
+import TabDrills from './TabDrills'
+import TabBreakdowns from './TabBreakdowns'
 
-
-
-
-
-const screen = Dimensions.get("screen");
-const window  = Dimensions.get("window");
 
 const MyCoachTabs = () => {
     
@@ -24,11 +20,15 @@ const MyCoachTabs = () => {
     const [routes] = React.useState([
         { key: 'series', title: 'Series' },
         { key: 'workouts', title: 'Workouts' },
+        { key: 'drills', title: 'Drills' },
+        { key: 'breakdowns', title: 'Breakdowns' },
     ]);
     
     const renderScene = SceneMap({
         series: TabSeries,
         workouts: TabWorkouts,
+        drills: TabDrills,
+        breakdowns: TabBreakdowns,
     });
     
     return (
@@ -56,6 +56,7 @@ const renderTabBar = (props: any) => (
             fontSize: 16,
             color: 'rgb(0,77,86)' 
         }}
+        scrollEnabled        
     />
 );
 

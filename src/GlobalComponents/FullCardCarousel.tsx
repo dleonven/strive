@@ -12,7 +12,7 @@ import DetailsCard from '../GlobalComponents/DetailsCards'
 
 interface ItemProps {
     title: string
-    link_text: string
+    link_text?: string
     text?: string;
     minutes?: number;
     level?: number;
@@ -26,7 +26,7 @@ interface ItemProps {
 
 interface FullCardCarouselProps {
     image_type: image_type
-    detail_type: detail_type
+    detail_type?: detail_type
     input: ItemProps[]
 }
 
@@ -40,7 +40,7 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
     const ref = useRef(null);
     
     const renderItem = useCallback( (props: {item: ItemProps, index: number}) => {
-        
+    
 
         return (
             <View
@@ -62,7 +62,7 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
                         />
                     }
 
-                    DetailComponent={    
+                    DetailComponent={!!detail_type ?
                         <DetailsCard
                             details_card_type={detail_type}
                             image_type={image_type}
@@ -74,30 +74,40 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
                             content_text={props.item.content_text} 
                             sport={props.item.sport}
                             coaches={props.item.coaches}                            
-                        />
+                        /> 
+                        :
+                        null
                     }
                 />              
             </View>
         );
     }, []);
 
+    const getItemWidth = () => {
+        if(image_type === "XLargeImage") return 309
+        if(image_type === "LargeImage") return 209
+        if(image_type === "SmallImage") return 147
+        if(image_type === "XXLargeImage") return 327
+
+    }
+
     return (
-            <View style={{ 
-                flexDirection: "row", 
-                backgroundColor: 'white'
-            }}>
-
-        <Carousel
-            layout={"default"}
-            ref={ref}
-            data={carouselItems}
-            sliderWidth={300}
-            itemWidth={315}
-            renderItem={renderItem}
-            onSnapToItem={(index: number) => setActiveIndex(index)}
-        />
-                </View>
-
+        <View style={{ 
+            flex: 1, 
+            flexDirection: "row", 
+            justifyContent: "center",
+            backgroundColor: 'white'
+        }}>
+            <Carousel
+                layout={"default"}
+                ref={ref}
+                data={carouselItems}
+                sliderWidth={0}
+                itemWidth={getItemWidth()}
+                renderItem={renderItem}
+                onSnapToItem={(index: number) => setActiveIndex(index)}
+            />
+         </View>
     );
 };
 
