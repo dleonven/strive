@@ -14,9 +14,10 @@ import CustomFont from '../../GlobalComponents/CustomFont'
 
 const MyCoach = () => {
     return(
-        <View style={{ 
+        <View style={{
             flex: 1, 
             backgroundColor: '#fff',
+            //height: '100%'
             //marginRight: 41
         }}>
             <CoachDetails/>

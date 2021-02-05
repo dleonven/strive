@@ -102,7 +102,7 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
                 layout={"default"}
                 ref={ref}
                 data={carouselItems}
-                sliderWidth={0}
+                sliderWidth={1}
                 itemWidth={getItemWidth()}
                 renderItem={renderItem}
                 onSnapToItem={(index: number) => setActiveIndex(index)}

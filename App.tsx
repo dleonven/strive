@@ -25,6 +25,7 @@ import material from './native-base-theme/variables/material';
 import getTheme from './native-base-theme/components';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
@@ -37,6 +38,7 @@ const MyTheme = Object.assign({}, AmplifyTheme, {
 
 Amplify.configure(amplify);
 
+const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
 
@@ -61,7 +63,6 @@ function App() {
         'BioSans-SemiBoldItalic': require('./assets/fonts/BioSans-SemiBoldItalic.otf'),
     });
     
-    const Tab = createBottomTabNavigator();
     const isLoggedIn = (null !== currentUser);
 
 
@@ -72,87 +73,96 @@ function App() {
         <NavigationContainer>
 
             {isLoggedIn ?
-                <Stack.Navigator>
-
-
-                    <Stack.Screen 
-                        name="MyCoach" 
-                        component={MyCoach} 
+            
+                <Tab.Navigator
+                    tabBarOptions={{
+                        showLabel: false,
+                        style: { height: 83 }
+                    }}
+                >
+                
+                    <Tab.Screen 
+                        name="My Coach" 
+                        component={Asd} 
+                        
                         options={{
-                            title: 'MY COACH',
-                            headerStyle: {
-                                height: 125,
-                                shadowColor: 'transparent'
-                            },
-                            headerTintColor: 'rgb(55,54,54)',
-                            headerTitleStyle: {
-                                fontFamily: 'BioSans-Bold',
-                                fontSize: 14
-                            },
-                            headerLeft: () => (
-                                <Image 
-                                    source={require('./assets/round-logo.png')} 
-                                    style={{ width: 32, height: 32, marginLeft: 24 }}
-                                />
-                            ),                                
-                        }}
-                    /> 
+                            tabBarLabel: 'Activity',
+                            tabBarIcon: ({ focused }) => {
+                                if(focused) return(
+                                    <Image 
+                                        source={require('./assets/coach-selected.png')} 
+                                        style={{ width: 32, height: 32 }}
+                                    />
+                                )
+                                else return(
+                                    <Image 
+                                        source={require('./assets/coach-unselected.png')} 
+                                        style={{ width: 32, height: 32 }}
+                                    />                               
+                                )
+                            }
+                        }} 
 
-
-                    <Stack.Screen 
-                        name="Discover" 
-                        component={Discover} 
-                        options={{
-                            title: 'Discover',
-                            headerStyle: {
-                                height: 125
-                            },
-                            headerTintColor: 'rgb(55,54,54)',
-                            headerTitleStyle: {
-                                fontFamily: 'BioSans-Bold',
-                                fontSize: 14
-                            },
-                            headerLeft: () => (
-                                <MaterialIcons 
-                                    name="keyboard-arrow-left" 
-                                    size={24} 
-                                    color="rgb(55,54,54)"
-                                    onPress={() => alert('This is a button!')}
-                                />                                
-                            ),                                
-                        }}    
                     />                        
+                        
+                        
                     
-                    <Stack.Screen 
-                        name="Home" 
-                        component={Home} 
+                    
+                    <Tab.Screen 
+                        name="Strive" 
+                        component={Asd} 
+                        listeners={{
+                            tabPress: e => {
+                                // Prevent default action
+                                e.preventDefault();
+                            },
+                        }}  
+                        
                         options={{
-                            title: 'My home',
-                            headerStyle: {
-                                height: 125
-                            },
-                            headerTintColor: 'rgb(55,54,54)',
-                            headerTitleStyle: {
-                                fontFamily: 'BioSans-Bold',
-                                fontSize: 14
-                            },
-                            headerLeft: () => (
-                                <MaterialIcons 
-                                    name="keyboard-arrow-left" 
-                                    size={24} 
-                                    color="rgb(55,54,54)"
-                                    onPress={() => alert('This is a button!')}
-                                />                                
-                            ),                                
-                        }}    
-                    />
+                            tabBarLabel: 'Activity',
+                            tabBarIcon: ({ focused }) => {
+                                return(
+                                    <Image 
+                                        source={require('./assets/round-logo.png')} 
+                                        style={{ width: 68, height: 68, marginBottom: 34 }}
+                                    />
+                                )
+                            }
+                        }}                           
+                        
+                        
+                    />                    
                     
-                </Stack.Navigator>
+                    <Tab.Screen 
+                        name="Qwe" 
+                        component={Asd} 
+                        
+                        options={{
+                            tabBarLabel: 'Activity',
+                            tabBarIcon: ({ focused }) => {
+                                if(focused) return(
+                                    <Image 
+                                        source={require('./assets/account-selected.png')} 
+                                        style={{ width: 32, height: 32 }}
+                                    />
+                                )
+                                else return(
+                                    <Image 
+                                        source={require('./assets/account-unselected.png')} 
+                                        style={{ width: 32, height: 32 }}
+                                    />                               
+                                )
+                            }
+                        }}                         
+                        
+                        
+                    />                    
+                    
+                </Tab.Navigator>    
                 :
-                            <Authenticator hideDefault={true} theme={MyTheme}>
-
-                <AuthWithContext/>
-                            </Authenticator>
+                <Authenticator hideDefault={true} theme={MyTheme}>
+                    <AuthWithContext/>
+                </Authenticator>
 
             }
         </NavigationContainer>
@@ -160,6 +170,92 @@ function App() {
 }
 
 export default App;
+
+
+
+const Asd = () => {
+    return(
+        <Stack.Navigator>
+    
+    
+            <Stack.Screen 
+                name="MyCoach" 
+                component={MyCoach} 
+                options={{
+                    title: 'MY COACH',
+                    headerStyle: {
+                        height: 125,
+                        shadowColor: 'transparent'
+                    },
+                    headerTintColor: 'rgb(55,54,54)',
+                    headerTitleStyle: {
+                        fontFamily: 'BioSans-Bold',
+                        fontSize: 14
+                    },
+                    headerLeft: () => (
+                        <Image 
+                            source={require('./assets/round-logo.png')} 
+                            style={{ width: 32, height: 32, marginLeft: 24 }}
+                        />
+                    ),                                
+                }}
+            /> 
+    
+    
+            <Stack.Screen 
+                name="Discover" 
+                component={Discover} 
+                options={{
+                    title: 'Discover',
+                    headerStyle: {
+                        height: 125
+                    },
+                    headerTintColor: 'rgb(55,54,54)',
+                    headerTitleStyle: {
+                        fontFamily: 'BioSans-Bold',
+                        fontSize: 14
+                    },
+                    headerLeft: () => (
+                        <MaterialIcons 
+                            name="keyboard-arrow-left" 
+                            size={24} 
+                            color="rgb(55,54,54)"
+                            onPress={() => alert('This is a button!')}
+                        />                                
+                    ),                                
+                }}    
+            />                        
+            
+            <Stack.Screen 
+                name="Home" 
+                component={Home} 
+                options={{
+                    title: 'My home',
+                    headerStyle: {
+                        height: 125
+                    },
+                    headerTintColor: 'rgb(55,54,54)',
+                    headerTitleStyle: {
+                        fontFamily: 'BioSans-Bold',
+                        fontSize: 14
+                    },
+                    headerLeft: () => (
+                        <MaterialIcons 
+                            name="keyboard-arrow-left" 
+                            size={24} 
+                            color="rgb(55,54,54)"
+                            onPress={() => alert('This is a button!')}
+                        />                                
+                    ),                                
+                }}    
+            />
+            
+        </Stack.Navigator>    
+    
+    )
+}
+
+
 
 const styles = StyleSheet.create({
   container: {
