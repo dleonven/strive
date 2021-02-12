@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Button, StyleSheet, Text, View, Image } from 'react-native';
+import { Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
@@ -19,6 +19,8 @@ import useCurrentUser from './src/useCurrentUser';
 import { Auth } from 'aws-amplify';
 import Home from './src/Athletes/Home'
 import MyCoach from './src/Athletes/MyCoach/MyCoach'
+import Drill from './src/Athletes/MyCoach/Drill'
+
 import Discover from './src/Athletes/Discover'
 import { Container, Content, StyleProvider } from 'native-base';
 import material from './native-base-theme/variables/material';
@@ -200,6 +202,46 @@ const Asd = () => {
                     ),                                
                 }}
             /> 
+    
+    
+    
+            <Stack.Screen 
+                name="Drill" 
+                component={Drill} 
+                options={{
+                    title: '',
+                    headerStyle: {
+                        height: 125,
+                        shadowColor: 'transparent'
+                    },
+                    headerTintColor: 'rgb(55,54,54)',
+                    headerTitleStyle: {
+                        fontFamily: 'BioSans-Bold',
+                        fontSize: 14
+                    },
+                    headerBackImage: () => (
+                        <Image 
+                            source={require('./assets/video-back.png')} 
+                            style={{ width: 32, height: 32, marginLeft: 24 }}
+                        />
+
+                    ), 
+                    headerBackTitleVisible: false,
+                    
+                    headerRight: () => (
+                        <Image 
+                            source={require('./assets/video-full-screen.png')} 
+                            style={{ width: 32, height: 32, marginRight: 24 }}
+                        />
+                    ),                      
+                    
+                    
+                    headerShown: true,
+                    headerTransparent: true,
+                }}
+            />     
+    
+    
     
     
             <Stack.Screen 

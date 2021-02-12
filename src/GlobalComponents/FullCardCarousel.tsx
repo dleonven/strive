@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
-import { Text, View, SafeAreaView, Image } from "react-native";
+import { Text, View, SafeAreaView, Image, TouchableHighlight } from "react-native";
 
 import Carousel from "react-native-snap-carousel";
 import {image_type, detail_type} from '../GlobalTypes'
@@ -8,6 +8,7 @@ import {image_type, detail_type} from '../GlobalTypes'
 import { FullCard } from '../GlobalComponents/FullCard'
 import CustomImage from '../GlobalComponents/CustomImage'
 import DetailsCard from '../GlobalComponents/DetailsCards'
+import { useNavigation } from '@react-navigation/native';
 
 
 interface ItemProps {
@@ -33,6 +34,8 @@ interface FullCardCarouselProps {
 
 const FullCardCarousel = (props: FullCardCarouselProps) => {
     
+    const navigation = useNavigation();
+
     const { image_type, detail_type } = props
     
     const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -43,43 +46,58 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
     
 
         return (
-            <View
-                style={{
-                    marginRight: 0,
-                    marginTop: 22,
-                    backgroundColor: 'white'
-                }}
-            >
             
-                <FullCard
-                    title={props.item.title}
-                    link_text={props.item.link_text}
+            <TouchableHighlight
+                activeOpacity={0.6}
+                underlayColor="#DDDDDD"
+                onPress={() => {
+                
+                    if(detail_type === "DrillDetails") {
+                        navigation.navigate("Drill")
+                    }
+                
                     
-                    ImageComponent={
-                        <CustomImage
-                            image_type={image_type}
-                            uri={props.item.uri}
-                        />
-                    }
+                }} 
+            >
+                <View
+                    style={{
+                        marginRight: 0,
+                        marginTop: 22,
+                        backgroundColor: 'white'
+                    }}
+                >
+                
+                    <FullCard
+                        title={props.item.title}
+                        link_text={props.item.link_text}
+                        
+                        ImageComponent={
+                            <CustomImage
+                                image_type={image_type}
+                                uri={props.item.uri}
+                            />
+                        }
+    
+                        DetailComponent={!!detail_type ?
+                            <DetailsCard
+                                details_card_type={detail_type}
+                                image_type={image_type}
+                                text={props.item.text}
+                                level={props.item.level}
+                                workouts={props.item.workouts}   
+                                minutes={props.item.minutes}
+                                title_text={props.item.title_text}
+                                content_text={props.item.content_text} 
+                                sport={props.item.sport}
+                                coaches={props.item.coaches}                            
+                            /> 
+                            :
+                            null
+                        }
+                    />              
+                </View>            
 
-                    DetailComponent={!!detail_type ?
-                        <DetailsCard
-                            details_card_type={detail_type}
-                            image_type={image_type}
-                            text={props.item.text}
-                            level={props.item.level}
-                            workouts={props.item.workouts}   
-                            minutes={props.item.minutes}
-                            title_text={props.item.title_text}
-                            content_text={props.item.content_text} 
-                            sport={props.item.sport}
-                            coaches={props.item.coaches}                            
-                        /> 
-                        :
-                        null
-                    }
-                />              
-            </View>
+            </TouchableHighlight>          
         );
     }, []);
 

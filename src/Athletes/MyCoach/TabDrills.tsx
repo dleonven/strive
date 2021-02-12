@@ -9,7 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
 
-const TabWorkouts = () => (
+const TabDrills = () => (
     <ScrollView style={{
         flex: 1, 
         marginLeft: 24,
@@ -27,7 +27,7 @@ const TabWorkouts = () => (
     </ScrollView>
 );
 
-export default TabWorkouts
+export default TabDrills
 
 
 
