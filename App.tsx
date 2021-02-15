@@ -11,7 +11,7 @@ import { AmplifyTheme, SignIn, SignUp, Authenticator } from 'aws-amplify-react-n
 import MyCustomSignIn from './src/Authentication/SignIn'
 import MyCustomSignUp from './src/Authentication/SignUp'
 import AuthWithContext from './src/Authentication/Auth'
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading'
 import { useFonts } from '@use-expo/font';
 /* https://github.com/aws-amplify/amplify-js/blob/master/packages/aws-amplify-react-native/src/AmplifyTheme.js */
 import { Hub } from '@aws-amplify/core';
@@ -68,7 +68,7 @@ function App() {
     const isLoggedIn = (null !== currentUser);
 
 
-    
+
     
     if (!fontsLoaded) return <AppLoading />;
     return (
@@ -76,91 +76,7 @@ function App() {
 
             {isLoggedIn ?
             
-                <Tab.Navigator
-                    tabBarOptions={{
-                        showLabel: false,
-                        style: { height: 83 }
-                    }}
-                >
-                
-                    <Tab.Screen 
-                        name="My Coach" 
-                        component={Asd} 
-                        
-                        options={{
-                            tabBarLabel: 'Activity',
-                            tabBarIcon: ({ focused }) => {
-                                if(focused) return(
-                                    <Image 
-                                        source={require('./assets/coach-selected.png')} 
-                                        style={{ width: 32, height: 32 }}
-                                    />
-                                )
-                                else return(
-                                    <Image 
-                                        source={require('./assets/coach-unselected.png')} 
-                                        style={{ width: 32, height: 32 }}
-                                    />                               
-                                )
-                            }
-                        }} 
-
-                    />                        
-                        
-                        
-                    
-                    
-                    <Tab.Screen 
-                        name="Strive" 
-                        component={Asd} 
-                        listeners={{
-                            tabPress: e => {
-                                // Prevent default action
-                                e.preventDefault();
-                            },
-                        }}  
-                        
-                        options={{
-                            tabBarLabel: 'Activity',
-                            tabBarIcon: ({ focused }) => {
-                                return(
-                                    <Image 
-                                        source={require('./assets/round-logo.png')} 
-                                        style={{ width: 68, height: 68, marginBottom: 34 }}
-                                    />
-                                )
-                            }
-                        }}                           
-                        
-                        
-                    />                    
-                    
-                    <Tab.Screen 
-                        name="Qwe" 
-                        component={Asd} 
-                        
-                        options={{
-                            tabBarLabel: 'Activity',
-                            tabBarIcon: ({ focused }) => {
-                                if(focused) return(
-                                    <Image 
-                                        source={require('./assets/account-selected.png')} 
-                                        style={{ width: 32, height: 32 }}
-                                    />
-                                )
-                                else return(
-                                    <Image 
-                                        source={require('./assets/account-unselected.png')} 
-                                        style={{ width: 32, height: 32 }}
-                                    />                               
-                                )
-                            }
-                        }}                         
-                        
-                        
-                    />                    
-                    
-                </Tab.Navigator>    
+                <StackNavigator/>
                 :
                 <Authenticator hideDefault={true} theme={MyTheme}>
                     <AuthWithContext/>
@@ -175,14 +91,127 @@ export default App;
 
 
 
-const Asd = () => {
+const BottomTabs = () => {
+    return(
+        <Tab.Navigator
+            tabBarOptions={{
+                showLabel: false,
+                style: { height: 83 }
+            }}
+        >
+        
+        
+            {/* FIRST BOTTOM TAB */}
+            <Tab.Screen 
+                name="MyCoach" 
+                component={MyCoach} 
+                options={{
+                    title: 'MY COACH',
+                    headerStyle: {
+                        height: 125,
+                        shadowColor: 'transparent'
+                    },
+                    headerTintColor: 'rgb(55,54,54)',
+                    headerTitleStyle: {
+                        fontFamily: 'BioSans-Bold',
+                        fontSize: 14
+                    },
+                    headerLeft: () => (
+                        <Image 
+                            source={require('./assets/round-logo.png')} 
+                            style={{ width: 32, height: 32, marginLeft: 24 }}
+                        />
+                    ), 
+                    tabBarLabel: 'Activity',
+                    tabBarIcon: ({ focused }) => {
+                        if(focused) return(
+                            <Image 
+                                source={require('./assets/coach-selected.png')} 
+                                style={{ width: 32, height: 32 }}
+                            />
+                        )
+                        else return(
+                            <Image 
+                                source={require('./assets/coach-unselected.png')} 
+                                style={{ width: 32, height: 32 }}
+                            />                               
+                        )
+                    }                    
+                }}
+            />         
+        
+                       
+                
+                
+            
+            {/* MIDDLE LOGO */}
+            <Tab.Screen 
+                name="Strive" 
+                component={StackNavigator} 
+                listeners={{
+                    tabPress: e => {
+                        // Prevent default action
+                        e.preventDefault();
+                    },
+                }}  
+                
+                options={{
+                    tabBarLabel: 'Activity',
+                    tabBarIcon: ({ focused }) => {
+                        return(
+                            <Image 
+                                source={require('./assets/round-logo.png')} 
+                                style={{ width: 68, height: 68, marginBottom: 34 }}
+                            />
+                        )
+                    }
+                }}                           
+                
+                
+            />                    
+            
+            <Tab.Screen 
+                name="Qwe" 
+                component={MyCoach} 
+                
+                options={{
+                    tabBarLabel: 'Activity',
+                    tabBarIcon: ({ focused }) => {
+                        if(focused) return(
+                            <Image 
+                                source={require('./assets/account-selected.png')} 
+                                style={{ width: 32, height: 32 }}
+                            />
+                        )
+                        else return(
+                            <Image 
+                                source={require('./assets/account-unselected.png')} 
+                                style={{ width: 32, height: 32 }}
+                            />                               
+                        )
+                    }
+                }}                         
+                
+                
+            />                    
+            
+        </Tab.Navigator>          
+        
+    )
+}
+
+const StackNavigator = () => {
     return(
         <Stack.Navigator>
     
     
+    
+
+    
+    
             <Stack.Screen 
                 name="MyCoach" 
-                component={MyCoach} 
+                component={BottomTabs} 
                 options={{
                     title: 'MY COACH',
                     headerStyle: {

@@ -91,7 +91,8 @@ const Auth = () => {
                 toValue: toValue,
                 velocity: 3,
                 tension: 2,
-                friction: 8,
+                friction: 8, 
+                useNativeDriver: true
             }
         ).start();
         

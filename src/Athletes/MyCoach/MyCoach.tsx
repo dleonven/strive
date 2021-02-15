@@ -13,6 +13,8 @@ import CustomFont from '../../GlobalComponents/CustomFont'
 
 
 const MyCoach = () => {
+    
+    
     return(
         <View style={{
             flex: 1, 

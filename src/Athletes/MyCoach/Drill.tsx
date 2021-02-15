@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,  useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
@@ -8,7 +8,7 @@ import CustomFormField from '../../GlobalComponents/CustomFormField'
 import { NavigationContainer } from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
-import { Video } from 'expo-av';
+import { Video, AVPlaybackStatus } from 'expo-av';
 
 
 const { width, height } = Dimensions.get("window");
@@ -18,8 +18,8 @@ let subViewHidden = true
 
 const Drill = () => {
     
-    const video = React.useRef(null);
-    const [status, setStatus] = React.useState({});
+    const video = useRef(null);
+    const [status, setStatus] = useState({});
 
     const [bounce_value, setBounceValue] = useState(new Animated.Value(400))
     
@@ -41,7 +41,8 @@ const Drill = () => {
                 toValue: toValue,
                 velocity: 3,
                 tension: 2,
-                friction: 8,
+                friction: 8, 
+                useNativeDriver: true
             }
         ).start();
         
@@ -51,30 +52,54 @@ const Drill = () => {
     
     return(
         
-        <TouchableOpacity 
-            activeOpacity={1} 
-            onPress={() => {
-                if(subViewHidden) return
-                toggleSubview()                
-            }}
-        >
-            <View style={styles.container}>
+
+        <View style={styles.container}>
+            <TouchableWithoutFeedback
+                //activeOpacity={1} 
+                onPress={() => {
+                    console.log("click")
+                    status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+                
+                    //if(subViewHidden) return
+                    //toggleSubview()    
+    
+                }}
+            >
+                        {/* https://docs.expo.io/versions/latest/sdk/video/ */}
+                        <Video
+                            ref={video}
+                            source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+                            rate={1.0}
+                            volume={1.0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            isLooping
+                            style={styles.video}
+                            onPlaybackStatusUpdate={status => setStatus(() => status)}
+                        />
+                        
+                        
+                    
+                        
+                        
+            </TouchableWithoutFeedback>
 
 
-                {/* https://docs.expo.io/versions/latest/sdk/video/ */}
-                <Video
-                    ref={video}
-                    source={{ uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4' }}
-                    rate={1.0}
-                    volume={1.0}
-                    isMuted={false}
-                    resizeMode="cover"
-                    shouldPlay
-                    isLooping
-                    style={styles.video}
-                />
-            </View>
-        </TouchableOpacity>
+            <Animated.View
+                style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
+            >
+            
+                <View style={{
+        padding: 8,
+        flex: 1,
+        backgroundColor: '#ecf0f1',
+    }}>
+                </View>
+
+            </Animated.View>  
+            
+            
+        </View>
 
         
         
