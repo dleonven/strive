@@ -104,7 +104,7 @@ const CopyText = (props: FontProps) => {
             style={props.image_type === 'HeroImage' ?
                 {fontSize: 16, fontFamily: 'BioSans-Regular', color: 'white'}
                 :
-                {fontSize: 16, fontFamily: 'BioSans-Regular'}
+                {fontSize: 16, fontFamily: 'BioSans-Regular', color: props.color}
             }
         >
             {props.text}
