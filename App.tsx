@@ -20,6 +20,9 @@ import { Auth } from 'aws-amplify';
 import Home from './src/Athletes/Home'
 import MyCoach from './src/Athletes/MyCoach/MyCoach'
 import Drill from './src/Athletes/MyCoach/Drill'
+import Workout from './src/Athletes/MyCoach/Workout'
+
+import Series from './src/Athletes/MyCoach/Series'
 
 import Discover from './src/Athletes/Discover'
 import { Container, Content, StyleProvider } from 'native-base';
@@ -117,13 +120,13 @@ const BottomTabs = () => {
                         fontSize: 14
                     },
                     headerLeft: () => (
-                        <Image 
+                        <Image
                             source={require('./assets/round-logo.png')} 
                             style={{ width: 32, height: 32, marginLeft: 24 }}
                         />
-                    ), 
+                    ),
                     tabBarLabel: 'Activity',
-                    tabBarIcon: ({ focused }) => {
+                    tabBarIcon: ({focused}: any) => {
                         if(focused) return(
                             <Image 
                                 source={require('./assets/coach-selected.png')} 
@@ -149,7 +152,7 @@ const BottomTabs = () => {
                 name="Strive" 
                 component={StackNavigator} 
                 listeners={{
-                    tabPress: e => {
+                    tabPress: (e: any) => {
                         // Prevent default action
                         e.preventDefault();
                     },
@@ -157,7 +160,7 @@ const BottomTabs = () => {
                 
                 options={{
                     tabBarLabel: 'Activity',
-                    tabBarIcon: ({ focused }) => {
+                    tabBarIcon: ({ focused }: any) => {
                         return(
                             <Image 
                                 source={require('./assets/round-logo.png')} 
@@ -167,7 +170,6 @@ const BottomTabs = () => {
                     }
                 }}                           
                 
-                
             />                    
             
             <Tab.Screen 
@@ -176,7 +178,7 @@ const BottomTabs = () => {
                 
                 options={{
                     tabBarLabel: 'Activity',
-                    tabBarIcon: ({ focused }) => {
+                    tabBarIcon: ({focused}: any) => {
                         if(focused) return(
                             <Image 
                                 source={require('./assets/account-selected.png')} 
@@ -232,45 +234,25 @@ const StackNavigator = () => {
                 }}
             /> 
     
+   
+            <Stack.Screen 
+                name="Workout" 
+                component={Workout}
+                options={() => topHeaderBackWhite('WORKOUT')}                
+            />        
     
     
             <Stack.Screen 
                 name="Drill" 
                 component={Drill} 
-                options={{
-                    title: '',
-                    headerStyle: {
-                        height: 125,
-                        shadowColor: 'transparent'
-                    },
-                    headerTintColor: 'rgb(55,54,54)',
-                    headerTitleStyle: {
-                        fontFamily: 'BioSans-Bold',
-                        fontSize: 14
-                    },
-                    headerBackImage: () => (
-                        <Image 
-                            source={require('./assets/video-back.png')} 
-                            style={{ width: 32, height: 32, marginLeft: 24 }}
-                        />
-
-                    ), 
-                    headerBackTitleVisible: false,
-                    
-                    headerRight: () => (
-                        <Image 
-                            source={require('./assets/video-full-screen.png')} 
-                            style={{ width: 32, height: 32, marginRight: 24 }}
-                        />
-                    ),                      
-                    
-                    
-                    headerShown: true,
-                    headerTransparent: true,
-                }}
+                options={() => topHeaderVideo()}
             />     
     
-    
+            <Stack.Screen 
+                name="Series" 
+                component={Series} 
+                options={() => topHeaderBackWhite('SERIES')}
+            />  
     
     
             <Stack.Screen 
@@ -336,3 +318,71 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+
+const topHeaderBackWhite = (title: string) => {
+    
+    return {
+        title: title,
+        headerStyle: {
+            height: 84,
+            backgroundColor: 'rgb(255,255,255)',
+            
+            /* TO REMOVE BORDER BELLOW THE HEADER */
+            shadowColor: 'transparent'
+        },
+        headerTintColor: 'rgb(55,54,54)',
+        headerTitleStyle: {
+            fontFamily: 'BioSans-Bold',
+            fontSize: 15,
+            letterSpacing: 2.25
+        },
+        headerBackImage: () => (
+            <Image 
+                source={require('./assets/back.png')} 
+                style={{ width: 13, height: 21, marginLeft: 24 }}
+            />
+
+        ), 
+        headerBackTitleVisible: false,
+        headerShown: true,
+        cardStyle: { backgroundColor: 'white' }
+    }
+}
+
+
+const topHeaderVideo = () => {
+    
+    return {
+        title: '',
+        headerStyle: {
+            height: 125,
+            shadowColor: 'transparent'
+        },
+        headerTintColor: 'rgb(55,54,54)',
+        headerTitleStyle: {
+            fontFamily: 'BioSans-Bold',
+            fontSize: 14
+        },
+        headerBackImage: () => (
+            <Image 
+                source={require('./assets/video-back.png')} 
+                style={{ width: 32, height: 32, marginLeft: 24 }}
+            />
+
+        ), 
+        headerBackTitleVisible: false,
+        
+        headerRight: () => (
+            <Image 
+                source={require('./assets/video-full-screen.png')} 
+                style={{ width: 32, height: 32, marginRight: 24 }}
+            />
+        ),                      
+        
+        
+        headerShown: true,
+        headerTransparent: true,
+    }
+}

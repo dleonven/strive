@@ -14,7 +14,7 @@ interface DataItem {
 }
 
 
-const ListWithImage = (props: { data:DataItem[]  }) => {
+const ListWithImage = (props: { data: DataItem[]  }) => {
     return (
         <SafeAreaView>
             <FlatList

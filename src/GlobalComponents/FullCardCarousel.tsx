@@ -51,11 +51,18 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
                 activeOpacity={0.6}
                 underlayColor="#DDDDDD"
                 onPress={() => {
-                
-                    if(detail_type === "DrillDetails") {
-                        navigation.navigate("Drill")
+
+                    switch(detail_type) {
+                        case "SeriesDetails":
+                            navigation.navigate("Series")
+                            break
+                        case "WorkoutDetails":
+                            navigation.navigate("Workout")
+                            break
+                        case "DrillDetails":
+                            navigation.navigate("Drill")
+                            break
                     }
-                
                     
                 }} 
             >
@@ -105,6 +112,7 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
         if(image_type === "XLargeImage") return 309
         if(image_type === "LargeImage") return 209
         if(image_type === "SmallImage") return 147
+        if(image_type === "MediumImage") return 152
         if(image_type === "XXLargeImage") return 327
 
     }

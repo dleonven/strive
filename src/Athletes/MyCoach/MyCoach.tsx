@@ -48,12 +48,12 @@ const CoachDetails = () => {
             <View style={{ flex: 1, marginLeft: 16 }}>
                 <CustomFont
                     font_type="ContentTitle"
-                    text="GARY MAITLAND"
+                    text="MIKE DUNN"
                 /> 
                 
                 <CustomFont
                     font_type="CopySmall"
-                    text="Gary Maitland is a NBA Skills Coach and the founder of CoachMaitland..."
+                    text="Mike Dunn is a NBA Skills Coach and the founder of CoachMaitland..."
                     color="rgb(84,84,84)"
                 />
             </View>
