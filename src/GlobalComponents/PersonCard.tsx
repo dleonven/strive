@@ -3,7 +3,7 @@ import { Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, Touchab
 import CustomFont from './CustomFont'
 
 
-const PersonCard = (props: {name: string, backgroundColor: string}) => {
+const PersonCard = (props: {name: string, backgroundColor: string, textColor: string}) => {
     return(
 
             <View style={{ 
@@ -26,7 +26,7 @@ const PersonCard = (props: {name: string, backgroundColor: string}) => {
                 <CustomFont
                     font_type="CopyText"
                     text={props.name}
-                    color="rgb(0,77,86)"
+                    color={props.textColor}
                 /> 
                 
             </View>

@@ -251,7 +251,32 @@ const StackNavigator = () => {
             <Stack.Screen 
                 name="Series" 
                 component={Series} 
-                options={() => topHeaderBackWhite('SERIES')}
+                options={{
+                    title: 'SERIES',
+                    headerStyle: {
+                        height: 84,
+
+                        /* TO REMOVE BORDER BELLOW THE HEADER */
+                        shadowColor: 'transparent'
+                    },
+                    /* TITLE COLOR */
+                    headerTintColor: 'white',
+                    headerTitleStyle: {
+                        fontFamily: 'BioSans-Bold',
+                        fontSize: 15,
+                        letterSpacing: 2.25
+                    },
+
+                    headerBackImage: () => (
+                        <Image 
+                            source={require('./assets/white-outlined.png')} 
+                            style={{ width: 13, height: 21, marginLeft: 24 }}
+                        />
+                    ), 
+                    headerBackTitleVisible: false,
+                    headerShown: true,
+                    headerTransparent: true
+                }}
             />  
     
     
@@ -343,7 +368,6 @@ const topHeaderBackWhite = (title: string) => {
                 source={require('./assets/back.png')} 
                 style={{ width: 13, height: 21, marginLeft: 24 }}
             />
-
         ), 
         headerBackTitleVisible: false,
         headerShown: true,
@@ -380,8 +404,6 @@ const topHeaderVideo = () => {
                 style={{ width: 32, height: 32, marginRight: 24 }}
             />
         ),                      
-        
-        
         headerShown: true,
         headerTransparent: true,
     }

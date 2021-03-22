@@ -59,7 +59,7 @@ const BigTitle = (props: FontProps) => {
             style={props.image_type === 'HeroImage' ?
                 {fontSize: 26, fontFamily: 'BioSans-Bold', color: 'white'}
                 :
-                {fontSize: 26, fontFamily: 'BioSans-Bold'}
+                {fontSize: 26, fontFamily: 'BioSans-Bold', color: props.color}
             }
         >
             {props.text}
@@ -89,7 +89,7 @@ const ContentTitle = (props: FontProps) => {
             style={props.image_type === 'HeroImage' ?
                 {fontSize: 18, fontFamily: 'BioSans-SemiBold', color: 'white'}
                 :
-                {fontSize: 18, fontFamily: 'BioSans-SemiBold'}
+                {fontSize: 18, fontFamily: 'BioSans-SemiBold', color: props.color}
             }
         >
             {props.text}

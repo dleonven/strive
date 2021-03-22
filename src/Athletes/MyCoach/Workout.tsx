@@ -34,6 +34,7 @@ const Workout = () => {
             <PersonCard 
                 name='Mike Dunn' 
                 backgroundColor='rgb(255,255,255)'
+                textColor="rgb(0,77,86)"
             />
             
             <Details/>
