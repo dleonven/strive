@@ -12,8 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 
 
 interface ItemProps {
-    title: string
-    link_text?: string
     text?: string;
     minutes?: number;
     level?: number;
@@ -26,6 +24,8 @@ interface ItemProps {
 }
 
 interface FullCardCarouselProps {
+    title: string
+    linkText?: string
     image_type: image_type
     detail_type?: detail_type
     input: ItemProps[]
@@ -68,16 +68,10 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
             >
                 <View
                     style={{
-                        marginRight: 0,
-                        marginTop: 22,
-                        backgroundColor: 'white'
                     }}
                 >
-                
                     <FullCard
-                        title={props.item.title}
-                        link_text={props.item.link_text}
-                        
+
                         ImageComponent={
                             <CustomImage
                                 image_type={image_type}
@@ -114,27 +108,81 @@ const FullCardCarousel = (props: FullCardCarouselProps) => {
         if(image_type === "SmallImage") return 147
         if(image_type === "MediumImage") return 152
         if(image_type === "XXLargeImage") return 327
-
     }
 
     return (
         <View style={{ 
             flex: 1, 
-            flexDirection: "row", 
-            justifyContent: "center",
-            backgroundColor: 'white'
+            flexDirection: "column", 
+            marginTop: 33
         }}>
-            <Carousel
-                layout={"default"}
-                ref={ref}
-                data={carouselItems}
-                sliderWidth={1}
-                itemWidth={getItemWidth()}
-                renderItem={renderItem}
-                onSnapToItem={(index: number) => setActiveIndex(index)}
-            />
+        
+            <CarouselItemHeader
+                title={props.title}
+                linkText={props.linkText}
+            />          
+        
+            <View style={{ 
+                flexDirection: "row", 
+                justifyContent: "center",
+                backgroundColor: 'white'
+            }}>
+                
+                <Carousel
+                    layout={"default"}
+                    ref={ref}
+                    data={carouselItems}
+                    sliderWidth={1}
+                    itemWidth={getItemWidth()}
+                    renderItem={renderItem}
+                    onSnapToItem={(index: number) => setActiveIndex(index)}
+                 
+                    /* https://github.com/meliorence/react-native-snap-carousel/issues/238#issuecomment-354528113 */
+                    removeClippedSubviews={false}                 
+                />
+        
+            </View>
+
          </View>
     );
 };
 
 export default FullCardCarousel;
+
+
+const CarouselItemHeader = (props: {title: string, linkText: string}) => {
+    return(
+        
+        <View style={{ 
+            flexDirection: 'row', 
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 24,
+            marginRight: 24
+        }}>
+        
+            {/* TITLE */}
+            <Text style={{ 
+                fontSize: 23, 
+                fontFamily: 'BioSans-SemiBold',
+                color: 'rgb(55,54,54)'
+            }}>
+                {props.title}
+            </Text>
+            
+            
+            {/* LINK TEXT */}
+            <Text style={{ 
+                fontFamily: 'BioSans-Regular', 
+                fontSize: 16, 
+                color: 'rgb(0, 77, 86)',
+                letterSpacing: 0.32,
+                textDecorationLine: 'underline',
+                textDecorationColor: 'rgb(0, 77, 86)'
+            }}>
+                {props.linkText}                           
+            </Text>                
+        
+        </View>          
+    )
+}

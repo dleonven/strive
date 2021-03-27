@@ -15,11 +15,13 @@ const TabBreakdowns = () => (
         marginLeft: 24,
     }}>
         <FullCardCarousel
+            title={'Title'}
             image_type='XXLargeImage'
             //detail_type='WorkoutDetails'
             input={input}
         />
         <FullCardCarousel
+            title={'Title'}
             image_type='XXLargeImage'
             //detail_type='WorkoutDetails'
             input={input}
@@ -34,8 +36,6 @@ export default TabBreakdowns
 
 const input = [
     {
-        title: "StaticText",
-        text: "StaticText",
         minutes: 5,
         level: 3,
         workouts: 2,
@@ -45,9 +45,7 @@ const input = [
         coaches: 3,
         uri: "https://picsum.photos/200/300?random=1"
     },
-        {
-        title: "StaticText",
-        text: "StaticText",
+    {
         minutes: 5,
         level: 3,
         workouts: 2,

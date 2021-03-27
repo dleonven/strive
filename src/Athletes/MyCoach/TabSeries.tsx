@@ -15,11 +15,15 @@ const TabSeries = () => (
         marginLeft: 24,
     }}>
         <FullCardCarousel
+            title={'Title'}
+            linkText={'See All'}
             image_type='XLargeImage'
             detail_type='SeriesDetails'
             input={input}
         />
         <FullCardCarousel
+            title={'Title'}
+            linkText={'See All'}        
             image_type='XLargeImage'
             detail_type='SeriesDetails'
             input={input}
@@ -34,9 +38,6 @@ export default TabSeries
 
 const input = [
     {
-        title: "StaticText",
-        link_text: "StaticText",
-        text: "StaticText",
         minutes: 5,
         level: 3,
         workouts: 2,
@@ -46,10 +47,7 @@ const input = [
         coaches: 3,
         uri: "https://picsum.photos/200/300?random=1"
     },
-        {
-        title: "StaticText",
-        link_text: "StaticText",
-        text: "StaticText",
+    {
         minutes: 5,
         level: 3,
         workouts: 2,

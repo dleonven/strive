@@ -10,16 +10,20 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 
 
 const TabDrills = () => (
-    <ScrollView style={{
-        flex: 1, 
-        marginLeft: 24,
-    }}>
+    <ScrollView 
+        style={{
+            flex: 1, 
+            marginLeft: 24,
+        }}
+    >
         <FullCardCarousel
+            title={'Title'}
             image_type='SmallImage'
             detail_type='DrillDetails'
             input={input}
         />
         <FullCardCarousel
+            title={'Title'}
             image_type='SmallImage'
             detail_type='DrillDetails'
             input={input}
@@ -34,8 +38,6 @@ export default TabDrills
 
 const input = [
     {
-        title: "StaticText",
-        text: "StaticText",
         minutes: 5,
         level: 3,
         workouts: 2,
@@ -45,9 +47,7 @@ const input = [
         coaches: 3,
         uri: "https://picsum.photos/200/300?random=1"
     },
-        {
-        title: "StaticText",
-        text: "StaticText",
+    {
         minutes: 5,
         level: 3,
         workouts: 2,

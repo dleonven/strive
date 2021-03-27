@@ -10,16 +10,20 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 
 
 const TabWorkouts = () => (
-    <ScrollView style={{
-        flex: 1, 
-        marginLeft: 24,
-    }}>
+    <ScrollView 
+        style={{
+            marginLeft: 24,
+            flex: 1
+        }}
+    >
         <FullCardCarousel
+            title={'Title'}
             image_type='LargeImage'
             detail_type='WorkoutDetails'
             input={input}
         />
         <FullCardCarousel
+            title={'Title'}
             image_type='LargeImage'
             detail_type='WorkoutDetails'
             input={input}
@@ -34,8 +38,6 @@ export default TabWorkouts
 
 const input = [
     {
-        title: "StaticText",
-        text: "StaticText",
         minutes: 5,
         level: 3,
         workouts: 2,
@@ -46,8 +48,6 @@ const input = [
         uri: "https://picsum.photos/200/300?random=1"
     },
         {
-        title: "StaticText",
-        text: "StaticText",
         minutes: 5,
         level: 3,
         workouts: 2,

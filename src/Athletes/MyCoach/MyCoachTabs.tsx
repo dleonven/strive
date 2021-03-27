@@ -38,7 +38,6 @@ const MyCoachTabs = () => {
             onIndexChange={setIndex}
             initialLayout={initialLayout}
             renderTabBar={renderTabBar}
-
         />
     );
 }
