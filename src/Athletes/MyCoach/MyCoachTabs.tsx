@@ -50,10 +50,11 @@ const renderTabBar = (props: any) => (
         {...props}
         indicatorStyle={{ backgroundColor: 'rgb(0,77,86)'}}
         style={{ backgroundColor: 'white' }}
+        activeColor={'rgb(0,77,86)'}
+        inactiveColor={'rgb(0,77,86)'}
         labelStyle={{ 
             fontFamily: 'BioSans-SemiBold',
             fontSize: 16,
-            color: 'rgb(0,77,86)' 
         }}
         scrollEnabled        
     />

@@ -33,7 +33,7 @@ const ListWithImage = (props: { data: DataItem[]  }) => {
     );
 }
 
-export default ListWithImage
+//export default ListWithImage
 
 
 
@@ -71,6 +71,8 @@ const ListItem = (props: { data_item: DataItem }) => {
     )
 }
 
+export default ListItem
+
 const MainText = (props: { main_text: string }) => {
     return(
         <Text 
@@ -99,7 +101,10 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginLeft: 24,
+        marginRight: 24
+        
     }, 
     listItemContentStyle: {
         flexDirection: 'row',
@@ -110,7 +115,11 @@ const styles = StyleSheet.create({
     },
     lineStyle: {
         borderWidth: 1,
+        marginLeft: 24,
+        marginRight: 24,
         borderColor:'rgb(236,235,235)',
+    
+        
     }
  });
 

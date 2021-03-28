@@ -1,9 +1,9 @@
 import React, { useState, useEffect,  useRef } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, FlatList } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
 import CustomList from '../../GlobalComponents/CustomList'
-import ListWithImage from '../../GlobalComponents/ListWithImage'
+import ListItem from '../../GlobalComponents/ListWithImage'
 import CustomFormField from '../../GlobalComponents/CustomFormField'
 import { NavigationContainer } from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
@@ -24,26 +24,42 @@ const Workout = () => {
     return(
         
 
-        <View style={styles.container}>
+                <FlatList 
+                    contentContainerStyle={{ }}
+                    //columnWrapperStyle={{marginLeft: 24}}
+                    ListHeaderComponent={
+                    
+                        <View style={styles.container}>
+                    
+                            <CustomFont
+                                font_type="BigTitle"
+                                text="Two Ball Dribbling"
+                            />        
+                            
+                            <PersonCard 
+                                name='Mike Dunn' 
+                                backgroundColor='rgb(255,255,255)'
+                                textColor="rgb(0,77,86)"
+                            />
+                            
+                            <Details/>
 
-            <CustomFont
-                font_type="BigTitle"
-                text="Two Ball Dribbling"
-            />        
-            
-            <PersonCard 
-                name='Mike Dunn' 
-                backgroundColor='rgb(255,255,255)'
-                textColor="rgb(0,77,86)"
-            />
-            
-            <Details/>
-            
-            
-            <ListWithImage data={DATA_LIST_WITH_IMAGE}/>
-            
-            
-        </View>
+                    
+                        </View>
+                    }
+                    data={DATA_LIST_WITH_IMAGE}
+                    //numColumns={2}
+                    renderItem={({ item }) => {
+                        return(
+                        
+                        <ListItem
+                            data_item={item}
+                        />           
+                        
+                        )
+                    }}
+                    keyExtractor={(item, index) => index.toString()}
+                />     
 
         
         
@@ -80,7 +96,7 @@ const styles = StyleSheet.create({
         marginLeft: 24,
         marginRight: 24,
         backgroundColor: 'rgb(255,255,255)',
-    }
+    },
 });
 
 
@@ -104,4 +120,16 @@ const DATA_LIST_WITH_IMAGE = [
     sub_text: '40 dribbles each arm',
     uri: 'https://picsum.photos/200/300?random=1'
   },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    main_text: 'Pocket Hangs',
+    sub_text: '40 dribbles each arm',
+    uri: 'https://picsum.photos/200/300?random=1'
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    main_text: 'Pocket Hangs',
+    sub_text: '40 dribbles each arm',
+    uri: 'https://picsum.photos/200/300?random=1'
+  },  
 ];

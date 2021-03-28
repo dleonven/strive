@@ -111,55 +111,18 @@ const Drill = () => {
                         
             </TouchableWithoutFeedback>
 
+
+            
             <TouchableWithoutFeedback onPress={() => toggleSubview()}>
                 <Animated.View
                     style={[styles.subView, {transform: [{translateY: animatedValue}]}]}
                 >
                 
-                    <View style={{
-                        padding: 8,
-                        flex: 1,
-                        backgroundColor: 'rgb(255,255,255)', 
-                        marginLeft: 24,
-                        marginRight: 24
-                    }}>
-                    
-                        <View style={{ 
-                            width: 45, 
-                            height: 5, 
-                            backgroundColor: "rgb(200,199,199)",
-                            borderRadius: 3,
-                            alignSelf: 'center',
-                            marginTop: 16,
-                            marginBottom: 31
-                        }}>
-                        </View>
-                    
-                    
-                        <CustomFont
-                            font_type="BigTitle"
-                            text="One-Two-Thru's"
-                        />                     
-                    
-                        
-                        <CoachDetails
-                            name="Mike Dunn"
-                        />
-                    
-                        <Content
-                            title="Equipment"
-                            paragraph="2 basketballs and some floor space"
-                        />
-                        
-                        <Content
-                            title="Information"
-                            paragraph="Focus on using your hips and your eyes to sell the move. Step into the dribble and keep low"
-                        />                    
-                    
-                    </View>
+                    <SwipeableComponent/>
     
                 </Animated.View>  
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>            
+          
             
         </View>
 
@@ -171,6 +134,57 @@ const Drill = () => {
 export default Drill
 
 
+
+
+const SwipeableComponent = () => {
+    
+    
+    return(
+        <View style={{
+            padding: 8,
+            flex: 1,
+            backgroundColor: 'rgb(255,255,255)', 
+            marginLeft: 24,
+            marginRight: 24
+        }}>
+        
+            <View style={{ 
+                width: 45, 
+                height: 5, 
+                backgroundColor: "rgb(200,199,199)",
+                borderRadius: 3,
+                alignSelf: 'center',
+                marginTop: 16,
+                marginBottom: 31
+            }}>
+            </View>
+        
+        
+            <CustomFont
+                font_type="BigTitle"
+                text="One-Two-Thru's"
+            />                     
+        
+            
+            <CoachDetails
+                name="Mike Dunn"
+            />
+        
+            <Content
+                title="Equipment"
+                paragraph="2 basketballs and some floor space"
+            />
+            
+            <Content
+                title="Information"
+                paragraph="Focus on using your hips and your eyes to sell the move. Step into the dribble and keep low"
+            />                    
+        
+        </View>    
+    )
+    
+    
+}
 
 
 const CoachDetails = (props: {name: string}) => {
