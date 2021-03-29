@@ -24,42 +24,40 @@ const Workout = () => {
     return(
         
 
-                <FlatList 
-                    contentContainerStyle={{ }}
-                    //columnWrapperStyle={{marginLeft: 24}}
-                    ListHeaderComponent={
+        <FlatList 
+            contentContainerStyle={{ }}
+            ListHeaderComponent={
+            
+                <View style={styles.container}>
+            
+                    <CustomFont
+                        font_type="BigTitle"
+                        text="Two Ball Dribbling"
+                    />        
                     
-                        <View style={styles.container}>
+                    <PersonCard 
+                        name='Mike Dunn' 
+                        backgroundColor='rgb(255,255,255)'
+                        textColor="rgb(0,77,86)"
+                    />
                     
-                            <CustomFont
-                                font_type="BigTitle"
-                                text="Two Ball Dribbling"
-                            />        
-                            
-                            <PersonCard 
-                                name='Mike Dunn' 
-                                backgroundColor='rgb(255,255,255)'
-                                textColor="rgb(0,77,86)"
-                            />
-                            
-                            <Details/>
+                    <Details/>
 
-                    
-                        </View>
-                    }
-                    data={DATA_LIST_WITH_IMAGE}
-                    //numColumns={2}
-                    renderItem={({ item }) => {
-                        return(
-                        
-                        <ListItem
-                            data_item={item}
-                        />           
-                        
-                        )
-                    }}
-                    keyExtractor={(item, index) => index.toString()}
-                />     
+            
+                </View>
+            }
+            data={DATA_LIST_WITH_IMAGE}
+            renderItem={({ item }) => {
+                return(
+                
+                <ListItem
+                    data_item={item}
+                />           
+                
+                )
+            }}
+            keyExtractor={(item, index) => index.toString()}
+        />     
 
         
         

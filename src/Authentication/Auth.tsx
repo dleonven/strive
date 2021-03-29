@@ -10,6 +10,7 @@ import SignIn  from './SignIn'
 import SignUp  from './SignUp'
 import { AuthContext, IAuthContext } from './AuthContext'
 import Loading from '../Loading'
+import { PanGestureHandler } from 'react-native-gesture-handler';
 
 /* declared as variable (not state), as it doesn't require a re render */
 let subViewHidden = true
@@ -109,57 +110,64 @@ const Auth = () => {
                 auth_context.setSignInState(initial_signin_state)
                 toggleSubview()
             }}>
-                <View style={styles.container}>
-                    <View style={styles.authButtons}>
-                        <View style={styles.signUpButton}>
-                            <Button
-                                color="black"
-                                title={'GET STARTED'}
+                <PanGestureHandler onGestureEvent={() => {
+                    if(subViewHidden) return
+                    auth_context.setSignUpState(initial_signup_state)
+                    auth_context.setSignInState(initial_signin_state)
+                    toggleSubview()
+                }}>
+                    <View style={styles.container}>
+                        <View style={styles.authButtons}>
+                            <View style={styles.signUpButton}>
+                                <Button
+                                    color="black"
+                                    title={'GET STARTED'}
+                                    onPress={() => {
+                                        auth_context.setAuthState('signup')
+                                        toggleSubview()
+                                    }}
+                                />
+                            </View>
+                            
+                            <Text 
+                                style={styles.signInButton}
                                 onPress={() => {
-                                    auth_context.setAuthState('signup')
+                                    auth_context.setAuthState('signin')
                                     toggleSubview()
                                 }}
-                            />
+                            >
+                                I already have an account
+                            </Text>
                         </View>
+        
+                        {/* https://docs.expo.io/versions/latest/sdk/video/ */}
+                        <Video
+                            source={{ uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4' }}
+                            rate={1.0}
+                            volume={1.0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            shouldPlay
+                            isLooping
+                            style={styles.video}
+                        />
                         
-                        <Text 
-                            style={styles.signInButton}
-                            onPress={() => {
-                                auth_context.setAuthState('signin')
-                                toggleSubview()
-                            }}
-                        >
-                            I already have an account
-                        </Text>
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <Animated.View
+                                style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
+                            >
+                                {auth_context.auth_state === 'signin' &&
+                                    <SignIn />
+                                }
+                                {auth_context.auth_state === 'signup' &&
+                                    <SignUp />
+                                }
+                            </Animated.View>
+                            
+                            
+                        </TouchableWithoutFeedback>
                     </View>
-    
-                    {/* https://docs.expo.io/versions/latest/sdk/video/ */}
-                    <Video
-                        source={{ uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4' }}
-                        rate={1.0}
-                        volume={1.0}
-                        isMuted={false}
-                        resizeMode="cover"
-                        shouldPlay
-                        isLooping
-                        style={styles.video}
-                    />
-                    
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                        <Animated.View
-                            style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
-                        >
-                            {auth_context.auth_state === 'signin' &&
-                                <SignIn />
-                            }
-                            {auth_context.auth_state === 'signup' &&
-                                <SignUp />
-                            }
-                        </Animated.View>
-                        
-                        
-                    </TouchableWithoutFeedback>
-                </View>
+                </PanGestureHandler>
             </TouchableOpacity>
         </KeyboardAvoidingView>
     )

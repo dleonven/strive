@@ -50,8 +50,19 @@ const renderTabBar = (props: any) => (
         {...props}
         indicatorStyle={{ backgroundColor: 'rgb(0,77,86)'}}
         style={{ backgroundColor: 'white' }}
+        
+        /* https://github.com/satya164/react-native-tab-view/blob/main/src/TabBarItem.tsx#L254 */
+        tabStyle={{ 
+            width: 'auto', 
+            minHeight: 0, 
+            paddingLeft: 24,
+            paddingRight: 24,
+            paddingTop: 14,
+            paddingBottom: 14
+
+        }}
         activeColor={'rgb(0,77,86)'}
-        inactiveColor={'rgb(0,77,86)'}
+        inactiveColor={'rgb(200,199,199)'}
         labelStyle={{ 
             fontFamily: 'BioSans-SemiBold',
             fontSize: 16,

@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, Text, View, Image, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
@@ -142,11 +142,11 @@ const BottomTabs = () => {
                     }                    
                 }}
             />         
-        
-                       
-                
-                
-            
+
+
+
+
+
             {/* MIDDLE LOGO */}
             <Tab.Screen 
                 name="Strive" 
@@ -226,15 +226,17 @@ const StackNavigator = () => {
                         fontSize: 14
                     },
                     headerLeft: () => (
-                        <Image 
-                            source={require('./assets/round-logo.png')} 
-                            style={{ width: 32, height: 32, marginLeft: 24 }}
-                        />
+                        <TouchableHighlight onPress={async () => await Auth.signOut()}>
+                            <Image 
+                                source={require('./assets/round-logo.png')} 
+                                style={{ width: 32, height: 32, marginLeft: 24 }}
+                            />
+                        </TouchableHighlight>   
                     ),                                
                 }}
             /> 
-    
-   
+
+
             <Stack.Screen 
                 name="Workout" 
                 component={Workout}

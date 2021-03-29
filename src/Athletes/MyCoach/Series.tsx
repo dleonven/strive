@@ -20,7 +20,6 @@ const Series = () => {
     
 
 
-
     return(
         
 
