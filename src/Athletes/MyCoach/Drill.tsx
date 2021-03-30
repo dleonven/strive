@@ -11,6 +11,7 @@ import { Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, Touchab
 import { Video, AVPlaybackStatus } from 'expo-av';
 import CustomFont from '../../GlobalComponents/CustomFont'
 import { Fontisto, Feather } from '@expo/vector-icons'; 
+import { PanGestureHandler } from 'react-native-gesture-handler';
 
 
 const { width, height } = Dimensions.get("window");
@@ -21,62 +22,44 @@ const Drill = () => {
     
     const video = useRef(null);
     const [status, setStatus] = useState({});
-    const [firstClick, setFirstClick] = useState(true)
+
+    const toValue = useRef(0)
+
+    const bounce_value = useRef(new Animated.Value(249))
     
-    /* initial value of the animated view is 400 (the height of the view), so it doesn't show */
-    //const [bounce_value, setBounceValue] = useState(0)
-    const [animatedValue, setAnimatedValue] = useState(new Animated.Value(0))
-    const [smallSubView, setSmallSubView] = useState(true)
-
-
-
-
-
-    /* IF  */
+    
+    /* IF USER PRESSES PLAY, REDUCE SUBVIEW  */
     useEffect(() => {
-        if(status.isPlaying) setAnimatedValue(new Animated.Value(249)) 
+        if(status.isPlaying && toValue.current === 0) {toggleSubview()}
     }, [status.isPlaying])   
 
-    useEffect(() => {
-        if((animatedValue as any)._value === 0) video.current.pauseAsync()
-    }, [animatedValue])   
 
-    
-    
-    
-    
+
+
+
+
 
     const toggleSubview = () => {
-        /* y axis value increases from top to bottom  */
+
+
+
+        if(toValue.current === 0) toValue.current = 249
+        else if(toValue.current === 249) toValue.current = 0
         
-        
-        if((animatedValue as any)._value === 0) setAnimatedValue(new Animated.Value(249))
-        else if((animatedValue as any)._value === 249) setAnimatedValue(new Animated.Value(0))
-        
-        
-        /* if its big, make it small */
-        //let toValue = 249;
-        
-        /* is its small, make it big */
-        //if(smallSubView) toValue = 0;
-        //if(animatedValue === 249) {
-          //  setAnimatedValue(new Animated.Value(0))
-            //setSmallSubView
-        //}
-        //else setAnimatedValue(new Animated.Value(249));
-        //This will animate the transalteY of the subview between 0 & 100 depending on its current state
-        //100 comes from the style below, which is the height of the subview.
-        /*Animated.spring(
-            animatedValue,
+
+        Animated.spring(
+            bounce_value.current,
             {
-                toValue: toValue,
+                toValue: toValue.current,
+                velocity: 8,
+                tension: 2,
                 friction: 8, 
-                tension: 30,
-                velocity: 6,
                 useNativeDriver: true
             }
-        ).start();*/
-        
+        ).start(() => {
+            if(toValue.current === 0 && status.isPlaying) video.current.pauseAsync()
+        });
+
     }
 
     
@@ -112,17 +95,19 @@ const Drill = () => {
             </TouchableWithoutFeedback>
 
 
-            
             <TouchableWithoutFeedback onPress={() => toggleSubview()}>
-                <Animated.View
-                    style={[styles.subView, {transform: [{translateY: animatedValue}]}]}
+                <PanGestureHandler 
+                    onHandlerStateChange={() => toggleSubview()}
                 >
-                
-                    <SwipeableComponent/>
-    
-                </Animated.View>  
-            </TouchableWithoutFeedback>            
-          
+                    <Animated.View
+                        style={[styles.subView, {transform: [{translateY: bounce_value.current}]}]}
+                    >
+                        <SwipeableComponent/>
+                    </Animated.View>  
+                </PanGestureHandler>
+            </TouchableWithoutFeedback>
+
+
             
         </View>
 
