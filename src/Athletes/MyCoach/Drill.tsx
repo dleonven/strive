@@ -25,28 +25,34 @@ const Drill = () => {
 
     const toValue = useRef(0)
 
-    const bounce_value = useRef(new Animated.Value(249))
+    const bounce_value = useRef(new Animated.Value(0))
     
+    const [videoWithOpacity, setVideoWithOpacity] = useState(true)
     
-    /* IF USER PRESSES PLAY, REDUCE SUBVIEW  */
+    /* IF USER PRESSES FRMO STOP TO PLAY, ANDSIZE IS BIG, REDUCE SUBVIEW  */
     useEffect(() => {
         if(status.isPlaying && toValue.current === 0) {toggleSubview()}
     }, [status.isPlaying])   
 
 
-
-
-
-
-
     const toggleSubview = () => {
 
-
-
-        if(toValue.current === 0) toValue.current = 249
-        else if(toValue.current === 249) toValue.current = 0
+        if(status.isPlaying && toValue.current === 249) video.current.pauseAsync()         
+    
+        if(toValue.current === 0) {
+            toValue.current = 249
+            setVideoWithOpacity(false)     
+            
+        }
+        else if(toValue.current === 249) {
+            toValue.current = 0
+            setVideoWithOpacity(true)        
+            
+            /* IF IT WAS PLAYING */
+            //if(status.isPlaying) video.current.pauseAsync()        
+            
+        }
         
-
         Animated.spring(
             bounce_value.current,
             {
@@ -56,13 +62,18 @@ const Drill = () => {
                 friction: 8, 
                 useNativeDriver: true
             }
-        ).start(() => {
-            if(toValue.current === 0 && status.isPlaying) video.current.pauseAsync()
+        ).start(({ finished }) => {
+            
+            //if(toValue.current === 0 && status.isPlaying) video.current.pauseAsync()
+
+
+            
         });
+
 
     }
 
-    
+
     return(
         
 
@@ -71,10 +82,10 @@ const Drill = () => {
                 //activeOpacity={1} 
                 onPress={() => {
                     status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-                
+
                     //if(subViewHidden) return
                     //toggleSubview()    
-    
+
                 }}
             >
                         {/* https://docs.expo.io/versions/latest/sdk/video/ */}
@@ -86,29 +97,40 @@ const Drill = () => {
                             isMuted={false}
                             resizeMode="cover"
                             isLooping
-                            style={styles.video}
+                            style={[styles.video, videoWithOpacity && styles.videoWithOpacity]}
                             onPlaybackStatusUpdate={status => setStatus(() => status)}
                         />
                         
+                     
                         
-                        
+
             </TouchableWithoutFeedback>
 
+            {videoWithOpacity &&
+                <Image
+                    source={require('../../../assets/video-big-play.png')} 
+                    style={{ width: 72, height: 76.7, marginBottom: 250 }}
+                />  
+            }
+ 
 
-            <TouchableWithoutFeedback onPress={() => toggleSubview()}>
-                <PanGestureHandler 
-                    onHandlerStateChange={() => toggleSubview()}
+            <PanGestureHandler 
+                onHandlerStateChange={({ nativeEvent }) => {
+                
+                    /* https://docs.swmansion.com/react-native-gesture-handler/docs/state */
+                    /* THIS IF MAKES IT TRIGGER ONLY ONCE */
+                    if(nativeEvent.state === 4) toggleSubview()
+                }}
+            >
+                <Animated.View
+                    style={[styles.subView, {transform: [{translateY: bounce_value.current}]}]}
                 >
-                    <Animated.View
-                        style={[styles.subView, {transform: [{translateY: bounce_value.current}]}]}
-                    >
-                        <SwipeableComponent/>
-                    </Animated.View>  
-                </PanGestureHandler>
-            </TouchableWithoutFeedback>
+                    <SwipeableComponent/>
+                </Animated.View>  
+            </PanGestureHandler>
 
 
-            
+
         </View>
 
         
@@ -289,7 +311,9 @@ const styles = StyleSheet.create({
         width: width,
         backgroundColor: 'black',
         //position: 'relative'
-        flex: 1
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     authButtons: {
         zIndex: 2,
@@ -302,7 +326,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: height,
         width: width,
-        zIndex: 1,
+        zIndex: 1
+    },
+    videoWithOpacity: {
+        opacity: 0.5
     },
     signUpButton: {
         backgroundColor: 'white',
