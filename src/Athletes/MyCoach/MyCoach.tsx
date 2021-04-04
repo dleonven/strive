@@ -16,19 +16,22 @@ import TabBreakdowns from './TabBreakdowns'
 
 const HEADER_HEIGHT = 66
 const TABS_DATA = [
-        {
-            title: "Series"
-        },
-        {
-            title: "Workouts"
-        },
-        {
-            title: "Drills"
-        },
-        {
-            title: "Breakdowns"
-        },
-    ];
+    {
+        title: "Series"
+    },
+    {
+        title: "Workouts"
+    },
+    {
+        title: "Drills"
+    },
+    {
+        title: "Breakdowns"
+    },
+];
+
+const SPECIALTIES_DATA = ['Shooting', 'Fundamentals', 'Scoring', 'Coaching']
+
 
 const MyCoach = () => {
     
@@ -54,13 +57,13 @@ const MyCoach = () => {
             stickyHeaderIndices={[1]}
             style={{
                 flex: 1, 
-                backgroundColor: '#fff',
+                marginLeft: 24,
                 //height: '100%'
                 //marginRight: 41
             }}
         >
 
-            <CoachDetails/>
+            <Header/>
 
             <MyCoachTabs
                 activeTab={activeTab}
@@ -76,10 +79,24 @@ const MyCoach = () => {
 
 export default MyCoach
 
+
+const Header = () => {
+    return(
+        <View>
+            <CoachDetails/>
+            
+            <CoachSpecializations/>
+
+            <UpgradeBox/>
+            
+        </View>
+    )
+}
+
+
 const CoachDetails = () => {
     return(
         <View style={{
-            marginLeft: 24,
             //marginRight: 100,
             flexDirection: 'row',
         }}>
@@ -102,10 +119,80 @@ const CoachDetails = () => {
                     color="rgb(84,84,84)"
                 />
             </View>
+
         </View>
     )
 }
 
+
+const CoachSpecializations = () => {
+    return( 
+        <View style={{ 
+            flexDirection: 'row', 
+            marginTop: 16
+        }}>
+            <Text style={{
+                fontSize: 14,
+                fontFamily: 'BioSans-SemiBold',
+                color: 'rgb(84,84,84)',
+                marginRight: 16
+            }}>
+                Specialises in:
+            </Text>
+            
+        <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            style={{ backgroundColor:  'white' }}
+        >
+            {SPECIALTIES_DATA.map(item => {
+                return(
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={{
+                            fontSize: 13,
+                            fontFamily: 'BioSans-SemiBold',
+                            color: 'rgb(0,77,86)',
+                            marginRight: 8
+                        }}>
+                            {item}
+                        </Text>
+                        <Text style={{
+                            fontSize: 13,
+                            fontFamily: 'BioSans-SemiBold',
+                            color: 'rgb(0,77,86)',
+                            marginRight: 8
+                        }}>
+                            |
+                        </Text>                        
+                    </View>
+                );
+            })}
+        </ScrollView>                
+            
+            
+        </View>    
+    )
+}
+
+
+const UpgradeBox = () => {
+    return( 
+        <View style={{
+            flex: 1,
+            backgroundColor: 'rgb(236,235,235)',
+            marginTop: 16,
+            marginRight: 24,
+            marginBottom: 24,
+            borderRadius: 4,
+            height: 58
+        }}>
+            
+        
+        </View>
+    
+    )
+}
 
 /* HORIZONTAL SCROLLVIEW FOR TABS */
 const MyCoachTabs = (props: {activeTab: string, setActiveTab: any}) => {
@@ -162,7 +249,6 @@ const styles = StyleSheet.create({
     },
     content: {
         marginTop: 32,
-        marginLeft: 24
     },
     image: {
         height: 423

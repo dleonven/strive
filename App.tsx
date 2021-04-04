@@ -35,9 +35,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
 const MyButton = Object.assign({}, AmplifyTheme.button, { backgroundColor: 'red' });
+
 const MyTheme = Object.assign({}, AmplifyTheme, { 
     sectionHeader: MySectionHeader,
-    button: MyButton
+    button: MyButton,
+    
+    /* https://stackoverflow.com/questions/48253357/react-navigation-default-background-color */    
+    colors: {
+        //...DefaultTheme.colors,
+        background: 'white'
+    },
 });
 
 
@@ -75,7 +82,7 @@ function App() {
     
     if (!fontsLoaded) return <AppLoading />;
     return (
-        <NavigationContainer>
+        <NavigationContainer theme={MyTheme}>
 
             {isLoggedIn ?
             
@@ -110,6 +117,9 @@ const BottomTabs = () => {
                 component={MyCoach} 
                 options={{
                     title: 'MY COACH',
+                    style: {
+                        backgroundColor: 'white'
+                    },
                     headerStyle: {
                         height: 125,
                         shadowColor: 'transparent'

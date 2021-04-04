@@ -13,7 +13,6 @@ const TabDrills = () => (
     <ScrollView 
         style={{
             flex: 1, 
-            marginLeft: 24,
         }}
     >
         <FullCardCarousel

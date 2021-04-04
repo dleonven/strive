@@ -12,7 +12,6 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 const TabWorkouts = () => (
     <ScrollView 
         style={{
-            marginLeft: 24,
             flex: 1
         }}
     >

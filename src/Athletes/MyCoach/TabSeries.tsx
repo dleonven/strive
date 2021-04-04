@@ -66,7 +66,6 @@ const input = [
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginLeft: 24
     },
     content: {
         marginTop: 32,
