@@ -11,6 +11,7 @@ import TabSeries from './TabSeries'
 import TabWorkouts from './TabWorkouts'
 import TabDrills from './TabDrills'
 import TabBreakdowns from './TabBreakdowns'
+import CustomFont from '../../GlobalComponents/CustomFont'
 
 
 const MyCoachTabs = () => {
@@ -33,12 +34,14 @@ const MyCoachTabs = () => {
     
     return (
         <TabView
+            style={{ height: Dimensions.get('window').height }}
             navigationState={{ index, routes }}
             renderScene={renderScene}
             onIndexChange={setIndex}
             initialLayout={initialLayout}
             renderTabBar={renderTabBar}
         />
+
     );
 }
 
@@ -72,6 +75,7 @@ const renderTabBar = (props: any) => (
 );
 
 const initialLayout = { 
-    width: Dimensions.get('window').width 
+    width: Dimensions.get('window').width,
 };
+
 
