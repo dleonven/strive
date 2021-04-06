@@ -202,7 +202,7 @@ const MyCoachTabs = (props: {activeTab: string, setActiveTab: any}) => {
         <ScrollView 
             horizontal 
             showsHorizontalScrollIndicator={false}
-            style={{ backgroundColor:  'white' }}
+            style={{ marginLeft:-24 }}
         >
             {TABS_DATA.map(item => {
                 return(
@@ -268,12 +268,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        //marginTop: 20,
-        //marginHorizontal: 20,
-        //width: 70,
-        //height: 30,
-        //borderRadius: 10,
-
     },
     tabText: {
         fontFamily: 'BioSans-SemiBold',
@@ -290,7 +284,7 @@ const styles = StyleSheet.create({
     indicator: {
         borderColor: 'rgb(200,199,199)',
         borderWidth: 1,
-        width: '100%'
+        width: '100%',
     },
     activeIndicator: {
         borderColor: 'rgb(0,77,86)',
