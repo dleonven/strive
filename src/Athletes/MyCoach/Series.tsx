@@ -37,6 +37,10 @@ const Series = () => {
                             source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg' }}
                             style={styles.image}
                         >
+                            
+                            {/* DARK BACKGROUND */}
+                            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}></View>
+                        
                             <View style={{
                                 position: 'absolute', 
                                 top: 0, 
@@ -45,7 +49,7 @@ const Series = () => {
                                 bottom: 0, 
                                 justifyContent: 'center', 
                                 marginLeft: 24,
-                                marginRight: 24
+                                marginRight: 24,
                             }}>
                             
                                 <CustomFont
@@ -204,7 +208,7 @@ const styles = StyleSheet.create({
         marginLeft: 24
     },
     image: {
-        height: 423
+        height: 423,
     },
     grid: {
         marginTop: 24,

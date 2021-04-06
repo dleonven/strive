@@ -97,7 +97,6 @@ const SubText = (props: { sub_text: string }) => {
 
 const styles = StyleSheet.create({
     listItemStyle: {
-        marginTop: 16, 
         marginBottom: 16,
         flexDirection: 'row',
         alignItems: 'center',
@@ -117,6 +116,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginLeft: 24,
         marginRight: 24,
+        marginBottom: 16,
         borderColor:'rgb(236,235,235)',
     
         

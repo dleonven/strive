@@ -25,9 +25,8 @@ const Workout = () => {
         
 
         <FlatList 
-            contentContainerStyle={{ }}
             ListHeaderComponent={
-            
+        
                 <View style={styles.container}>
             
                     <CustomFont
@@ -42,8 +41,12 @@ const Workout = () => {
                     />
                     
                     <Details/>
-
-            
+                    
+                    <CustomFont
+                        font_type="Subtitle"
+                        text="Drills"
+                    />                      
+                    
                 </View>
             }
             data={DATA_LIST_WITH_IMAGE}
@@ -77,7 +80,8 @@ const Details = () => {
             height:238,
             backgroundColor: 'rgb(247,247,247)',
             borderRadius: 4,
-            marginTop: 17
+            marginTop: 17,
+            marginBottom: 24
         }}>
         </View>    
     )
@@ -91,8 +95,10 @@ const Details = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 36,
         marginLeft: 24,
         marginRight: 24,
+        marginBottom: 28.5,
         backgroundColor: 'rgb(255,255,255)',
     },
 });

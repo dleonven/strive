@@ -104,10 +104,16 @@ const SeriesDetails = (props: {
                     name="ellipse" 
                     size={6} 
                     color={props.level > 2 ? 'rgb(0,77,86)' : 'rgb(200,199,199)'} 
+                    style={{ marginRight: 12 }}
                 />
-                <CustomFont font_type={'CopySmall'} text={' | '} image_type={props.image_type} />
                 
-                <CustomFont font_type={'CopySmall'} text={'Workouts: ' + props.workouts} image_type={props.image_type} />
+                <CustomFont font_type={'CopySmall'} text={'|'} image_type={props.image_type} />
+                
+                <View style={{marginRight: 12}}></View>
+                
+                <CustomFont font_type={'CopySmall'} text={'Workouts: '} image_type={props.image_type} />
+                
+                <Text style={{fontFamily: 'BioSans-Bold', fontSize: 14}}>{props.workouts.toString()}</Text>
             </View>
         </View>
     )
@@ -152,7 +158,12 @@ const WorkoutDetails = (props: {
                     color={props.level > 2 ? 'rgb(0,77,86)' : 'rgb(200,199,199)'} 
                 />
                 
-                <CustomFont font_type={'CopySmall'} text={' | '} image_type={props.image_type} />
+                
+                <View style={{marginRight: 12}}></View>
+                
+                <CustomFont font_type={'CopySmall'} text={'|'} image_type={props.image_type} />
+
+                <View style={{marginRight: 12}}></View>
 
                 <Feather name="clock" size={13} color="black" />
                 

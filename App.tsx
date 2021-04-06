@@ -281,7 +281,7 @@ const StackNavigator = () => {
 
                     headerBackImage: () => (
                         <Image 
-                            source={require('./assets/white-outlined.png')} 
+                            source={require('./assets/transparent-back.png')} 
                             style={{ width: 13, height: 21, marginLeft: 24 }}
                         />
                     ), 

@@ -211,7 +211,7 @@ const MyCoachTabs = (props: {activeTab: string, setActiveTab: any}) => {
                         key={item.title}
                     >
                         {/* https://stackoverflow.com/questions/64085543/react-native-touchablewithoutfeedback-is-not-working */}
-                        <View>
+                        <View style={{ backgroundColor: 'white' }}>
                             <Tab
                                 key={item.title}
                                 title={item.title}
@@ -220,8 +220,6 @@ const MyCoachTabs = (props: {activeTab: string, setActiveTab: any}) => {
                         </View>
 
                     </TouchableWithoutFeedback>                    
-
-
                 );
             })}
         </ScrollView>
@@ -293,7 +291,7 @@ const styles = StyleSheet.create({
   
   
   
-  const input = [
+const input = [
     {
         minutes: 5,
         level: 3,
