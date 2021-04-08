@@ -22,6 +22,7 @@ const DetailsCard = (props: {
 }) => {
     if(props.details_card_type === 'SeriesDetails') return(
         <SeriesDetails
+            title_text={props.title_text}
             image_type={props.image_type}
             text={props.text}
             level={props.level}
@@ -30,6 +31,7 @@ const DetailsCard = (props: {
     )
     else if(props.details_card_type === 'WorkoutDetails') return(
         <WorkoutDetails
+            title_text={props.title_text}
             image_type={props.image_type}
             text={props.text}
             level={props.level}
@@ -38,6 +40,7 @@ const DetailsCard = (props: {
     )
     else if(props.details_card_type === 'DrillDetails') return(
         <DrillDetails
+            title_text={props.title_text}
             image_type={props.image_type}
             text={props.text}
             level={props.level}
@@ -78,11 +81,12 @@ const SeriesDetails = (props: {
                 null
             }
         >
-            <CustomFont 
-                font_type={'CopyText'} 
-                text={props.text} 
-                image_type={props.image_type} 
-            />
+            <View style={{ marginTop: 12 }}></View>
+
+            <Text style={{ fontSize: 16, fontFamily: 'BioSans-SemiBold' }}>{props.title_text}</Text>
+
+            <View style={{ marginBottom: 5 }}></View>
+            
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <CustomFont font_type={'CopySmall'} text={'Level: '} image_type={props.image_type} />
                 
@@ -122,6 +126,7 @@ const SeriesDetails = (props: {
 
 const WorkoutDetails = (props: {
     image_type: string,
+    title_text: string,
     text: string, 
     level: number, 
     minutes: number
@@ -134,8 +139,15 @@ const WorkoutDetails = (props: {
                 null
             }
         >
-            <CustomFont font_type={'CopyText'} text={props.text} image_type={props.image_type} />
+        
+            <View style={{ marginTop: 12 }}></View>
+
+            <Text style={{ fontSize: 16, fontFamily: 'BioSans-SemiBold' }}>{props.title_text}</Text>
+
+            <View style={{ marginBottom: 5 }}></View>
+
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                
                 <CustomFont font_type={'CopySmall'} text={'Level: '} image_type={props.image_type} />
                 
                 <Fontisto
@@ -176,6 +188,7 @@ const WorkoutDetails = (props: {
 
 const DrillDetails = (props: {
     image_type: string,
+    title_text: string,
     text: string, 
     level: number
 }) => {
@@ -187,7 +200,12 @@ const DrillDetails = (props: {
                 null
             }
         >
-            <CustomFont font_type={'CopyText'} text={props.text} image_type={props.image_type} />
+            <View style={{ marginTop: 12 }}></View>
+
+            <Text style={{ fontSize: 16, fontFamily: 'BioSans-SemiBold' }}>{props.title_text}</Text>
+
+            <View style={{ marginBottom: 5 }}></View>
+            
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <CustomFont font_type={'CopySmall'} text={'Level: '} image_type={props.image_type} />
                 
