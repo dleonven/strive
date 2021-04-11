@@ -46,7 +46,9 @@ const MyCoach = () => {
             case 'Workouts':
                 return <TabWorkouts/>
             case 'Drills':
-                return <TabDrills/>                
+                return <TabDrills/>        
+            case 'Breakdowns':
+                return <TabBreakdowns/>                  
             default:
         }
     }
@@ -56,10 +58,7 @@ const MyCoach = () => {
         <ScrollView
             stickyHeaderIndices={[1]}
             style={{
-                flex: 1, 
-                marginLeft: 24,
-                //height: '100%'
-                //marginRight: 41
+                flex: 1
             }}
         >
 
@@ -82,7 +81,7 @@ export default MyCoach
 
 const Header = () => {
     return(
-        <View>
+        <View style={{ marginLeft: 24 }}>
             <CoachDetails/>
             
             <CoachSpecializations/>
@@ -148,7 +147,7 @@ const CoachSpecializations = () => {
             {SPECIALTIES_DATA.map(item => {
                 return(
 
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row' }} key={item}>
                         <Text style={{
                             fontSize: 13,
                             fontFamily: 'BioSans-SemiBold',
@@ -201,8 +200,8 @@ const MyCoachTabs = (props: {activeTab: string, setActiveTab: any}) => {
     return(
         <ScrollView 
             horizontal 
+            bounces={false}
             showsHorizontalScrollIndicator={false}
-            style={{ marginLeft:-24 }}
         >
             {TABS_DATA.map(item => {
                 return(

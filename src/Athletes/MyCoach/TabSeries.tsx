@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Animated, FlatList, Image, TouchableWithoutFeedback, StyleSheet, View, ScrollView, TextInput, Text, Dimensions } from 'react-native';
+import { TouchableHighlight, Animated, FlatList, Image, TouchableWithoutFeedback, StyleSheet, View, ScrollView, TextInput, Text, Dimensions } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
 import CustomList from '../../GlobalComponents/CustomList'
@@ -9,6 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import CustomFont from '../../GlobalComponents/CustomFont'
 import { Fontisto, Feather } from '@expo/vector-icons'; 
+import { useNavigation } from '@react-navigation/native';
 
 
 const TabSeries = () => (
@@ -18,9 +19,10 @@ const TabSeries = () => (
         
         <View style={{ marginBottom: 33 }}></View>
         
-        {data.map(item => {
+        {data.map((item, index) => {
             return( 
                 <SeriesCarousel
+                    key={index}
                     series={item}
                 />              
             )
@@ -49,9 +51,9 @@ const SeriesCarousel = (props: {series: any}) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
             >
-                {props.series.items.map((item: any) => {
+                {props.series.items.map((item: any, index: any) => {
                     return( 
-                        <View style={styles.gridItem}>
+                        <View style={styles.gridItem} key={index}>
                             <SeriesFullCard item={item}/>                            
                         </View>                
                     )
@@ -101,16 +103,28 @@ const CarouselHeader = (props: {title: string, linkText: string}) => {
 }
 
 const SeriesFullCard = (props: {item: any}) => {
+
+    const navigation = useNavigation();
+    
+    
     return( 
-        <View style={{ marginRight: 16 }}>
-            <SeriesImage uri={props.item.uri}/>
-            <SeriesDetails
-                itemTitle={props.item.itemTitle}
-                text={props.item.text}
-                level={props.item.level}
-                workouts={props.item.workouts}
-            />
-        </View>
+        <TouchableHighlight
+            activeOpacity={0.6}
+            underlayColor="#DDDDDD"
+            onPress={() => navigation.navigate("Series")} 
+        >
+            <View style={{ marginRight: 16 }}>
+                <SeriesImage uri={props.item.uri}/>
+                <SeriesDetails
+                    itemTitle={props.item.itemTitle}
+                    text={props.item.text}
+                    level={props.item.level}
+                    workouts={props.item.workouts}
+                />
+            </View>
+        
+        </TouchableHighlight>          
+
     )
 }
 
@@ -154,12 +168,12 @@ const SeriesDetails = (props: SeriesDetailsProps) => {
         <View>
             <View style={{ marginTop: 12 }}></View>
 
-            <Text style={{ fontSize: 16, fontFamily: 'BioSans-SemiBold' }}>{props.itemTitle}</Text>
+            <Text style={{ fontSize: 16, fontFamily: 'BioSans-SemiBold', color: '#373636' }}>{props.itemTitle}</Text>
 
             <View style={{ marginBottom: 5 }}></View>
             
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <CustomFont font_type={'CopySmall'} text={'Level: '} />
+                <CustomFont color={'#545454'} font_type={'CopySmall'} text={'Level: '} />
                 
                 <Fontisto
                     name="ellipse" 
@@ -182,13 +196,13 @@ const SeriesDetails = (props: SeriesDetailsProps) => {
                     style={{ marginRight: 12 }}
                 />
                 
-                <CustomFont font_type={'CopySmall'} text={'|'} />
+                <CustomFont color={'#C8C7C7'} font_type={'CopySmall'} text={'|'} />
                 
                 <View style={{marginRight: 12}}></View>
                 
-                <CustomFont font_type={'CopySmall'} text={'Workouts: '}  />
+                <CustomFont color={'#545454'} font_type={'CopySmall'} text={'Workouts: '}  />
                 
-                <Text style={{fontFamily: 'BioSans-Bold', fontSize: 14}}>{props.workouts.toString()}</Text>
+                <Text style={{fontFamily: 'BioSans-Bold', fontSize: 14, color: '#545454'}}>{props.workouts.toString()}</Text>
             </View>
         </View>
     )
@@ -264,6 +278,7 @@ const data = [
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginLeft: 24
     },
     content: {
         marginTop: 32,

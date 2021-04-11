@@ -179,7 +179,7 @@ const WorkoutDetails = (props: {
 
                 <Feather name="clock" size={13} color="black" />
                 
-                <CustomFont font_type={'CopySmall'} text={' ' +props.minutes + 'mins'} image_type={props.image_type} />
+                <CustomFont font_type={'CopySmall'} text={' ' + props.minutes + 'mins'} image_type={props.image_type} />
             </View>
         </View>
     )
