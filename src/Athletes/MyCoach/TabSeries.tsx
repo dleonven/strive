@@ -108,9 +108,9 @@ const SeriesFullCard = (props: {item: any}) => {
     
     
     return( 
-        <TouchableHighlight
-            activeOpacity={0.6}
-            underlayColor="#DDDDDD"
+        <TouchableWithoutFeedback
+            //activeOpacity={0.6}
+            //underlayColor="#DDDDDD"
             onPress={() => navigation.navigate("Series")} 
         >
             <View style={{ marginRight: 16 }}>
@@ -123,7 +123,7 @@ const SeriesFullCard = (props: {item: any}) => {
                 />
             </View>
         
-        </TouchableHighlight>          
+        </TouchableWithoutFeedback>          
 
     )
 }
@@ -287,11 +287,8 @@ const styles = StyleSheet.create({
     image: {
         height: 423
     },
-    grid: {
-        marginTop: 24,
-    },
     gridItem: {
-        marginBottom: 32,
+        marginBottom: 48,
         flex: 1,
     },  
     overlay: {

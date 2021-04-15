@@ -75,8 +75,6 @@ const Drill = () => {
 
 
     return(
-        
-
         <View style={styles.container}>
             <TouchableWithoutFeedback
                 //activeOpacity={1} 
@@ -307,10 +305,9 @@ const Level = (props: {level: number}) => {
 
 const styles = StyleSheet.create({
     container: {
-        height: height,
-        width: width,
+        //height: height,
+        //width: width,
         backgroundColor: 'black',
-        //position: 'relative'
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'

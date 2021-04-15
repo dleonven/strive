@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, TouchableWithoutFeedback, Animated, ScrollView, StyleSheet, View, TextInput, Text, Dimensions, Image } from 'react-native';
-import { Auth } from 'aws-amplify';
-import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
-import CustomList from '../../GlobalComponents/CustomList'
-import ListWithImage from '../../GlobalComponents/ListWithImage'
-import CustomFormField from '../../GlobalComponents/CustomFormField'
-import { NavigationContainer } from '@react-navigation/native';
-import { TabBar, TabView, SceneMap } from 'react-native-tab-view';
-//import MyCoachTabs from './MyCoachTabs'
+import { TouchableWithoutFeedback, ScrollView, StyleSheet, View, Text, Image } from 'react-native';
 import CustomFont from '../../GlobalComponents/CustomFont'
 import TabSeries from './TabSeries'
 import TabWorkouts from './TabWorkouts'
@@ -58,7 +50,7 @@ const MyCoach = () => {
         <ScrollView
             stickyHeaderIndices={[1]}
             style={{
-                flex: 1
+                flex: 1,
             }}
         >
 
@@ -81,7 +73,7 @@ export default MyCoach
 
 const Header = () => {
     return(
-        <View style={{ marginLeft: 24 }}>
+        <View style={{ marginLeft: 24, marginTop: 18 }}>
             <CoachDetails/>
             
             <CoachSpecializations/>
@@ -96,7 +88,6 @@ const Header = () => {
 const CoachDetails = () => {
     return(
         <View style={{
-            //marginRight: 100,
             flexDirection: 'row',
         }}>
             <Image

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableHighlight,Image, StyleSheet, View, ScrollView, TextInput, Text, Dimensions } from 'react-native';
+import { TouchableWithoutFeedback, TouchableHighlight,Image, StyleSheet, View, ScrollView, TextInput, Text, Dimensions } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
 import CustomList from '../../GlobalComponents/CustomList'
@@ -101,15 +101,15 @@ const BreakdownFullCard = (props: {item: any}) => {
     const navigation = useNavigation();
     
     return( 
-        <TouchableHighlight
-            activeOpacity={0.6}
-            underlayColor="#DDDDDD"
+        <TouchableWithoutFeedback
+            //activeOpacity={0.6}
+            //underlayColor="#DDDDDD"
             onPress={() => navigation.navigate("Breakdowns")} 
         >        
             <View style={{ marginRight: 16 }}>
                 <BreakdownImage uri={props.item.uri}/>
             </View>
-        </TouchableHighlight>          
+        </TouchableWithoutFeedback>          
     )
 }
 
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
         marginTop: 24,
     },
     gridItem: {
-        marginBottom: 32,
+        marginBottom: 48,
         flex: 1,
     },  
     overlay: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect,  useRef } from 'react';
-import { ScrollView, FlatList, ImageBackground } from 'react-native';
+import { StatusBar, ScrollView, FlatList, ImageBackground } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
 import CustomList from '../../GlobalComponents/CustomList'
@@ -24,6 +24,8 @@ const Series = () => {
         
 
         <View style={styles.container}>
+            <StatusBar translucent={true} />
+
         
             <FlatList 
                 contentContainerStyle={styles.grid}
@@ -201,26 +203,33 @@ export default Series
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     },
     content: {
         marginTop: 32,
         marginLeft: 24
     },
     image: {
+        flex: 1,
         height: 423,
+        //height: height,
+                //alignSelf: 'center',
+        //position: 'absolute',
+        //width: width,
+        
+        zIndex: 1
     },
     grid: {
-        marginTop: 24,
+        //marginTop: 24,
     },
     gridItem: {
         marginBottom: 32,
         flex: 1,
     },  
-      overlay: {
-    opacity: 0.5,
-    backgroundColor: '#000000'
-  },
+    overlay: {
+        opacity: 0.5,
+        backgroundColor: '#000000'
+    },
     
 });
 
