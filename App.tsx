@@ -23,6 +23,7 @@ import Drill from './src/Athletes/MyCoach/Drill'
 import Workout from './src/Athletes/MyCoach/Workout'
 
 import Series from './src/Athletes/MyCoach/Series'
+import MyAccount from './src/Athletes/MyAccount'
 
 import Discover from './src/Athletes/Discover'
 import { Container, Content, StyleProvider } from 'native-base';
@@ -183,10 +184,11 @@ const BottomTabs = () => {
             />                    
             
             <Tab.Screen 
-                name="Qwe" 
-                component={MyCoach} 
+                name="MyAccount" 
+                component={MyAccount} 
                 
                 options={{
+                    Title: 'MY ACCOUNT',
                     tabBarLabel: 'Activity',
                     tabBarIcon: ({focused}: any) => {
                         if(focused) return(
@@ -215,11 +217,7 @@ const BottomTabs = () => {
 const StackNavigator = () => {
     return(
         <Stack.Navigator>
-    
-    
-    
 
-    
     
             <Stack.Screen 
                 name="MyCoach" 

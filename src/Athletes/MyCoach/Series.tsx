@@ -12,9 +12,8 @@ import { Video, AVPlaybackStatus } from 'expo-av';
 import CustomFont from '../../GlobalComponents/CustomFont'
 import PersonCard from '../../GlobalComponents/PersonCard'
 
-import { Fontisto, Feather } from '@expo/vector-icons'; 
+import { Fontisto } from '@expo/vector-icons'; 
 
-const { width, height } = Dimensions.get("window");
 
 const Series = () => {
     
@@ -52,6 +51,7 @@ const Series = () => {
                                 justifyContent: 'center', 
                                 marginLeft: 24,
                                 marginRight: 24,
+                                marginTop: 26
                             }}>
                             
                                 <CustomFont
@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
     gridItem: {
         marginBottom: 32,
         flex: 1,
+        
     },  
     overlay: {
         opacity: 0.5,

@@ -78,8 +78,6 @@ const Header = () => {
             
             <CoachSpecializations/>
 
-            <UpgradeBox/>
-            
         </View>
     )
 }
