@@ -106,7 +106,7 @@ const DrillFullCard = (props: {item: any}) => {
         <TouchableWithoutFeedback
             //activeOpacity={0.6}
             //underlayColor="#DDDDDD"
-            onPress={() => navigation.navigate("Drill")} 
+            onPress={() => navigation.navigate("Drill", { item: props.item })} 
         >        
             <View style={{ marginRight: 16 }}>
                 <DrillImage uri={props.item.uri}/>
@@ -181,29 +181,6 @@ const DrillDetails = (props: DrillDetailsProps) => {
     )
 }
 
-const input = [
-    {
-        minutes: 5,
-        level: 3,
-        workouts: 2,
-        title_text: "StaticText",
-        content_text: "StaticText",
-        sport: "StaticText",
-        coaches: 3,
-        uri: "https://picsum.photos/200/300?random=1"
-    },
-    {
-        minutes: 5,
-        level: 3,
-        workouts: 2,
-        title_text: "StaticText",
-        content_text: "StaticText",
-        sport: "StaticText",
-        coaches: 3,
-        uri: "https://picsum.photos/200/300?random=1"
-    }
-]
-
 
 
 
@@ -222,7 +199,8 @@ const data = [
                 sport: "StaticText",
                 coaches: 3,
                 uri: "https://picsum.photos/200/300?random=1",
-                itemTitle: "Item 1 Title"
+                itemTitle: "Item 1 Title",
+                video_uri: "https://www.youtube.com/watch?v=0mdidcb1GxU",
             },
             {
                 minutes: 5,
@@ -233,7 +211,8 @@ const data = [
                 sport: "StaticText",
                 coaches: 3,
                 uri: "https://picsum.photos/200/300?random=1",
-                itemTitle: "Item 2 Title"
+                itemTitle: "Item 2 Title",
+                video_uri: "https://www.youtube.com/watch?v=0mdidcb1GxU",
             }            
         ]
     },
@@ -250,7 +229,8 @@ const data = [
                 sport: "StaticText",
                 coaches: 3,
                 uri: "https://picsum.photos/200/300?random=1",
-                itemTitle: "Item 1 Title"
+                itemTitle: "Item 1 Title",
+                video_uri: "https://www.youtube.com/watch?v=0mdidcb1GxU",
             },
             {
                 minutes: 5,
@@ -261,7 +241,8 @@ const data = [
                 sport: "StaticText",
                 coaches: 3,
                 uri: "https://picsum.photos/200/300?random=1",
-                itemTitle: "Item 2 Title"
+                itemTitle: "Item 2 Title",
+                video_uri: "https://www.youtube.com/watch?v=0mdidcb1GxU",
             }            
         ]
     }

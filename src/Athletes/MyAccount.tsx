@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableHighlight, Text, Button, StyleSheet, View, TextInput } from 'react-native';
+import { Pressable, Modal, TouchableHighlight, Text, Button, StyleSheet, View, TextInput } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../GlobalComponents/FullCardCarousel'
 import CustomList from '../GlobalComponents/CustomList'
@@ -9,6 +9,9 @@ import CustomFont from '../GlobalComponents/CustomFont'
 
 
 const MyAccount = () => {
+    
+    const [modalVisible, setModalVisible] = useState(false);
+    
     return(
         <View style={styles.container}>
         
@@ -22,15 +25,19 @@ const MyAccount = () => {
             
                 <View style={styles.lineStyle}></View>            
             
-                <View style={styles.listItemStyle}>
-                    <CustomFont 
-                        font_type={'CopyText'} 
-                        text={'Product feedback'} 
-                        image_type={''}
-                        color={'rgb(84,84,84)'}
-                    />
-                </View>
-                
+            
+                    <TouchableHighlight 
+                        style={styles.listItemStyle}
+                        onPress={() => setModalVisible(true)}
+                    >            
+                        <CustomFont 
+                            font_type={'CopyText'} 
+                            text={'Product feedback'} 
+                            image_type={''}
+                            color={'rgb(84,84,84)'}
+                        />
+                    </TouchableHighlight>
+
                 <View style={styles.lineStyle}></View>                
                 
                 <View style={styles.listItemStyle}>
@@ -75,6 +82,22 @@ const MyAccount = () => {
             
             
 
+
+            <Modal
+                visible={modalVisible}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text >Hello World!</Text>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={styles.textStyle}>Hide Modal</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
             
             
             
@@ -114,5 +137,34 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         justifyContent: 'center',
         borderRadius: 4
-    }
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+        width: 0,
+        height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
 });

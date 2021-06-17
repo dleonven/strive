@@ -12,13 +12,20 @@ import { Video, AVPlaybackStatus } from 'expo-av';
 import CustomFont from '../../GlobalComponents/CustomFont'
 import { Fontisto, Feather } from '@expo/vector-icons'; 
 import { PanGestureHandler } from 'react-native-gesture-handler';
+import YoutubePlayer from "react-native-youtube-iframe";
 
 
 const { width, height } = Dimensions.get("window");
 
 /* declared as variable (not state), as it doesn't require a re render */
 
-const Drill = () => {
+const Drill = (props: any) => {
+    
+    
+    const { item } = props.route.params;
+    
+    console.log("item: ", item)
+    
     
     const video = useRef(null);
     const [status, setStatus] = useState({});
@@ -29,7 +36,7 @@ const Drill = () => {
     
     const [videoWithOpacity, setVideoWithOpacity] = useState(true)
     
-    /* IF USER PRESSES FRMO STOP TO PLAY, ANDSIZE IS BIG, REDUCE SUBVIEW  */
+    /* IF USER PRESSES FROM STOP TO PLAY, ANDSIZE IS BIG, REDUCE SUBVIEW  */
     useEffect(() => {
         if(status.isPlaying && toValue.current === 0) {toggleSubview()}
     }, [status.isPlaying])   
@@ -75,61 +82,14 @@ const Drill = () => {
 
 
     return(
-        <View style={styles.container}>
-            <TouchableWithoutFeedback
-                //activeOpacity={1} 
-                onPress={() => {
-                    status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-
-                    //if(subViewHidden) return
-                    //toggleSubview()    
-
-                }}
-            >
-                        {/* https://docs.expo.io/versions/latest/sdk/video/ */}
-                        <Video
-                            ref={video}
-                            source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
-                            rate={1.0}
-                            volume={1.0}
-                            isMuted={false}
-                            resizeMode="cover"
-                            isLooping
-                            style={[styles.video, videoWithOpacity && styles.videoWithOpacity]}
-                            onPlaybackStatusUpdate={status => setStatus(() => status)}
-                        />
-                        
-                     
-                        
-
-            </TouchableWithoutFeedback>
-
-            {videoWithOpacity &&
-                <Image
-                    source={require('../../../assets/video-big-play.png')} 
-                    style={{ width: 72, height: 76.7, marginBottom: 250 }}
-                />  
-            }
- 
-
-            <PanGestureHandler 
-                onHandlerStateChange={({ nativeEvent }) => {
-                
-                    /* https://docs.swmansion.com/react-native-gesture-handler/docs/state */
-                    /* THIS IF MAKES IT TRIGGER ONLY ONCE */
-                    if(nativeEvent.state === 4) toggleSubview()
-                }}
-            >
-                <Animated.View
-                    style={[styles.subView, {transform: [{translateY: bounce_value.current}]}]}
-                >
-                    <SwipeableComponent/>
-                </Animated.View>  
-            </PanGestureHandler>
-
-
-
-        </View>
+    <View>
+      <YoutubePlayer
+        height={300}
+        play={true}
+        videoId={"0mdidcb1GxU"}
+        //onChangeState={onStateChange}
+      />
+    </View>
 
         
         
