@@ -1,5 +1,10 @@
 import React, { useState, useEffect,  useRef } from 'react';
-import { ScrollView } from 'react-native';
+import { 
+    ScrollView, 
+    StatusBar, 
+    SafeAreaView,
+    Platform
+ } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
 import CustomList from '../../GlobalComponents/CustomList'
@@ -15,88 +20,41 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import YoutubePlayer from "react-native-youtube-iframe";
 
 
+
+
 const { width, height } = Dimensions.get("window");
 
-/* declared as variable (not state), as it doesn't require a re render */
 
 const Drill = (props: any) => {
     
     
-    const { item } = props.route.params;
-    
-    console.log("item: ", item)
-    
+    const { item } = props.route.params;    
     
     const video = useRef(null);
     const [status, setStatus] = useState({});
-
     const toValue = useRef(0)
-
     const bounce_value = useRef(new Animated.Value(0))
-    
     const [videoWithOpacity, setVideoWithOpacity] = useState(true)
-    
-    /* IF USER PRESSES FROM STOP TO PLAY, ANDSIZE IS BIG, REDUCE SUBVIEW  */
-    useEffect(() => {
-        if(status.isPlaying && toValue.current === 0) {toggleSubview()}
-    }, [status.isPlaying])   
-
-
-    const toggleSubview = () => {
-
-        if(status.isPlaying && toValue.current === 249) video.current.pauseAsync()         
-    
-        if(toValue.current === 0) {
-            toValue.current = 249
-            setVideoWithOpacity(false)     
-            
-        }
-        else if(toValue.current === 249) {
-            toValue.current = 0
-            setVideoWithOpacity(true)        
-            
-            /* IF IT WAS PLAYING */
-            //if(status.isPlaying) video.current.pauseAsync()        
-            
-        }
-        
-        Animated.spring(
-            bounce_value.current,
-            {
-                toValue: toValue.current,
-                velocity: 8,
-                tension: 2,
-                friction: 8, 
-                useNativeDriver: true
-            }
-        ).start(({ finished }) => {
-            
-            //if(toValue.current === 0 && status.isPlaying) video.current.pauseAsync()
-
-
-            
-        });
-
-
-    }
-
 
     return(
-    <View>
-      <YoutubePlayer
-        height={300}
-        play={true}
-        videoId={"0mdidcb1GxU"}
-        //onChangeState={onStateChange}
-      />
-    </View>
+        <View style={styles.container}>
+            
+            <StatusBar translucent barStyle="light-content"  />
 
-        
-        
+            <YoutubePlayer
+                height={300}
+                play={true}
+                videoId={"0mdidcb1GxU"}
+                //onChangeState={onStateChange}
+            />
+
+
+        </View>      
     )
 };
 
 export default Drill
+
 
 
 
@@ -263,14 +221,17 @@ const Level = (props: {level: number}) => {
 }
 
 
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
+
 const styles = StyleSheet.create({
     container: {
         //height: height,
         //width: width,
         backgroundColor: 'black',
+        paddingTop: 68,
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        //alignItems: 'center',
+        //justifyContent: 'center'
     },
     authButtons: {
         zIndex: 2,
@@ -313,5 +274,9 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-    }
+    },
+
+
+
+
 });
