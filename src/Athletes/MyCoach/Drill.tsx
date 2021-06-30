@@ -1,4 +1,4 @@
-import React, { useState, useEffect,  useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
     ScrollView, 
     StatusBar, 
@@ -24,10 +24,13 @@ import YoutubePlayer from "react-native-youtube-iframe";
 
 const { width, height } = Dimensions.get("window");
 
+/* declared as variable (not state), as it doesn't require a re render */
 
 const Drill = (props: any) => {
     
-    
+
+    const [playing, setPlaying] = useState(false);
+
     const { item } = props.route.params;    
     
     const video = useRef(null);
@@ -36,18 +39,40 @@ const Drill = (props: any) => {
     const bounce_value = useRef(new Animated.Value(0))
     const [videoWithOpacity, setVideoWithOpacity] = useState(true)
 
+    const onStateChange = useCallback((state) => {
+        if(state === "playing") setPlaying(true);
+        else if(state === "paused") setPlaying(false);
+        else if(state === "ended") setPlaying(false);
+    }, []);
+
+    const togglePlaying = useCallback(() => {
+        setPlaying((prev) => !prev);
+    }, []);
+
     return(
         <View style={styles.container}>
-            
             <StatusBar translucent barStyle="light-content"  />
 
-            <YoutubePlayer
-                height={300}
-                play={true}
-                videoId={"0mdidcb1GxU"}
-                //onChangeState={onStateChange}
-            />
+            <View style={{marginTop: 68}}></View>
 
+            <TouchableWithoutFeedback onPress={() => togglePlaying()}>
+                <View style={[styles.video, !playing && styles.videoWithOpacity]}>
+                    <YoutubePlayer
+                        height={300}
+                        play={playing}
+                        videoId={"0mdidcb1GxU"}
+                        onChangeState={onStateChange}
+                    />
+                </View>
+            </TouchableWithoutFeedback>
+
+
+            {!playing &&
+                <Image
+                    source={require('../../../assets/video-big-play.png')} 
+                    style={{ width: 72, height: 76.7, marginTop: -230, alignSelf: 'center' }}
+                />  
+            }   
 
         </View>      
     )
@@ -221,14 +246,12 @@ const Level = (props: {level: number}) => {
 }
 
 
-const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
-
 const styles = StyleSheet.create({
     container: {
         //height: height,
         //width: width,
         backgroundColor: 'black',
-        paddingTop: 68,
+        //paddingTop: 68,
         flex: 1,
         //alignItems: 'center',
         //justifyContent: 'center'
@@ -240,10 +263,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     video: {
-        alignSelf: 'center',
-        position: 'absolute',
-        height: height,
-        width: width,
+
         zIndex: 1
     },
     videoWithOpacity: {

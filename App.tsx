@@ -402,18 +402,18 @@ const topHeaderVideo = () => {
         headerBackImage: () => (
             <Image 
                 source={require('./assets/video-back.png')} 
-                style={{ width: 32, height: 32, marginLeft: 24 }}
+                style={{ width: 32, height: 32, marginLeft: 24, marginTop: 54 }}
             />
 
         ), 
         headerBackTitleVisible: false,
         
-        headerRight: () => (
+        /*headerRight: () => (
             <Image 
                 source={require('./assets/video-full-screen.png')} 
                 style={{ width: 32, height: 32, marginRight: 24 }}
             />
-        ),                      
+        ),  */                    
         headerShown: true,
         headerTransparent: true,
     }
