@@ -26,39 +26,48 @@ const MyAccount = () => {
                 <View style={styles.lineStyle}></View>            
             
             
-                    <TouchableHighlight 
+
+                    <Pressable
                         style={styles.listItemStyle}
                         onPress={() => setModalVisible(true)}
-                    >            
+                    >
                         <CustomFont 
                             font_type={'CopyText'} 
                             text={'Product feedback'} 
                             image_type={''}
                             color={'rgb(84,84,84)'}
                         />
-                    </TouchableHighlight>
+
+                    </Pressable>
+
 
                 <View style={styles.lineStyle}></View>                
                 
-                <View style={styles.listItemStyle}>
+                <Pressable
+                    style={styles.listItemStyle}
+                    onPress={() => setModalVisible(true)}
+                >
                     <CustomFont 
                         font_type={'CopyText'} 
                         text={'App support'} 
                         image_type={''}
                         color={'rgb(84,84,84)'}
                     />
-                </View>
+                </Pressable>
                 
                 <View style={styles.lineStyle}></View>                
                 
-                <View style={styles.listItemStyle}>
+                <Pressable
+                    style={styles.listItemStyle}
+                    onPress={() => setModalVisible(true)}
+                >                    
                     <CustomFont 
                         font_type={'CopyText'} 
                         text={'Product Ideas'} 
                         image_type={''}
                         color={'rgb(84,84,84)'}
                     />
-                </View>                
+                </Pressable>                
                 
                 <View style={styles.lineStyle}></View>
             </View>        
@@ -82,22 +91,11 @@ const MyAccount = () => {
             
             
 
-
-            <Modal
-                visible={modalVisible}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text >Hello World!</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}
-                        >
-                            <Text style={styles.textStyle}>Hide Modal</Text>
-                        </Pressable>
-                    </View>
-                </View>
-            </Modal>
+            <HelpModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+            />
+            
             
             
             
@@ -110,13 +108,39 @@ export default MyAccount
 
 
 
+const HelpModal = (props: { modalVisible: boolean, setModalVisible: Function }) => {
+    return(
+        <Modal
+            visible={props.modalVisible}
+            transparent={true}
+        >
+            <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text>We're here to help</Text>
+
+                    <View style={{ marginTop: 24 }}></View>
+
+                    <Text>Send us an email at support@striveapp.com and we'll get back to you ASAP</Text>
+
+                    <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => props.setModalVisible(!props.modalVisible)}
+                    >
+                        <Text style={styles.textStyle}>Done</Text>
+                    </Pressable>
+                </View>
+            </View>
+        </Modal>    
+    )
+}
+
+
 
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
         marginLeft: 24,
-        marginRight: 24
+        marginRight: 24,
     },
     listItemStyle: {
         marginLeft: 6,

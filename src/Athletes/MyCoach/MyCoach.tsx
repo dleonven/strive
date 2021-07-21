@@ -27,7 +27,6 @@ const SPECIALTIES_DATA = ['Shooting', 'Fundamentals', 'Scoring', 'Coaching']
 
 const MyCoach = () => {
     
-    
     const [activeTab, setActiveTab] = useState('Series')
 
 
@@ -55,6 +54,8 @@ const MyCoach = () => {
         >
 
             <Header/>
+
+            <View style={{ marginBottom: 26 }}></View>
 
             <MyCoachTabs
                 activeTab={activeTab}
