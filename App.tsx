@@ -87,7 +87,7 @@ function App() {
 
             {isLoggedIn ?
             
-                <StackNavigator/>
+                <BottomTabs/>
                 :
                 <Authenticator hideDefault={true} theme={MyTheme}>
                     <AuthWithContext/>
@@ -115,27 +115,9 @@ const BottomTabs = () => {
             {/* FIRST BOTTOM TAB */}
             <Tab.Screen 
                 name="MyCoach" 
-                component={MyCoach} 
+                component={MyCoachStackNavigator} 
                 options={{
                     title: 'MY COACH',
-                    style: {
-                        backgroundColor: 'white'
-                    },
-                    headerStyle: {
-                        height: 125,
-                        shadowColor: 'transparent'
-                    },
-                    headerTintColor: 'rgb(55,54,54)',
-                    headerTitleStyle: {
-                        fontFamily: 'BioSans-Bold',
-                        fontSize: 14
-                    },
-                    headerLeft: () => (
-                        <Image
-                            source={require('./assets/round-logo.png')} 
-                            style={{ width: 32, height: 32, marginLeft: 24 }}
-                        />
-                    ),
                     tabBarLabel: 'Activity',
                     tabBarIcon: ({focused}: any) => {
                         if(focused) return(
@@ -161,7 +143,7 @@ const BottomTabs = () => {
             {/* MIDDLE LOGO */}
             <Tab.Screen 
                 name="Strive" 
-                component={StackNavigator} 
+                component={MyCoachStackNavigator} 
                 listeners={{
                     tabPress: (e: any) => {
                         // Prevent default action
@@ -185,10 +167,9 @@ const BottomTabs = () => {
             
             <Tab.Screen 
                 name="MyAccount" 
-                component={MyAccount} 
-                
+                component={MyAccountStackNavigator} 
                 options={{
-                    Title: 'MY ACCOUNT',
+                    title: 'MY ACCOUNT',
                     tabBarLabel: 'Activity',
                     tabBarIcon: ({focused}: any) => {
                         if(focused) return(
@@ -214,14 +195,17 @@ const BottomTabs = () => {
     )
 }
 
-const StackNavigator = () => {
+
+
+
+const MyCoachStackNavigator = () => {
     return(
         <Stack.Navigator>
 
     
             <Stack.Screen 
                 name="MyCoach" 
-                component={BottomTabs} 
+                component={MyCoach} 
                 options={{
                     title: 'MY COACH',
                     headerStyle: {
@@ -234,12 +218,10 @@ const StackNavigator = () => {
                         fontSize: 14
                     },
                     headerLeft: () => (
-                        <TouchableHighlight onPress={async () => await Auth.signOut()}>
-                            <Image 
-                                source={require('./assets/round-logo.png')} 
-                                style={{ width: 32, height: 32, marginLeft: 24 }}
-                            />
-                        </TouchableHighlight>   
+                        <Image 
+                            source={require('./assets/round-logo.png')} 
+                            style={{ width: 32, height: 32, marginLeft: 24 }}
+                        />
                     ),                                
                 }}
             /> 
@@ -343,6 +325,36 @@ const StackNavigator = () => {
     )
 }
 
+
+const MyAccountStackNavigator = () => {
+    return(
+        <Stack.Navigator>
+       
+            <Stack.Screen 
+                name="MyAccount" 
+                component={MyAccount}
+                options={{
+                    title: 'MY ACCOUNT',
+                    headerStyle: {
+                        height: 125,
+                        shadowColor: 'transparent'
+                    },
+                    headerTintColor: 'rgb(55,54,54)',
+                    headerTitleStyle: {
+                        fontFamily: 'BioSans-Bold',
+                        fontSize: 14
+                    },
+                    headerLeft: () => (
+                        <Image 
+                            source={require('./assets/round-logo.png')} 
+                            style={{ width: 32, height: 32, marginLeft: 24 }}
+                        />
+                    ),                                
+                }}            />       
+        </Stack.Navigator>
+  
+    )
+}
 
 
 const styles = StyleSheet.create({
