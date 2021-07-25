@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pressable, Modal, TouchableHighlight, Text, Button, StyleSheet, View, TextInput } from 'react-native';
+import { Dimensions, Pressable, Modal, TouchableHighlight, Text, Button, StyleSheet, View, TextInput } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../GlobalComponents/FullCardCarousel'
 import CustomList from '../GlobalComponents/CustomList'
@@ -7,14 +7,49 @@ import ListWithImage from '../GlobalComponents/ListWithImage'
 import CustomFormField from '../GlobalComponents/CustomFormField'
 import CustomFont from '../GlobalComponents/CustomFont'
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
-const MyAccount = () => {
+const MyAccount = (props: any) => {
     
     const [modalVisible, setModalVisible] = useState(false);
     
+    useEffect(() => {
+        if(modalVisible) {
+
+            props.navigation.setOptions({ 
+                cardStyle: { 
+                    backgroundColor: 'rgba(55,54,54,0.8)',
+                },
+                headerStyle: {
+                    height: 125,
+                    backgroundColor: 'rgba(55,54,54,0.8)',
+                    shadowColor: 'transparent'
+                },  
+
+           
+
+
+
+            })
+
+        }
+        else {
+            props.navigation.setOptions({ 
+                cardStyle: { opacity: 1 },
+                headerStyle: {
+                    height: 125,
+                    backgroundColor: 'white',
+                    shadowColor: 'transparent'
+                },      
+            })  
+        }
+    }, [modalVisible])
+
+
     return(
         <View style={styles.container}>
-        
+
             <CustomFont 
                 font_type="Subtitle"
                 text="Support"
@@ -23,8 +58,7 @@ const MyAccount = () => {
             {/* LIST */}
             <View style={{ marginTop: 15 }}>
             
-                <View style={styles.lineStyle}></View>            
-            
+                <View style={[modalVisible ? styles.lineStyleModalVisible : styles.lineStyle]}></View>            
             
 
                     <Pressable
@@ -41,7 +75,7 @@ const MyAccount = () => {
                     </Pressable>
 
 
-                <View style={styles.lineStyle}></View>                
+                <View style={[modalVisible ? styles.lineStyleModalVisible : styles.lineStyle]}></View>            
                 
                 <Pressable
                     style={styles.listItemStyle}
@@ -55,7 +89,7 @@ const MyAccount = () => {
                     />
                 </Pressable>
                 
-                <View style={styles.lineStyle}></View>                
+                <View style={[modalVisible ? styles.lineStyleModalVisible : styles.lineStyle]}></View>            
                 
                 <Pressable
                     style={styles.listItemStyle}
@@ -69,12 +103,12 @@ const MyAccount = () => {
                     />
                 </Pressable>                
                 
-                <View style={styles.lineStyle}></View>
+                <View style={[modalVisible ? styles.lineStyleModalVisible : styles.lineStyle]}></View>            
             </View>        
             
             
             
-            <TouchableHighlight 
+            <Pressable 
                 style={styles.button} 
                 onPress={async () => await Auth.signOut()}
             >
@@ -87,21 +121,21 @@ const MyAccount = () => {
                 }}>
                     LOG OUT
                 </Text>
-            </TouchableHighlight>
+            </Pressable>
             
             
-
             <HelpModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
             />
-            
+
             
             
             
             
         </View>
     )
+
 }
 
 export default MyAccount
@@ -114,22 +148,49 @@ const HelpModal = (props: { modalVisible: boolean, setModalVisible: Function }) 
             visible={props.modalVisible}
             transparent={true}
         >
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <Text>We're here to help</Text>
 
-                    <View style={{ marginTop: 24 }}></View>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
 
-                    <Text>Send us an email at support@striveapp.com and we'll get back to you ASAP</Text>
+                        <CustomFont 
+                            font_type={'Subtitle'} 
+                            text={"We're here to help"} 
+                            image_type={''}
+                            color={'rgb(0,0,0)'}
+                        />
 
-                    <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => props.setModalVisible(!props.modalVisible)}
-                    >
-                        <Text style={styles.textStyle}>Done</Text>
-                    </Pressable>
+
+
+                        <View style={{ marginTop: 24 }}></View>
+
+                        <Text style={{
+                            fontSize: 16, 
+                            fontFamily: 'BioSans-Regular',
+                            textAlign: 'center'
+                        }}>
+                            Send us an email at <Text style={{color: 'rgb(0,77,86)'}}>support@striveapp.com</Text> and we'll get back to you ASAP
+                        </Text>
+
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => props.setModalVisible(!props.modalVisible)}
+                        >
+                            <Text style={{
+                                fontSize: 16, 
+                                fontFamily: 'BioSans-SemiBold',    
+                                textAlign: 'center',
+                                color: 'white'                        
+                            }}>
+                                DONE
+                            </Text>
+                        </Pressable>
+                    </View>
                 </View>
-            </View>
+
+
+
+
+
         </Modal>    
     )
 }
@@ -153,6 +214,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor:'rgb(236,235,235)',
     },
+    lineStyleModalVisible: {
+        borderWidth: 1,
+        borderColor:'grey',
+    },    
     button: {
         alignSelf: "stretch",
         marginTop: 32,
@@ -166,7 +231,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
+        marginTop: 22,
     },
     modalView: {
         margin: 20,
@@ -184,7 +249,7 @@ const styles = StyleSheet.create({
     elevation: 5
     },
     buttonClose: {
-        backgroundColor: "#2196F3",
+        backgroundColor: 'rgb(55,54,54)',
     },
     textStyle: {
         color: "white",

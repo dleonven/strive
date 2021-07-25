@@ -5,7 +5,13 @@ import TabSeries from './TabSeries'
 import TabWorkouts from './TabWorkouts'
 import TabDrills from './TabDrills'
 import TabBreakdowns from './TabBreakdowns'
-
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+    useQuery,
+    gql
+  } from "@apollo/client";
 const HEADER_HEIGHT = 66
 const TABS_DATA = [
     {
@@ -23,11 +29,24 @@ const TABS_DATA = [
 ];
 
 const SPECIALTIES_DATA = ['Shooting', 'Fundamentals', 'Scoring', 'Coaching']
-
+const READ_TODO = gql`
+  query ReadTodo($id: ID!) {
+    todo(id: $id) {
+      id
+      text
+      completed
+    }
+  }
+`;
 
 const MyCoach = () => {
     
     const [activeTab, setActiveTab] = useState('Series')
+    const { loading, error, data } = useQuery(READ_TODO, {
+        variables: { id: 5 },
+    });
+    
+    console.log("data: ", data)
 
 
     const renderActiveTab = () => {

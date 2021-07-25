@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.21",
     "@aws-amplify/api": "^3.2.6",
     "@aws-amplify/auth": "^3.4.6",
     "@aws-amplify/pubsub": "^3.2.4",
@@ -25,6 +26,7 @@
     "expo-app-loading": "^1.0.1",
     "expo-av": "~8.7.0",
     "expo-font": "~8.4.0",
+    "graphql": "^15.5.1",
     "install": "^0.13.0",
     "native-base": "^2.13.12",
     "npm": "^6.14.8",

@@ -26,16 +26,32 @@ import Series from './src/Athletes/MyCoach/Series'
 import MyAccount from './src/Athletes/MyAccount'
 
 import Discover from './src/Athletes/Discover'
-import { Container, Content, StyleProvider } from 'native-base';
-import material from './native-base-theme/variables/material';
-import getTheme from './native-base-theme/components';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialIcons } from '@expo/vector-icons'; 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+    useQuery,
+    gql
+  } from "@apollo/client";
 
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
 const MyButton = Object.assign({}, AmplifyTheme.button, { backgroundColor: 'red' });
+
+const MyThemee = {
+    dark: false,
+    colors: {
+      primary: 'rgb(255, 45, 85)',
+      background: 'rgb(242, 242, 242)',
+      card: 'rgb(255, 255, 255)',
+      text: 'rgb(28, 28, 30)',
+      border: 'rgb(199, 199, 204)',
+      notification: 'rgb(255, 69, 58)',
+    },
+  };
+
+
 
 const MyTheme = Object.assign({}, AmplifyTheme, { 
     sectionHeader: MySectionHeader,
@@ -56,11 +72,55 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
+const client = new ApolloClient({
+    uri: '',
+    cache: new InMemoryCache()
+});
+
+const READ_TODO = gql`
+  query ReadTodo($id: ID!) {
+    todo(id: $id) {
+      id
+      text
+      completed
+    }
+  }
+`;
+
+client.writeQuery({
+    query: gql`
+      query WriteTodo($id: Int!) {
+        todo(id: $id) {
+          id
+          text
+          completed
+        }
+      }`,
+    data: { // Contains the data to write
+      todo: {
+        __typename: 'Todo',
+        id: 5,
+        text: 'Buy grapes 🍇',
+        completed: false
+      },
+    },
+    variables: {
+      id: 5
+    }
+  });
+
+
+
+
+
+
 function App() {
     const currentUser = useCurrentUser();
 
     //const fontsLoaded = true
-    
+
+
+
     let [fontsLoaded] = useFonts({
         'BioSans-Bold': require('./assets/fonts/BioSans-Bold.otf'),
         'BioSans-BoldItalic': require('./assets/fonts/BioSans-BoldItalic.otf'),
@@ -83,18 +143,17 @@ function App() {
     
     if (!fontsLoaded) return <AppLoading />;
     return (
-        <NavigationContainer theme={MyTheme}>
-
-            {isLoggedIn ?
-            
-                <BottomTabs/>
-                :
-                <Authenticator hideDefault={true} theme={MyTheme}>
-                    <AuthWithContext/>
-                </Authenticator>
-
-            }
-        </NavigationContainer>
+        <ApolloProvider client={client}>
+            <NavigationContainer theme={MyTheme}>
+                {isLoggedIn ?
+                    <BottomTabs/>
+                    :
+                    <Authenticator hideDefault={true} theme={MyTheme}>
+                        <AuthWithContext/>
+                    </Authenticator>
+                }
+            </NavigationContainer>
+        </ApolloProvider>
     );
 }
 
@@ -119,7 +178,7 @@ const BottomTabs = () => {
                 options={{
                     title: 'MY COACH',
                     tabBarLabel: 'Activity',
-                    tabBarIcon: ({focused}: any) => {
+                    tabBarIcon: ({ focused }: any) => {
                         if(focused) return(
                             <Image 
                                 source={require('./assets/coach-selected.png')} 
@@ -247,7 +306,6 @@ const MyCoachStackNavigator = () => {
                     title: 'SERIES',
                     headerStyle: {
                         height: 84,
-
                         /* TO REMOVE BORDER BELLOW THE HEADER */
                         shadowColor: 'transparent'
                     },
@@ -349,8 +407,9 @@ const MyAccountStackNavigator = () => {
                             source={require('./assets/round-logo.png')} 
                             style={{ width: 32, height: 32, marginLeft: 24 }}
                         />
-                    ),                                
-                }}            />       
+                    ),                                   
+                }}            
+            />       
         </Stack.Navigator>
   
     )

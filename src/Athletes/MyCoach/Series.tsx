@@ -1,5 +1,4 @@
 import React, { useState, useEffect,  useRef } from 'react';
-import { StatusBar, ScrollView, FlatList, ImageBackground } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
 import CustomList from '../../GlobalComponents/CustomList'
@@ -7,7 +6,26 @@ import ListWithImage from '../../GlobalComponents/ListWithImage'
 import CustomFormField from '../../GlobalComponents/CustomFormField'
 import { NavigationContainer } from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import { Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
+import { 
+    ImageBackground,
+    FlatList,
+    ScrollView,
+    StatusBar,
+    Keyboard, 
+    KeyboardAvoidingView, 
+    Image, 
+    TouchableOpacity, 
+    Modal, 
+    TouchableWithoutFeedback, 
+    Dimensions, 
+    Alert, 
+    Button, 
+    TextInput, 
+    View, 
+    StyleSheet, 
+    Text, 
+    Animated 
+} from 'react-native';
 import { Video, AVPlaybackStatus } from 'expo-av';
 import CustomFont from '../../GlobalComponents/CustomFont'
 import PersonCard from '../../GlobalComponents/PersonCard'
@@ -15,10 +33,13 @@ import PersonCard from '../../GlobalComponents/PersonCard'
 import { Fontisto } from '@expo/vector-icons'; 
 
 
-const Series = () => {
+
+const Series = (props: any) => {
     
 
 
+
+    //return null
     return(
         
 
@@ -156,6 +177,56 @@ const Series = () => {
                 
                     </View>
                 }
+
+                onScroll={(event) => {
+                    const scrollOffset = event.nativeEvent.contentOffset.y
+                    console.log("scrollOffset: ", scrollOffset)
+
+                    if(scrollOffset > 425) {
+                        props.navigation.setOptions({
+                            /* TITLE COLOR */
+                            headerTintColor: 'black',            
+                            headerTransparent: false,
+                            headerBackImage: () => (
+                                <Image 
+                                    source={require('../../../assets/back.png')} 
+                                    style={{ width: 13, height: 21, marginLeft: 24 }}
+                                />
+                            ),        
+                        })                    
+                    }
+                    if(scrollOffset <= 425) {
+                        props.navigation.setOptions({
+                                title: 'SERIES',
+                                headerStyle: {
+                                    height: 84,
+                                    /* TO REMOVE BORDER BELLOW THE HEADER */
+                                    shadowColor: 'transparent'
+                                },
+                                /* TITLE COLOR */
+                                headerTintColor: 'white',
+                                headerTitleStyle: {
+                                    fontFamily: 'BioSans-Bold',
+                                    fontSize: 15,
+                                    letterSpacing: 2.25
+                                },
+            
+                                headerBackImage: () => (
+                                    <Image 
+                                        source={require('../../../assets/transparent-back.png')} 
+                                        style={{ width: 13, height: 21, marginLeft: 24 }}
+                                    />
+                                ), 
+                                headerBackTitleVisible: false,
+                                headerShown: true,
+                                headerTransparent: true
+                        })
+
+                    }
+                }
+            }
+
+                
                 data={input}
                 numColumns={2}
                 renderItem={({ item }) => {

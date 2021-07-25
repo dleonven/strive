@@ -14,32 +14,55 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import { ValidationContext } from 'graphql';
 
 interface IsignUpData {
-    name: string,
-    email: string,
-    password: string
+    name:       string,
+    email:      string,
+    password:   string
+}
+
+type user = {
+    name:       string
+    email:      string
+    password:   string    
+}
+
+interface IstepProps {
+    user:           user
+    setUser:        Function
+    setActiveStep:  Function
 }
 
 
-
-
 const SignUp = () => {
+        
+
+
+    const [user, setUser] = useState<user>({
+        name: '',
+        email: '',
+        password: '',
+    })
     
-    const auth_context = useContext(AuthContext)
-    
-    if(auth_context.signup_state.step === 1) return <Step1/>
-    else if(auth_context.signup_state.step === 2) return <Step2/>
-    else if(auth_context.signup_state.step === 3) return <Step3/>
+    console.log("user: ", user)
+
+
+    const [activeStep, setActiveStep] = useState<1|2|3>(1)
+
+    if(activeStep === 1) return <Step1 user={user} setUser={setUser} setActiveStep={setActiveStep}/>
+    else if(activeStep === 2) return <Step2 user={user} setUser={setUser} setActiveStep={setActiveStep}/>
+    else if(activeStep === 3) return <Step3 user={user} setUser={setUser} setActiveStep={setActiveStep}/>
     return null
 }
 
 export default SignUp
 
 
-const Step1 = () => {
-    const { signup_state, setSignUpState } = useContext(AuthContext)
+const Step1 = (props: IstepProps) => {
     
+    const [showNameValidation, setShowNameValidation] = useState<boolean>(false)
+
     return(
         <View style={styles.container}>
             <View style={styles.upperContent}>
@@ -52,12 +75,12 @@ const Step1 = () => {
                 <View>
                     <Text>What should we call you?</Text>
                     <TextInput
-                        value={signup_state.name}
-                        onChangeText={(val) => setSignUpState((prevState: {}) => ({...prevState, name: val}))}
+                        value={props.user.name}
+                        onChangeText={(val) => props.setUser((prevState: {}) => ({...prevState, name: val}))}
                         placeholder={'eg. John'}
                         style={styles.input}
                     />
-                    {signup_state.show_name_validation &&
+                    {showNameValidation &&
                         <Text style={globalStyles.inputError}>Enter name</Text>
                     }
                 </View>
@@ -67,8 +90,8 @@ const Step1 = () => {
                     color="white"
                     title={'CONTINUE'}
                     onPress={() => {
-                        if(signup_state.name.length === 0) setSignUpState((prevState: {}) => ({...prevState, show_name_validation: true}))
-                        else setSignUpState((prevState: {}) => ({...prevState, step: 2}))
+                        if(props.user.name.length === 0) setShowNameValidation(true)
+                        else props.setActiveStep(2)
                     }}
                 />
             </View>
@@ -77,54 +100,39 @@ const Step1 = () => {
 }
 
 
+const Step2 = (props: IstepProps) => {
 
-
-
-
-
-const Step2 = () => {
-    const { signup_state, setSignUpState, setLoading } = useContext(AuthContext)
-
+    const [showValidations, setShowValidations] = useState({
+        email: false,
+        password: false
+    })
+    
 
     const signUp = async () => {
         
-        setLoading(true)
+        //setLoading(true)
         try {
             const user = await Auth.signUp({
-                username: signup_state.email,
-                password: signup_state.password,
+                username: props.user.email,
+                password: props.user.password,
                 attributes: {
-                    email: signup_state.email,
-                    nickname: signup_state.name
+                    email: props.user.email,
+                    nickname: props.user.name
                 }
             });
             console.log({ user });
-            setSignUpState((prevState: {}) => ({...prevState, step: 3}))
+            props.setActiveStep(3)
         } 
-        catch (error) {
+        catch(error) {
             console.log('error signing up:', error.message);
-            
-            /* this first one should be catched by step1 */
-            if(error.message.includes("Username cannot be empty")) {
-                setSignUpState((prevState: {}) => ({...prevState, show_password_validation: false, show_email_validation: true}))
-            } 
-            else if(error.message.includes("Invalid email address format")) {
-                setSignUpState((prevState: {}) => ({...prevState, show_password_validation: false, show_email_validation: true}))
-            } 
-            else if(error.message.includes("Password cannot be empty")) {
-                setSignUpState((prevState: {}) => ({...prevState, show_email_validation: false, show_password_validation: true}))
-            } 
-            else if(error.message.includes("'password' failed to satisfy constraint")) {
-                setSignUpState((prevState: {}) => ({...prevState, show_email_validation: false, show_password_validation: true}))
-            } 
-            else if(error.message.includes("Password not long enough")) {
-                setSignUpState((prevState: {}) => ({...prevState, show_email_validation: false, show_password_validation: true}))
-            }
-            else if(error.message.includes("An account with the given email already exists")) {
-                setSignUpState((prevState: {}) => ({...prevState, show_email_validation: true, show_password_validation: false}))
-            } 
+            if(error.message.includes("Username cannot be empty")) setShowValidations({email: true, password: false})
+            else if(error.message.includes("Invalid email address format")) setShowValidations({email: true, password: false})
+            else if(error.message.includes("Password cannot be empty")) setShowValidations({email: false, password: true})
+            else if(error.message.includes("'password' failed to satisfy constraint")) setShowValidations({email: false, password: true})
+            else if(error.message.includes("Password not long enough")) setShowValidations({email: false, password: true})
+            else if(error.message.includes("An account with the given email already exists")) setShowValidations({email: true, password: false})
         }
-        setLoading(false)
+        //setLoading(false)
     }
 
 
@@ -140,25 +148,25 @@ const Step2 = () => {
                 <View>
                     <Text>Enter your email</Text>
                     <TextInput
-                        value={signup_state.email}
-                        onChangeText={(val) => setSignUpState((prevState: {}) => ({...prevState, email: val}))}
+                        value={props.user.email}
+                        onChangeText={(val) => props.setUser((prevState: {}) => ({...prevState, email: val}))}
                         placeholder={'eg. john@johnboyle.me'}
                         style={styles.input}
                     />
-                    {signup_state.show_email_validation &&
-                        <Text style={globalStyles.inputError}>Enter a valir email</Text>
+                    {showValidations.email &&
+                        <Text style={globalStyles.inputError}>Enter a valid email</Text>
                     }
                 </View>
                     <View>
                         <Text>Choose a password</Text>
                         <TextInput
                             secureTextEntry={true}
-                            value={signup_state.password}
-                            onChangeText={(val) => setSignUpState((prevState: {}) => ({...prevState, password: val}))}
+                            value={props.user.password}
+                            onChangeText={(val) => props.setUser((prevState: {}) => ({...prevState, password: val}))}
                             placeholder={'eg. john@johnboyle.me'}
                             style={styles.input}
                         />
-                        {signup_state.show_password_validation &&
+                        {showValidations.password &&
                             <Text style={globalStyles.inputError}>Password should contain XX</Text>
                         }
                     </View>
@@ -175,8 +183,17 @@ const Step2 = () => {
 }
 
 
-const Step3 = () => {
-    const { setAuthState, signup_state, setSignUpState, setLoading } = useContext(AuthContext)
+const Step3 = (props: IstepProps) => {
+    const { setAuthState } = useContext(AuthContext)
+
+    const [confirmationCode, setConfirmationCode] = useState<string>('')
+
+    const [validation, setValidation] = useState({
+        show: false,
+        message: ''
+    })
+
+    console.log(validation)
 
     return(
         <View style={styles.container}>
@@ -190,9 +207,9 @@ const Step3 = () => {
                 <View>
                     <Text>Enter the code</Text>
                     <CodeField
-                        accessibilityValue
-                        value={signup_state.confirmation_code}
-                        onChangeText={(val) => setSignUpState((prevState: {}) => ({...prevState, confirmation_code: val}))}
+                        //accessibilityValue
+                        value={confirmationCode}
+                        onChangeText={(val) => setConfirmationCode(val)}
                         cellCount={6}
                         rootStyle={styles.codeFiledRoot}
                         keyboardType="number-pad"
@@ -205,6 +222,13 @@ const Step3 = () => {
                             </Text>
                         )}
                     />
+
+                    {validation.show &&
+                        <Text style={globalStyles.inputError}>{validation.message}</Text>
+                    }
+
+
+
                 </View>
             </View>
             <View style={styles.button}>
@@ -213,13 +237,14 @@ const Step3 = () => {
                     title={'CONTINUE'}
                     onPress={async () => {
                         try {
-                            setLoading(true)
-                            await Auth.confirmSignUp(signup_state.email, signup_state.confirmation_code);
-                            setLoading(false)
+                            await Auth.confirmSignUp(props.user.email, confirmationCode);
                             setAuthState('signin')
                         } 
                         catch(error) {
-                            console.log('error confirming sign up', error);
+                            setValidation({
+                                show: true,
+                                message: error.message
+                            })
                         }
                     }}
                 />
