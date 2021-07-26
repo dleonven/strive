@@ -16,21 +16,16 @@ import {
 } from 'react-native-confirmation-code-field';
 import { ValidationContext } from 'graphql';
 
-interface IsignUpData {
-    name:       string,
-    email:      string,
-    password:   string
-}
 
-type user = {
+interface Iuser {
     name:       string
     email:      string
     password:   string    
 }
 
 interface IstepProps {
-    user:           user
-    setUser:        Function
+    user:           Iuser
+    setUser:        React.Dispatch<React.SetStateAction<Iuser>>
     setActiveStep:  Function
 }
 
@@ -39,15 +34,12 @@ const SignUp = () => {
         
 
 
-    const [user, setUser] = useState<user>({
+    const [user, setUser] = useState<Iuser>({
         name: '',
         email: '',
         password: '',
     })
     
-    console.log("user: ", user)
-
-
     const [activeStep, setActiveStep] = useState<1|2|3>(1)
 
     if(activeStep === 1) return <Step1 user={user} setUser={setUser} setActiveStep={setActiveStep}/>
@@ -76,7 +68,7 @@ const Step1 = (props: IstepProps) => {
                     <Text>What should we call you?</Text>
                     <TextInput
                         value={props.user.name}
-                        onChangeText={(val) => props.setUser((prevState: {}) => ({...prevState, name: val}))}
+                        onChangeText={(val) => props.setUser((prevState) => ({...prevState, name: val}))}
                         placeholder={'eg. John'}
                         style={styles.input}
                     />
@@ -149,9 +141,10 @@ const Step2 = (props: IstepProps) => {
                     <Text>Enter your email</Text>
                     <TextInput
                         value={props.user.email}
-                        onChangeText={(val) => props.setUser((prevState: {}) => ({...prevState, email: val}))}
+                        onChangeText={(val) => props.setUser((prevState) => ({...prevState, email: val}))}
                         placeholder={'eg. john@johnboyle.me'}
                         style={styles.input}
+                        autoCapitalize='none'
                     />
                     {showValidations.email &&
                         <Text style={globalStyles.inputError}>Enter a valid email</Text>
@@ -162,7 +155,7 @@ const Step2 = (props: IstepProps) => {
                         <TextInput
                             secureTextEntry={true}
                             value={props.user.password}
-                            onChangeText={(val) => props.setUser((prevState: {}) => ({...prevState, password: val}))}
+                            onChangeText={(val) => props.setUser((prevState) => ({...prevState, password: val}))}
                             placeholder={'eg. john@johnboyle.me'}
                             style={styles.input}
                         />
@@ -192,8 +185,6 @@ const Step3 = (props: IstepProps) => {
         show: false,
         message: ''
     })
-
-    console.log(validation)
 
     return(
         <View style={styles.container}>

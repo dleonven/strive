@@ -6,11 +6,27 @@ import { AmplifyTheme, SignUp, Authenticator } from 'aws-amplify-react-native';
 import { Alert, Button, TextInput, View, StyleSheet, Text } from 'react-native';
 import { AuthContext } from './AuthContext'
 import { Auth } from 'aws-amplify';
+import { globalStyles } from '../GlobalStyles'
 
 
+interface Iuser {
+    email: string
+    password: string  
+} 
 
 const SignIn = () => {
     const { setLoading, signin_state, setSignInState } = useContext(AuthContext)
+
+    const [user, setUser] = useState<Iuser>({
+        email: '',
+        password: '',
+    })
+
+    const [validations, setValidations] = useState({
+        email: false, 
+        password: false,
+        message: ''
+    })
 
     return(
         <View style={styles.container}>
@@ -21,21 +37,28 @@ const SignIn = () => {
                 <View>
                     <Text>Email</Text>
                     <TextInput
-                        value={signin_state.email}
-                        onChangeText={(val) => setSignInState((prevState: {}) => ({...prevState, email: val}))}
+                        value={user.email}
+                        onChangeText={(val) => setUser((prevState) => ({...prevState, email: val}))}
                         placeholder={'eg. john@johnboyle.me'}
                         style={styles.input}
                     />
+                    {validations.email &&
+                        <Text style={globalStyles.inputError}>{validations.message}</Text>
+                    }
                 </View>
                     <View>
                         <Text>Password</Text>
                         <TextInput
-                            value={signin_state.password}
-                            onChangeText={(val) => setSignInState((prevState: {}) => ({...prevState, password: val}))}
+                            secureTextEntry={true}
+                            value={user.password}
+                            onChangeText={(val) => setUser((prevState) => ({...prevState, password: val}))}
                             placeholder={'eg. john@johnboyle.me'}
                             style={styles.input}
                         />
-                    </View>
+                        {validations.password &&
+                            <Text style={globalStyles.inputError}>{validations.message}</Text>
+                        }                    
+                </View>
             </View>
             <View style={styles.button}>
                 <Button
@@ -43,11 +66,9 @@ const SignIn = () => {
                     title={'SIGN IN'}
                     onPress={async () => {
                         try {
-                            setLoading(true)
-                            await Auth.signIn(signin_state.email, signin_state.password);
+                            await Auth.signIn(user.email, user.password);
                         }
                         catch (error) {
-                            setLoading(false)
                             console.log('error signing in', error);
                         }
                     }}

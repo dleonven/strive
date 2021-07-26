@@ -163,9 +163,8 @@ const Auth = () => {
                                     <SignUp />
                                 }
                             </Animated.View>
-                            
-                            
                         </TouchableWithoutFeedback>
+                        
                     </View>
                 </PanGestureHandler>
             </TouchableOpacity>
