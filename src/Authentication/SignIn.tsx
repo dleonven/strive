@@ -3,7 +3,7 @@ import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
 import { AmplifyTheme, SignUp, Authenticator } from 'aws-amplify-react-native';
-import { Pressable, Alert, Button, TextInput, View, StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { Pressable, Alert, Button, TextInput, View, StyleSheet, Text, ActivityIndicator, Keyboard } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { globalStyles } from '../GlobalStyles'
 import CustomFont from '../GlobalComponents/CustomFont'
@@ -15,11 +15,14 @@ interface Iuser {
     password: string  
 } 
 
-const SignIn = () => {
+const SignIn = (props: {setIsLoggedIn: Function}) => {
 
     const [loading, setLoading]  = useState<boolean>(false)
 
     const emailRef = useRef<TextInput>(null) 
+    const passwordRef = useRef<TextInput>(null) 
+
+
 
     /* TO HANDLE STYLES CONDITIONALY */
     const [inputFocus, setInputFocus] = useState({
@@ -30,6 +33,15 @@ const SignIn = () => {
     /* FOCUS EMAIL INPUT ON MOUNT */
     useEffect(() => {
         if(emailRef.current) emailRef.current.focus()
+
+        Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+        // cleanup function
+        return () => {
+            Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        };
+
     }, [])
 
     const [user, setUser] = useState<Iuser>({
@@ -43,13 +55,17 @@ const SignIn = () => {
         message: ''
     })
 
+    const [keyboardShown, setKeyboardShown] = useState(true);
+    const _keyboardDidShow = () => setKeyboardShown(true);
+    const _keyboardDidHide = () => setKeyboardShown(false);
 
-    
+
     const handleOnPress = async () => {
 
         setLoading(true)
         try {
             await Auth.signIn(user.email, user.password);
+            props.setIsLoggedIn(true)
         }
         catch (error) {
             console.log('error signing in', error);
@@ -81,6 +97,9 @@ const SignIn = () => {
                     style={inputFocus.email ? [styles.unfocusedInput, {borderBottomColor: '#373636'}] : styles.unfocusedInput}
                     autoCapitalize='none'
                     onFocus={() => setInputFocus({email: true, password: false})}
+                    onSubmitEditing={() => {
+                        if(passwordRef.current) passwordRef.current.focus()
+                    }}
                 />
                 {validations.email &&
                     <Text style={[globalStyles.inputError, {marginTop: 14}]}>{validations.message}</Text>
@@ -94,6 +113,7 @@ const SignIn = () => {
             <View>
                 <Text style={inputFocus.password ? [globalStyles.copyText, {fontWeight: '600'}] : globalStyles.copyText}>Password</Text>
                 <TextInput
+                    ref={passwordRef}
                     secureTextEntry={true}
                     value={user.password}
                     onChangeText={(val) => setUser((prevState) => ({...prevState, password: val}))}
@@ -108,8 +128,9 @@ const SignIn = () => {
             
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
             
-
-            <View style={{marginBottom: 84}}></View>
+            {/* IF KEYBOARD IS SHOWN, REDUCE THE MARGIN */}
+            {keyboardShown ? <View style={{marginBottom: 36}}></View> : <View style={{marginBottom: 62}}></View>}
+            
 
 
             <Pressable

@@ -13,10 +13,11 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import { globalStyles } from '../GlobalStyles';
 
 /* declared as variable (not state), as it doesn't require a re render */
-let subViewHidden = true
 
 
-const Authentication = () => {
+const Authentication = (props: {setIsLoggedIn: Function}) => {
+
+    const [subViewHidden, setSubViewHidden] = useState(true)
 
     const [counter, setCounter] = useState(0)
 
@@ -24,6 +25,7 @@ const Authentication = () => {
 
     const [route, setRoute] = useState<'' | 'signIn' | 'signUp'>('')
     
+
     /* initial value of the animated view is 400 (the height of the view), so it doesn't show */
     const [bounce_value, setBounceValue] = useState(new Animated.Value(400))
     
@@ -34,6 +36,7 @@ const Authentication = () => {
             firstUpdate.current = false;
             return;
         }
+
 
         /* IF IT RUNS HERE, MEANS ITS NOT THE FIRST RENDER/UPDATE */
         toggleSubview()
@@ -65,7 +68,7 @@ const Authentication = () => {
             }
         ).start();
         
-        subViewHidden = !subViewHidden;
+        setSubViewHidden(!subViewHidden)
     }
     
     if(loading) return <Loading />
@@ -123,7 +126,7 @@ const Authentication = () => {
                             style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
                         >
                             {route === 'signIn' &&
-                                <SignIn />
+                                <SignIn setIsLoggedIn={props.setIsLoggedIn}/>
                             }
                             {route === 'signUp' &&
                                 <SignUp setRoute={setRoute}/>

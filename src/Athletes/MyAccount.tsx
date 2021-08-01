@@ -10,10 +10,12 @@ import CustomFont from '../GlobalComponents/CustomFont'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+/* CURRENTLY GETTING PROPS.NAVIGATION AND PROPS.SETISLOGGEDIN */
 const MyAccount = (props: any) => {
     
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
     
+
     useEffect(() => {
         if(modalVisible) {
 
@@ -46,6 +48,17 @@ const MyAccount = (props: any) => {
         }
     }, [modalVisible])
 
+
+    const handleSignOut = async () => {
+
+        try {
+            await Auth.signOut()
+            props.setIsLoggedIn(false)
+        }
+        catch(error) {
+            console.log(error)
+        }
+    }
 
     return(
         <View style={styles.container}>
@@ -110,7 +123,7 @@ const MyAccount = (props: any) => {
             
             <Pressable 
                 style={styles.button} 
-                onPress={async () => await Auth.signOut()}
+                onPress={handleSignOut}
             >
                 <Text style={{ 
                     fontFamily: "BioSans-SemiBold",

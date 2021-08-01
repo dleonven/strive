@@ -115,11 +115,28 @@ client.writeQuery({
 
 
 function App() {
-    const currentUser = useCurrentUser();
 
-    //const fontsLoaded = true
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+
+    /* CHECK IF USER IS SIGNED IN WITH AMPLIFY API */
+    useEffect(() => {
+        
+        const getUser = async () => {
+
+            try {
+                const user = await Auth.currentAuthenticatedUser()
+                setIsLoggedIn(true)
+            }
+            catch(error) {
+                console.log("error", error)
+            }
+
+        }
+
+        getUser()
 
 
+    }, [])
 
     let [fontsLoaded] = useFonts({
         'BioSans-Bold': require('./assets/fonts/BioSans-Bold.otf'),
@@ -136,20 +153,16 @@ function App() {
         'BioSans-SemiBoldItalic': require('./assets/fonts/BioSans-SemiBoldItalic.otf'),
     });
     
-    const isLoggedIn = (null !== currentUser);
 
-
-
-    
     if (!fontsLoaded) return <AppLoading />;
     return (
         <ApolloProvider client={client}>
             <NavigationContainer theme={MyTheme}>
                 {isLoggedIn ?
-                    <BottomTabs/>
+                    <BottomTabs setIsLoggedIn={setIsLoggedIn}/>
                     :
                     <Authenticator hideDefault={true} theme={MyTheme}>
-                        <Authentication/>
+                        <Authentication setIsLoggedIn={setIsLoggedIn}/>
                     </Authenticator>
                 }
             </NavigationContainer>
@@ -161,7 +174,7 @@ export default App;
 
 
 
-const BottomTabs = () => {
+const BottomTabs = (props: {setIsLoggedIn: Function}) => {
     return(
         <Tab.Navigator
             tabBarOptions={{
@@ -225,8 +238,9 @@ const BottomTabs = () => {
             />                    
             
             <Tab.Screen 
-                name="MyAccount" 
-                component={MyAccountStackNavigator} 
+                name="MyAccount"
+                /* PASS THE COMPONENT AS CHILDREN TO BE ABLE TO PASS PROPS TO IT */
+                children={() => <MyAccountStackNavigator setIsLoggedIn={props.setIsLoggedIn} />} 
                 options={{
                     title: 'MY ACCOUNT',
                     tabBarLabel: 'Activity',
@@ -384,13 +398,14 @@ const MyCoachStackNavigator = () => {
 }
 
 
-const MyAccountStackNavigator = () => {
+const MyAccountStackNavigator = (props: {setIsLoggedIn: Function}) => {
     return(
         <Stack.Navigator>
        
             <Stack.Screen 
                 name="MyAccount" 
-                component={MyAccount}
+                /* THIS WAY SO THE NAVIGATION PROP IS PASSED CORRECTLY */
+                children={myAccountProps => <MyAccount setIsLoggedIn={props.setIsLoggedIn} {...myAccountProps}   />}                
                 options={{
                     title: 'MY ACCOUNT',
                     headerStyle: {
