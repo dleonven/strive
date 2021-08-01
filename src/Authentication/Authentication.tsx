@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
@@ -27,6 +27,22 @@ const Authentication = () => {
     /* initial value of the animated view is 400 (the height of the view), so it doesn't show */
     const [bounce_value, setBounceValue] = useState(new Animated.Value(400))
     
+    const firstUpdate = useRef(true);
+
+    useLayoutEffect(() => {
+        if(firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+
+        /* IF IT RUNS HERE, MEANS ITS NOT THE FIRST RENDER/UPDATE */
+        toggleSubview()
+    
+    }, [route]);
+
+
+
+
     const toggleSubview = () => {
         /* y axis value increases from top to bottom  */
         
@@ -59,10 +75,7 @@ const Authentication = () => {
 
             <PanGestureHandler onGestureEvent={() => {
                 Keyboard.dismiss()
-                if(!subViewHidden) {
-                    setRoute('')
-                    toggleSubview()
-                }
+                if(!subViewHidden) setRoute('')
             }}>
                 <View style={styles.container}>
                     
@@ -71,10 +84,7 @@ const Authentication = () => {
                         {/* SIGN UP BUTTON */}
                         <Pressable
                             style={styles.signUpButton} 
-                            onPress={() => {
-                                setRoute('signUp')
-                                toggleSubview()
-                            }}
+                            onPress={() => setRoute('signUp')}
                         >
                             <Text style={globalStyles.copyText}>GET STARTED</Text>
                         </Pressable>
@@ -82,10 +92,7 @@ const Authentication = () => {
                         {/* SIGN IN BUTTON */}
                         <Text 
                             style={styles.signInButton}
-                            onPress={() => {
-                                setRoute('signIn')
-                                toggleSubview()
-                            }}
+                            onPress={() => setRoute('signIn')}
                         >
                             I already have an account
                         </Text>
@@ -93,10 +100,7 @@ const Authentication = () => {
 
                     <Pressable onPress={() => {
                         Keyboard.dismiss()
-                        if(!subViewHidden) {
-                            setRoute('')
-                            toggleSubview()
-                        }
+                        if(!subViewHidden) setRoute('')
                     }}>
                         {/* https://docs.expo.io/versions/latest/sdk/video/ */}
                         <Video
