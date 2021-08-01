@@ -18,6 +18,8 @@ let subViewHidden = true
 
 const Authentication = () => {
 
+    const [counter, setCounter] = useState(0)
+
     const [loading, setLoading] = useState(false)
 
     const [route, setRoute] = useState<'' | 'signIn' | 'signUp'>('')
@@ -29,7 +31,7 @@ const Authentication = () => {
         /* y axis value increases from top to bottom  */
         
         /* if its not hidden, hide it */
-        let toValue = 400;
+        let toValue = 700;
         
         /* is its hidden, show it */
         if(subViewHidden) toValue = 0;
@@ -54,67 +56,79 @@ const Authentication = () => {
     
     return(
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-24}>
-            <TouchableOpacity activeOpacity={1} onPress={() => {
-                if(subViewHidden) return
-                toggleSubview()
-            }}>
-                <PanGestureHandler onGestureEvent={() => {
-                    if(subViewHidden) return
+
+            <PanGestureHandler onGestureEvent={() => {
+                Keyboard.dismiss()
+                if(!subViewHidden) {
+                    setRoute('')
                     toggleSubview()
-                }}>
-                    <View style={styles.container}>
-                        <View style={styles.authButtons}>
+                }
+            }}>
+                <View style={styles.container}>
+                    
+                    <View style={styles.authButtons}>
 
-                            <Pressable
-                                style={styles.signUpButton} 
-                                onPress={() => {
-                                    setRoute('signUp')
-                                    toggleSubview()
-                                }}
-                            >
-                                <Text style={globalStyles.copyText}>GET STARTED</Text>
-                            </Pressable>
+                        {/* SIGN UP BUTTON */}
+                        <Pressable
+                            style={styles.signUpButton} 
+                            onPress={() => {
+                                setRoute('signUp')
+                                toggleSubview()
+                            }}
+                        >
+                            <Text style={globalStyles.copyText}>GET STARTED</Text>
+                        </Pressable>
 
-                            
-                            <Text 
-                                style={styles.signInButton}
-                                onPress={() => {
-                                    setRoute('signIn')
-                                    toggleSubview()
-                                }}
-                            >
-                                I already have an account
-                            </Text>
-                        </View>
-        
+                        {/* SIGN IN BUTTON */}
+                        <Text 
+                            style={styles.signInButton}
+                            onPress={() => {
+                                setRoute('signIn')
+                                toggleSubview()
+                            }}
+                        >
+                            I already have an account
+                        </Text>
+                    </View>
+
+                    <Pressable onPress={() => {
+                        Keyboard.dismiss()
+                        if(!subViewHidden) {
+                            setRoute('')
+                            toggleSubview()
+                        }
+                    }}>
                         {/* https://docs.expo.io/versions/latest/sdk/video/ */}
                         <Video
                             source={{ uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4' }}
                             rate={1.0}
                             volume={1.0}
-                            isMuted={false}
+                            isMuted={true}
                             resizeMode="cover"
                             shouldPlay
                             isLooping
                             style={styles.video}
                         />
-                        
-                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                            <Animated.View
-                                style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
-                            >
-                                {route === 'signIn' &&
-                                    <SignIn />
-                                }
-                                {route === 'signUp' &&
-                                    <SignUp setRoute={setRoute}/>
-                                }
-                            </Animated.View>
-                        </TouchableWithoutFeedback>
-                        
-                    </View>
-                </PanGestureHandler>
-            </TouchableOpacity>
+                    </Pressable>
+
+
+                    
+                    {/* SUBVIEW */}
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <Animated.View
+                            style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
+                        >
+                            {route === 'signIn' &&
+                                <SignIn />
+                            }
+                            {route === 'signUp' &&
+                                <SignUp setRoute={setRoute}/>
+                            }
+                        </Animated.View>
+                    </TouchableWithoutFeedback>
+                    
+                </View>
+            </PanGestureHandler>
         </KeyboardAvoidingView>
     )
 }
