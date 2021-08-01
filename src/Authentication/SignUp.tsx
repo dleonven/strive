@@ -4,7 +4,6 @@ import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
 import { AmplifyTheme, Authenticator } from 'aws-amplify-react-native';
 import { Alert, Button, TextInput, View, StyleSheet, Text, Keyboard } from 'react-native';
-import { AuthContext } from './AuthContext'
 import { Auth } from 'aws-amplify';
 import { globalStyles } from '../GlobalStyles'
 import Loading from '../Loading'
@@ -23,17 +22,9 @@ interface Iuser {
     password:   string    
 }
 
-interface IstepProps {
-    user:           Iuser
-    setUser:        React.Dispatch<React.SetStateAction<Iuser>>
-    setActiveStep:  Function
-}
 
-
-const SignUp = () => {
+const SignUp = (props: {setRoute: React.Dispatch<React.SetStateAction<"" | "signIn" | "signUp">>}) => {
         
-
-
     const [user, setUser] = useState<Iuser>({
         name: '',
         email: '',
@@ -44,12 +35,19 @@ const SignUp = () => {
 
     if(activeStep === 1) return <Step1 user={user} setUser={setUser} setActiveStep={setActiveStep}/>
     else if(activeStep === 2) return <Step2 user={user} setUser={setUser} setActiveStep={setActiveStep}/>
-    else if(activeStep === 3) return <Step3 user={user} setUser={setUser} setActiveStep={setActiveStep}/>
+    else if(activeStep === 3) return <Step3 user={user} setUser={setUser} setActiveStep={setActiveStep} setRoute={props.setRoute}/>
     return null
 }
 
 export default SignUp
 
+
+interface IstepProps {
+    user:           Iuser
+    setUser:        React.Dispatch<React.SetStateAction<Iuser>>
+    setActiveStep:  React.Dispatch<React.SetStateAction<2 | 1 | 3>>
+    setRoute?:      React.Dispatch<React.SetStateAction<"" | "signIn" | "signUp">>
+}
 
 const Step1 = (props: IstepProps) => {
     
@@ -177,7 +175,6 @@ const Step2 = (props: IstepProps) => {
 
 
 const Step3 = (props: IstepProps) => {
-    const { setAuthState } = useContext(AuthContext)
 
     const [confirmationCode, setConfirmationCode] = useState<string>('')
 
@@ -229,7 +226,7 @@ const Step3 = (props: IstepProps) => {
                     onPress={async () => {
                         try {
                             await Auth.confirmSignUp(props.user.email, confirmationCode);
-                            setAuthState('signin')
+                            if(!!props.setRoute) props.setRoute('signIn')
                         } 
                         catch(error) {
                             setValidation({

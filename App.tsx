@@ -10,7 +10,7 @@ import amplify from './aws-exports';
 import { AmplifyTheme, SignIn, SignUp, Authenticator } from 'aws-amplify-react-native';
 import MyCustomSignIn from './src/Authentication/SignIn'
 import MyCustomSignUp from './src/Authentication/SignUp'
-import AuthWithContext from './src/Authentication/Auth'
+import Authentication from './src/Authentication/Authentication'
 import AppLoading from 'expo-app-loading'
 import { useFonts } from '@use-expo/font';
 /* https://github.com/aws-amplify/amplify-js/blob/master/packages/aws-amplify-react-native/src/AmplifyTheme.js */
@@ -149,7 +149,7 @@ function App() {
                     <BottomTabs/>
                     :
                     <Authenticator hideDefault={true} theme={MyTheme}>
-                        <AuthWithContext/>
+                        <Authentication/>
                     </Authenticator>
                 }
             </NavigationContainer>
@@ -234,13 +234,13 @@ const BottomTabs = () => {
                         if(focused) return(
                             <Image 
                                 source={require('./assets/account-selected.png')} 
-                                style={{ width: 32, height: 32 }}
+                                style={{ width: 32, height: 35 }}
                             />
                         )
                         else return(
                             <Image 
                                 source={require('./assets/account-unselected.png')} 
-                                style={{ width: 32, height: 32 }}
+                                style={{ width: 32, height: 35 }}
                             />                               
                         )
                     }

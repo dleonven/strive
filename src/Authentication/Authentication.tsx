@@ -3,77 +3,27 @@ import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
 import { AmplifyTheme, Authenticator } from 'aws-amplify-react-native';
-import { Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
+import { Pressable, Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
 import { Video } from 'expo-av';
 const { width, height } = Dimensions.get("window");
 import SignIn  from './SignIn'
 import SignUp  from './SignUp'
-import { AuthContext, IAuthContext } from './AuthContext'
 import Loading from '../Loading'
 import { PanGestureHandler } from 'react-native-gesture-handler';
+import { globalStyles } from '../GlobalStyles';
 
 /* declared as variable (not state), as it doesn't require a re render */
 let subViewHidden = true
 
 
-const initial_signup_state = {
-    step: 1,
-    name: '',
-    email: '',
-    password: '',
-    confirmation_code: '',
-    show_name_validation: false,
-    show_email_validation: false,
-    show_password_validation: false,
-}
+const Authentication = () => {
 
-const initial_signin_state = {
-    email: '',
-    password: '',
-}
-
-const AuthWithContext = () => {
-    
-    const [signup_state, setSignUpState] = useState<IAuthContext['signup_state']>(initial_signup_state)
-    const [signin_state, setSignInState] = useState<IAuthContext['signin_state']>(initial_signin_state)
     const [loading, setLoading] = useState(false)
-    const [auth_state, setAuthState] = useState<'' | 'signin' | 'signup'>('')
 
-
-
-    const initialAuthContext = {
-        signup_state: signup_state,
-        setSignUpState: setSignUpState,
-        signin_state: signin_state,
-        setSignInState: setSignInState,
-        loading: loading,
-        setLoading: setLoading,
-        auth_state: auth_state,
-        setAuthState: setAuthState
-    }
-    
-    return(
-        <AuthContext.Provider value={initialAuthContext}>
-            <Auth/>
-        </AuthContext.Provider>
-    )
-}
-
-export default AuthWithContext
-
-
-
-const Auth = () => {
-
-    const auth_context = useContext(AuthContext)
-
+    const [route, setRoute] = useState<'' | 'signIn' | 'signUp'>('')
     
     /* initial value of the animated view is 400 (the height of the view), so it doesn't show */
     const [bounce_value, setBounceValue] = useState(new Animated.Value(400))
-    
-    const _onLogin = () => {
-        //Alert.alert('Credentials', `${email} + ${password}`);
-    }
     
     const toggleSubview = () => {
         /* y axis value increases from top to bottom  */
@@ -100,39 +50,36 @@ const Auth = () => {
         subViewHidden = !subViewHidden;
     }
     
-    if(auth_context.loading) return <Loading />
+    if(loading) return <Loading />
     
     return(
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-24}>
             <TouchableOpacity activeOpacity={1} onPress={() => {
                 if(subViewHidden) return
-                auth_context.setSignUpState(initial_signup_state)
-                auth_context.setSignInState(initial_signin_state)
                 toggleSubview()
             }}>
                 <PanGestureHandler onGestureEvent={() => {
                     if(subViewHidden) return
-                    auth_context.setSignUpState(initial_signup_state)
-                    auth_context.setSignInState(initial_signin_state)
                     toggleSubview()
                 }}>
                     <View style={styles.container}>
                         <View style={styles.authButtons}>
-                            <View style={styles.signUpButton}>
-                                <Button
-                                    color="black"
-                                    title={'GET STARTED'}
-                                    onPress={() => {
-                                        auth_context.setAuthState('signup')
-                                        toggleSubview()
-                                    }}
-                                />
-                            </View>
+
+                            <Pressable
+                                style={styles.signUpButton} 
+                                onPress={() => {
+                                    setRoute('signUp')
+                                    toggleSubview()
+                                }}
+                            >
+                                <Text style={globalStyles.copyText}>GET STARTED</Text>
+                            </Pressable>
+
                             
                             <Text 
                                 style={styles.signInButton}
                                 onPress={() => {
-                                    auth_context.setAuthState('signin')
+                                    setRoute('signIn')
                                     toggleSubview()
                                 }}
                             >
@@ -156,11 +103,11 @@ const Auth = () => {
                             <Animated.View
                                 style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
                             >
-                                {auth_context.auth_state === 'signin' &&
+                                {route === 'signIn' &&
                                     <SignIn />
                                 }
-                                {auth_context.auth_state === 'signup' &&
-                                    <SignUp />
+                                {route === 'signUp' &&
+                                    <SignUp setRoute={setRoute}/>
                                 }
                             </Animated.View>
                         </TouchableWithoutFeedback>
@@ -172,7 +119,7 @@ const Auth = () => {
     )
 }
 
-
+export default Authentication
 
 
 
@@ -194,7 +141,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         position: 'absolute',
         height: height,
-        width: width-50,
+        //width: width-50,
+        width: width,
         zIndex: 1,
     },
     signUpButton: {
@@ -202,7 +150,9 @@ const styles = StyleSheet.create({
         width: 250,
         height: 40,
         borderRadius: 10,
-        marginBottom: 32
+        marginBottom: 32,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     signInButton: {
         color: 'white',
@@ -217,8 +167,8 @@ const styles = StyleSheet.create({
         right: 0,
         backgroundColor: "#FFFFFF",
         height: 400,
-        marginRight: 25,
-        marginLeft: 25,
+        //marginRight: 25,
+        //marginLeft: 25,
         overflow: 'hidden',
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
