@@ -79,6 +79,61 @@ const SignIn = (props: {setIsLoggedIn: Function}) => {
         setLoading(false)
     }
 
+    /* https://stackoverflow.com/questions/53138637/how-to-use-multiple-independent-conditional-styles-on-same-div-in-reactjs */
+    const setEmailInputStyle = () => {
+        let inputStyles = {
+            height: 46,
+            borderBottomWidth: 2         
+        }
+        if(validations.email) {
+            const inputErrorStyle = {
+                borderBottomColor: '#DE0404'
+            }
+            inputStyles = Object.assign(inputStyles, inputErrorStyle)        
+        }
+        else if(inputFocus.email) {
+            const inputErrorStyle = {
+                borderBottomColor: '#373636'
+            }    
+            inputStyles = Object.assign(inputStyles, inputErrorStyle)        
+        }
+        else {
+            const inputErrorStyle = {
+                borderBottomColor: '#C8C7C7'
+            }    
+            inputStyles = Object.assign(inputStyles, inputErrorStyle)           }
+
+        return inputStyles
+    } 
+    
+
+    const setPasswordInputStyle = () => {
+        let inputStyles = {
+            height: 46,
+            borderBottomWidth: 2           
+        }
+        if(validations.password) {
+            const inputErrorStyle = {
+                borderBottomColor: '#DE0404'
+            }
+            inputStyles = Object.assign(inputStyles, inputErrorStyle)        
+        }
+        else if(inputFocus.password) {
+            const inputErrorStyle = {
+                borderBottomColor: '#373636'
+            }    
+            inputStyles = Object.assign(inputStyles, inputErrorStyle)        
+        }
+        else {
+            const inputErrorStyle = {
+                borderBottomColor: '#C8C7C7'
+            }    
+            inputStyles = Object.assign(inputStyles, inputErrorStyle)           }
+
+        return inputStyles
+    } 
+
+
 
     return(
         <View style={styles.container}>
@@ -94,7 +149,7 @@ const SignIn = (props: {setIsLoggedIn: Function}) => {
                     value={user.email}
                     onChangeText={(val) => setUser((prevState) => ({...prevState, email: val}))}
                     placeholder={'eg. john@johnboyle.me'}
-                    style={inputFocus.email ? [styles.unfocusedInput, {borderBottomColor: '#373636'}] : styles.unfocusedInput}
+                    style={setEmailInputStyle()}
                     autoCapitalize='none'
                     onFocus={() => setInputFocus({email: true, password: false})}
                     onSubmitEditing={() => {
@@ -118,7 +173,7 @@ const SignIn = (props: {setIsLoggedIn: Function}) => {
                     value={user.password}
                     onChangeText={(val) => setUser((prevState) => ({...prevState, password: val}))}
                     //placeholder={'eg. john@johnboyle.me'}
-                    style={inputFocus.password ? [styles.unfocusedInput, {borderBottomColor: '#373636'}] : styles.unfocusedInput}
+                    style={setPasswordInputStyle()}
                     onFocus={() => setInputFocus({email: false, password: true})}
                 />
                 {validations.password &&
@@ -168,13 +223,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    unfocusedInput: {
-        height: 46,
-        //padding: 10,
-        //marginBottom: 10,
-        borderBottomColor: '#C8C7C7',
-        borderBottomWidth: 1
     },
     forgottenPassword: {
         alignSelf: 'center',
