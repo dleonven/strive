@@ -36,6 +36,8 @@ import {
     gql
   } from "@apollo/client";
 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
 const MyButton = Object.assign({}, AmplifyTheme.button, { backgroundColor: 'red' });
 
@@ -161,12 +163,19 @@ function App() {
                 {isLoggedIn ?
                     <BottomTabs setIsLoggedIn={setIsLoggedIn}/>
                     :
-                    <Authenticator hideDefault={true} theme={MyTheme}>
-                        <Authentication setIsLoggedIn={setIsLoggedIn}/>
+                    <Authenticator 
+                        hideDefault={true} 
+                        theme={MyTheme}
+                        /* https://github.com/aws-amplify/amplify-js/issues/4549#issuecomment-612591809 */
+                        container={() => (
+                            <Authentication setIsLoggedIn={setIsLoggedIn} />
+                        )}
+                    >
                     </Authenticator>
                 }
             </NavigationContainer>
-        </ApolloProvider>
+        </ApolloProvider>        
+
     );
 }
 
@@ -321,7 +330,7 @@ const MyCoachStackNavigator = () => {
                     headerStyle: {
                         height: 84,
                         /* TO REMOVE BORDER BELLOW THE HEADER */
-                        shadowColor: 'transparent'
+                        shadowColor: 'transparent',
                     },
                     /* TITLE COLOR */
                     headerTintColor: 'white',

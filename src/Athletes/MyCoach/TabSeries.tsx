@@ -106,7 +106,6 @@ const SeriesFullCard = (props: {item: any}) => {
 
     const navigation = useNavigation();
     
-    
     return( 
         <TouchableWithoutFeedback
             //activeOpacity={0.6}

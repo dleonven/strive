@@ -3,7 +3,27 @@ import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify from 'aws-amplify';
 /* https://duncanleung.com/aws-amplify-aws-exports-js-typescript/ */
 import { AmplifyTheme, Authenticator } from 'aws-amplify-react-native';
-import { Pressable, Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
+import { 
+    Easing,
+    StatusBar, 
+    Platform, 
+    SafeAreaView, 
+    Pressable, 
+    Keyboard, 
+    KeyboardAvoidingView, 
+    Image, 
+    TouchableOpacity, 
+    Modal, 
+    TouchableWithoutFeedback, 
+    Dimensions, 
+    Alert, 
+    Button, 
+    TextInput, 
+    View, 
+    StyleSheet, 
+    Text, 
+    Animated 
+} from 'react-native';
 import { Video } from 'expo-av';
 const { width, height } = Dimensions.get("window");
 import SignIn  from './SignIn'
@@ -14,129 +34,134 @@ import { globalStyles } from '../GlobalStyles';
 
 /* declared as variable (not state), as it doesn't require a re render */
 
+const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 80 : StatusBar.currentHeight;
+
+type authState = '' | 'signIn' | 'signUp'
 
 const Authentication = (props: {setIsLoggedIn: Function}) => {
 
-    const [subViewHidden, setSubViewHidden] = useState(true)
+    const [route, setRoute] = useState<authState>('')
 
-    const [counter, setCounter] = useState(0)
-
-    const [loading, setLoading] = useState(false)
-
-    const [route, setRoute] = useState<'' | 'signIn' | 'signUp'>('')
-    
-
-    /* initial value of the animated view is 400 (the height of the view), so it doesn't show */
-    const [bounce_value, setBounceValue] = useState(new Animated.Value(400))
-    
+    const prevRouteRef = useRef<authState>(route);
     const firstUpdate = useRef(true);
 
-    useLayoutEffect(() => {
+    const [isShown, setIsShown] = useState<boolean>(false)    
+    const animatedController = useRef(new Animated.Value(0)).current;
+
+    const translateY = animatedController.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 450],
+    });
+
+    useEffect(() => {
+        /* TO AVOID TO RUN AT FIRST RENDER (UPDATE) */
         if(firstUpdate.current) {
             firstUpdate.current = false;
             return;
         }
 
+        if(prevRouteRef.current === '' && route === 'signIn') toggleListItem()
+        else if(prevRouteRef.current === 'signIn' && route === '') toggleListItem()
+        /* ADD HERE LOGIC LATER WHEN WE ADD SIGN UP */
 
-        /* IF IT RUNS HERE, MEANS ITS NOT THE FIRST RENDER/UPDATE */
-        toggleSubview()
+        prevRouteRef.current = route
+
+    }, [route])
+
+    const toggleListItem = () => {
+
+        if(isShown) {
+            Animated.timing(animatedController, {
+                duration: 700,
+                toValue: 0,
+                easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+                useNativeDriver: false
+            }).start();
+        } 
+        else {
+            Animated.timing(animatedController, {
+                duration: 700,
+                toValue: 1,
+                easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+                useNativeDriver: false
+            }).start();
+        }
+        
+        setIsShown(!isShown);
+    };
+
+
+
+
+    const [loading, setLoading] = useState(false)
+
     
-    }, [route]);
 
 
-
-
-    const toggleSubview = () => {
-        /* y axis value increases from top to bottom  */
-        
-        /* if its not hidden, hide it */
-        let toValue = 700;
-        
-        /* is its hidden, show it */
-        if(subViewHidden) toValue = 0;
-        
-        //This will animate the transalteY of the subview between 0 & 100 depending on its current state
-        //100 comes from the style below, which is the height of the subview.
-        Animated.spring(
-            bounce_value,
-            {
-                toValue: toValue,
-                velocity: 3,
-                tension: 2,
-                friction: 8, 
-                useNativeDriver: true
-            }
-        ).start();
-        
-        setSubViewHidden(!subViewHidden)
-    }
     
     if(loading) return <Loading />
     
     return(
-        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-24}>
+        <View style={styles.container}>
 
-            <PanGestureHandler onGestureEvent={() => {
-                Keyboard.dismiss()
-                if(!subViewHidden) setRoute('')
-            }}>
-                <View style={styles.container}>
-                    
-                    <View style={styles.authButtons}>
-
-                        {/* SIGN UP BUTTON */}
-                        <Pressable
-                            style={styles.signUpButton} 
-                            onPress={() => setRoute('signUp')}
-                        >
-                            <Text style={globalStyles.copyText}>GET STARTED</Text>
-                        </Pressable>
-
-                        {/* SIGN IN BUTTON */}
-                        <Text 
-                            style={styles.signInButton}
-                            onPress={() => setRoute('signIn')}
-                        >
-                            I already have an account
-                        </Text>
-                    </View>
-
-                    <Pressable onPress={() => {
-                        Keyboard.dismiss()
-                        if(!subViewHidden) setRoute('')
-                    }}>
-                        {/* https://docs.expo.io/versions/latest/sdk/video/ */}
-                        <Video
-                            source={{ uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4' }}
-                            rate={1.0}
-                            volume={1.0}
-                            isMuted={true}
-                            resizeMode="cover"
-                            shouldPlay
-                            isLooping
-                            style={styles.video}
-                        />
-                    </Pressable>
+            {/* BACKGROUND VIDEO */}
+            {/* https://docs.expo.io/versions/latest/sdk/video/ */}
+            <Video
+                source={{ uri: 'http://johnboyle.me/wp-content/uploads/2021/08/8fbd8031-e692-4896-894c-bbc6bc658097.mp4' }}
+                rate={1.0}
+                volume={1.0}
+                isMuted={true}
+                resizeMode="cover"
+                shouldPlay
+                isLooping
+                style={styles.video}
+            />
 
 
-                    
-                    {/* SUBVIEW */}
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                        <Animated.View
-                            style={[styles.subView, {transform: [{translateY: bounce_value}]}]}
-                        >
-                            {route === 'signIn' &&
-                                <SignIn setIsLoggedIn={props.setIsLoggedIn}/>
-                            }
-                            {route === 'signUp' &&
-                                <SignUp setRoute={setRoute}/>
-                            }
-                        </Animated.View>
-                    </TouchableWithoutFeedback>
-                    
-                </View>
-            </PanGestureHandler>
-        </KeyboardAvoidingView>
+
+            {/* CONTENT */}
+            <Pressable 
+                style={styles.content}
+                onPress={() => {
+                    Keyboard.dismiss()
+                    setRoute('')
+                }}
+            >
+
+                <Image
+                    style={{width: 200, height: 200}}
+                    source={require('../../assets/round-logo.png')} 
+                />
+
+
+                {/* LOGIN BUTTON */}
+                {route === '' &&
+                    <Pressable
+                        onPress={() => {setRoute('signIn')}}
+                        style={styles.loginButton}
+                    >
+                        <Text style={globalStyles.copyText}>LOG IN</Text>
+                    </Pressable>                
+                }
+
+
+            </Pressable>
+
+            {/* KeyboardAvoidingView SO THE FORM ADJUSTS TO THE KEYBOARD*/}
+            <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-24}>
+                {/* LOGIN ANIMATION */}
+                <Animated.View style={[styles.authContainer, {height: translateY}]}> 
+                    {route === 'signIn' && <SignIn setIsLoggedIn={props.setIsLoggedIn}/>}
+
+                </Animated.View>
+            </KeyboardAvoidingView>
+
+        </View>
+
+
+
+
+
     )
 }
 
@@ -146,39 +171,45 @@ export default Authentication
 
 const styles = StyleSheet.create({
     container: {
-        height: height,
-        width: width,
-        backgroundColor: 'black',
-        //position: 'relative'
-        flex: 1
+        flex: 1,
+    },
+    content: {
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        paddingLeft: 24,
+        paddingRight: 24,
     },
     authButtons: {
         zIndex: 2,
         position: 'absolute',
-        bottom: '20%',
         alignSelf: 'center',
+    },
+    loginButton: {
+        backgroundColor: '#FFFFFF' , 
+        width: '100%', 
+        height: 56, 
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 48
+    },
+    authContainer: {
+        backgroundColor: '#FFFFFF',
+        overflow: 'hidden',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+    },
+    bodyContainer: {
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
     },
     video: {
-        alignSelf: 'center',
         position: 'absolute',
         height: height,
-        //width: width-50,
         width: width,
-        zIndex: 1,
-    },
-    signUpButton: {
-        backgroundColor: 'white',
-        width: 250,
-        height: 40,
-        borderRadius: 10,
-        marginBottom: 32,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    signInButton: {
-        color: 'white',
-        alignSelf: 'center',
-        textDecorationLine: 'underline'
     },
     subView: {
         zIndex: 3,

@@ -3,7 +3,8 @@ import {
     ScrollView, 
     StatusBar, 
     SafeAreaView,
-    Platform
+    Platform,
+    Pressable
  } from 'react-native';
 import { Auth } from 'aws-amplify';
 import FullCardCarousel from '../../GlobalComponents/FullCardCarousel'
@@ -12,7 +13,7 @@ import ListWithImage from '../../GlobalComponents/ListWithImage'
 import CustomFormField from '../../GlobalComponents/CustomFormField'
 import { NavigationContainer } from '@react-navigation/native';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import { Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
+import { Easing, Keyboard, KeyboardAvoidingView, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Dimensions, Alert, Button, TextInput, View, StyleSheet, Text, Animated } from 'react-native';
 import { Video, AVPlaybackStatus } from 'expo-av';
 import CustomFont from '../../GlobalComponents/CustomFont'
 import { Fontisto, Feather } from '@expo/vector-icons'; 
@@ -30,6 +31,15 @@ const Drill = (props: any) => {
     
 
     const [playing, setPlaying] = useState(false);
+    const [animatedViewHeight, setAnimatedViewHeight] = useState(0) 
+    const [isShown, setIsShown] = useState<boolean>(false)    
+    const animatedController = useRef(new Animated.Value(0)).current;
+
+    const translateY = animatedController.interpolate({
+        inputRange: [0, 1],
+        outputRange: [animatedViewHeight-48, animatedViewHeight],
+    });
+
 
     const { item } = props.route.params;    
     
@@ -49,30 +59,61 @@ const Drill = (props: any) => {
         setPlaying((prev) => !prev);
     }, []);
 
+    useEffect(() => {
+        toggleListItem()
+    }, [playing])
+
+
+    const toggleListItem = () => {
+
+        if(isShown) {
+            Animated.timing(animatedController, {
+                duration: 700,
+                toValue: 0,
+                easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+                useNativeDriver: false
+            }).start();
+        } 
+        else {
+            Animated.timing(animatedController, {
+                duration: 700,
+                toValue: 1,
+                easing: Easing.bezier(0.4, 0.0, 0.2, 1),
+                useNativeDriver: false
+            }).start();
+        }
+        
+        setIsShown(!isShown);
+    };
+
+
+
     return(
         <View style={styles.container}>
             <StatusBar translucent barStyle="light-content"  />
 
             <View style={{marginTop: 68}}></View>
 
-            <TouchableWithoutFeedback onPress={() => togglePlaying()}>
-                <View style={[styles.video, !playing && styles.videoWithOpacity]}>
-                    <YoutubePlayer
-                        height={300}
-                        play={playing}
-                        videoId={"0mdidcb1GxU"}
-                        onChangeState={onStateChange}
-                    />
-                </View>
-            </TouchableWithoutFeedback>
+            <Pressable 
+                style={[!playing && styles.videoWithOpacity]}
+                onPress={() => togglePlaying()}
+                onLayout={event => {
+                    const layout = event.nativeEvent.layout;
+                    setAnimatedViewHeight(height - (layout.height + 68))
+                  }}
+            >
+                <YoutubePlayer
+                    height={300}
+                    play={playing}
+                    videoId={"0mdidcb1GxU"}
+                    onChangeState={onStateChange}
+                />
+            </Pressable>
 
+            <Animated.View style={[styles.animatedView, {height: translateY}]}> 
+                <SwipeableComponent />
+            </Animated.View>
 
-            {!playing &&
-                <Image
-                    source={require('../../../assets/video-big-play.png')} 
-                    style={{ width: 72, height: 76.7, marginTop: -230, alignSelf: 'center' }}
-                />  
-            }   
 
         </View>      
     )
@@ -91,7 +132,6 @@ const SwipeableComponent = () => {
         <View style={{
             padding: 8,
             flex: 1,
-            backgroundColor: 'rgb(255,255,255)', 
             marginLeft: 24,
             marginRight: 24
         }}>
@@ -256,16 +296,6 @@ const styles = StyleSheet.create({
         //alignItems: 'center',
         //justifyContent: 'center'
     },
-    authButtons: {
-        zIndex: 2,
-        position: 'absolute',
-        bottom: '20%',
-        alignSelf: 'center',
-    },
-    video: {
-
-        zIndex: 1
-    },
     videoWithOpacity: {
         opacity: 0.5
     },
@@ -295,7 +325,16 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
     },
-
+    animatedView: {
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+        overflow: 'hidden',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        position: 'absolute',
+        bottom: 0,
+        width: '100%'
+    },
 
 
 
