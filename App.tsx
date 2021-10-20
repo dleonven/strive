@@ -186,10 +186,17 @@ export default App;
 const BottomTabs = (props: {setIsLoggedIn: Function}) => {
     return(
         <Tab.Navigator
-            tabBarOptions={{
-                showLabel: false,
-                style: { height: 83 }
-            }}
+            screenOptions={
+                {
+                    "tabBarShowLabel": false,
+                    "tabBarStyle": [
+                        {
+                            "display": "flex"
+                        },
+                        null
+                    ]
+                }
+            }
         >
         
         
