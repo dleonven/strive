@@ -117,7 +117,10 @@ const Authentication = (props: {setIsLoggedIn: Function}) => {
                 style={styles.video}
             />
 
-
+            <Image
+                style={{position: 'absolute', width: 200, height: 200, alignSelf: 'center'}}
+                source={require('../../assets/round-logo.png')} 
+            />
 
             {/* CONTENT */}
             <Pressable 
@@ -128,10 +131,7 @@ const Authentication = (props: {setIsLoggedIn: Function}) => {
                 }}
             >
 
-                <Image
-                    style={{width: 200, height: 200}}
-                    source={require('../../assets/round-logo.png')} 
-                />
+
 
 
                 {/* LOGIN BUTTON */}
@@ -140,7 +140,7 @@ const Authentication = (props: {setIsLoggedIn: Function}) => {
                         onPress={() => {setRoute('signIn')}}
                         style={styles.loginButton}
                     >
-                        <Text style={globalStyles.copyText}>LOG IN</Text>
+                        <Text style={[globalStyles.copyText, {fontFamily: 'BioSans-Bold'}]}>LOG IN</Text>
                     </Pressable>                
                 }
 
@@ -172,6 +172,7 @@ export default Authentication
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'center',
     },
     content: {
         flex: 1, 
@@ -198,8 +199,8 @@ const styles = StyleSheet.create({
     authContainer: {
         backgroundColor: '#FFFFFF',
         overflow: 'hidden',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
+        borderTopLeftRadius: 32,
+        borderTopRightRadius: 32,
     },
     bodyContainer: {
         width: '100%',
