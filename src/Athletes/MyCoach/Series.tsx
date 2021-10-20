@@ -31,23 +31,56 @@ import CustomFont from '../../GlobalComponents/CustomFont'
 import PersonCard from '../../GlobalComponents/PersonCard'
 
 import { Fontisto } from '@expo/vector-icons'; 
-
-
+import { Ionicons } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 const Series = (props: any) => {
     
+    const [animatedViewHeight, setAnimatedViewHeight] = useState(0) 
+    const yOffset = useRef(new Animated.Value(0)).current;
 
+    const headerOpacity = yOffset.interpolate({
+        inputRange: [0, animatedViewHeight],
+        outputRange: [0, 1],
+        extrapolate: "clamp",
+    });
 
+    const animatedColor = yOffset.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['white', 'black']
+    });
 
-    //return null
+    var arrowBackColor = yOffset.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 0, 1)']
+    });
+
+    useEffect(() => {
+        props.navigation.setOptions({
+            headerStyle: {
+                //opacity: headerOpacity,
+            },
+            headerTintColor: animatedColor,
+            headerBackground: () => (
+                <Animated.View
+                    style={{
+                        backgroundColor: "white",
+                        ...StyleSheet.absoluteFillObject,
+                        opacity: headerOpacity,
+                    }}
+                />
+            ),
+            headerTransparent: true,
+        })
+    }, [headerOpacity]);
+
     return(
-        
 
         <View style={styles.container}>
             <StatusBar translucent={true} />
 
         
-            <FlatList 
+            <Animated.FlatList 
                 contentContainerStyle={styles.grid}
                 columnWrapperStyle={{marginLeft: 24}}
                 ListHeaderComponent={
@@ -58,6 +91,10 @@ const Series = (props: any) => {
                         <ImageBackground 
                             source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg' }}
                             style={styles.image}
+                            onLayout={event => {
+                                const layout = event.nativeEvent.layout;
+                                setAnimatedViewHeight(layout.height)
+                            }}                        
                         >
                             
                             {/* DARK BACKGROUND */}
@@ -178,55 +215,21 @@ const Series = (props: any) => {
                     </View>
                 }
 
-                onScroll={(event) => {
-                    const scrollOffset = event.nativeEvent.contentOffset.y
-                    console.log("scrollOffset: ", scrollOffset)
+                onScroll={Animated.event(
+                    [
+                      {
+                        nativeEvent: {
+                          contentOffset: {
+                            y: yOffset,
+                          },
+                        },
+                      },
+                    ],
+                    { useNativeDriver: false }
+                  )}
 
-                    if(scrollOffset > 425) {
-                        props.navigation.setOptions({
-                            /* TITLE COLOR */
-                            headerTintColor: 'black',            
-                            headerTransparent: false,
-                            headerBackImage: () => (
-                                <Image 
-                                    source={require('../../../assets/back.png')} 
-                                    style={{ width: 13, height: 21, marginLeft: 24 }}
-                                />
-                            ),        
-                        })                    
-                    }
-                    if(scrollOffset <= 425) {
-                        props.navigation.setOptions({
-                                title: 'SERIES',
-                                headerStyle: {
-                                    height: 84,
-                                    /* TO REMOVE BORDER BELLOW THE HEADER */
-                                    shadowColor: 'transparent'
-                                },
-                                /* TITLE COLOR */
-                                headerTintColor: 'white',
-                                headerTitleStyle: {
-                                    fontFamily: 'BioSans-Bold',
-                                    fontSize: 15,
-                                    letterSpacing: 2.25
-                                },
-            
-                                headerBackImage: () => (
-                                    <Image 
-                                        source={require('../../../assets/transparent-back.png')} 
-                                        style={{ width: 13, height: 21, marginLeft: 24 }}
-                                    />
-                                ), 
-                                headerBackTitleVisible: false,
-                                headerShown: true,
-                                headerTransparent: true
-                        })
+                scrollEventThrottle={16}
 
-                    }
-                }
-            }
-
-                
                 data={input}
                 numColumns={2}
                 renderItem={({ item }) => {
