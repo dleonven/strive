@@ -194,7 +194,8 @@ const BottomTabs = (props: {setIsLoggedIn: Function}) => {
                             "display": "flex"
                         },
                         null
-                    ]
+                    ],
+                    headerShown: false
                 }
             }
         >
