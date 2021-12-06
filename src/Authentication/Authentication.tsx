@@ -7,18 +7,11 @@ import {
     Easing,
     StatusBar, 
     Platform, 
-    SafeAreaView, 
     Pressable, 
     Keyboard, 
     KeyboardAvoidingView, 
     Image, 
-    TouchableOpacity, 
-    Modal, 
-    TouchableWithoutFeedback, 
     Dimensions, 
-    Alert, 
-    Button, 
-    TextInput, 
     View, 
     StyleSheet, 
     Text, 
@@ -38,7 +31,7 @@ const STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 80 : StatusBar.currentHeight;
 
 type authState = '' | 'signIn' | 'signUp'
 
-const Authentication = (props: {setIsLoggedIn: Function}) => {
+const Authentication = () => {
 
     const [route, setRoute] = useState<authState>('')
 
@@ -151,7 +144,7 @@ const Authentication = (props: {setIsLoggedIn: Function}) => {
             <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-24}>
                 {/* LOGIN ANIMATION */}
                 <Animated.View style={[styles.authContainer, {height: translateY}]}> 
-                    {route === 'signIn' && <SignIn setIsLoggedIn={props.setIsLoggedIn}/>}
+                    {route === 'signIn' && <SignIn/>}
 
                 </Animated.View>
             </KeyboardAvoidingView>

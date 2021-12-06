@@ -50,10 +50,7 @@ const Series = (props: any) => {
         outputRange: ['white', 'black']
     });
 
-    var arrowBackColor = yOffset.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 0, 1)']
-    });
+
 
     useEffect(() => {
         props.navigation.setOptions({
@@ -70,6 +67,17 @@ const Series = (props: any) => {
                     }}
                 />
             ),
+            headerBackImage: () => {
+                return(
+                    <MaterialIcons 
+                        name="keyboard-arrow-left" 
+                        size={40} 
+                        color="black" 
+                        style={{ marginLeft: 10 }}
+                    />
+                )
+            },
+
             headerTransparent: true,
         })
     }, [headerOpacity]);

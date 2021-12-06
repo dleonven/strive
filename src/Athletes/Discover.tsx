@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
-import { Auth } from 'aws-amplify';
-import FullCardCarousel from '../GlobalComponents/FullCardCarousel'
-import CustomList from '../GlobalComponents/CustomList'
-import ListWithImage from '../GlobalComponents/ListWithImage'
-import CustomFormField from '../GlobalComponents/CustomFormField'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import CustomFont from '../GlobalComponents/CustomFont'
 
 

@@ -15,7 +15,7 @@ interface Iuser {
     password: string  
 } 
 
-const SignIn = (props: {setIsLoggedIn: Function}) => {
+const SignIn = () => {
 
     const [loading, setLoading]  = useState<boolean>(false)
 
@@ -65,7 +65,6 @@ const SignIn = (props: {setIsLoggedIn: Function}) => {
         setLoading(true)
         try {
             await Auth.signIn(user.email, user.password);
-            props.setIsLoggedIn(true)
         }
         catch (error) {
             console.log('error signing in', error);

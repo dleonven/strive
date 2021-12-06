@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, Pressable, Modal, TouchableHighlight, Text, Button, StyleSheet, View, TextInput } from 'react-native';
+import { Pressable, Modal, Text, StyleSheet, View } from 'react-native';
 import { Auth } from 'aws-amplify';
-import FullCardCarousel from '../GlobalComponents/FullCardCarousel'
-import CustomList from '../GlobalComponents/CustomList'
-import ListWithImage from '../GlobalComponents/ListWithImage'
-import CustomFormField from '../GlobalComponents/CustomFormField'
+
 import CustomFont from '../GlobalComponents/CustomFont'
+import { useNavigation } from '@react-navigation/native';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
-/* CURRENTLY GETTING PROPS.NAVIGATION AND PROPS.SETISLOGGEDIN */
-const MyAccount = (props: any) => {
+const MyAccount = () => {
     
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    
+    const navigation = useNavigation();
+
 
     useEffect(() => {
         if(modalVisible) {
 
-            props.navigation.setOptions({ 
+            navigation.setOptions({ 
                 cardStyle: { 
                     backgroundColor: 'rgba(55,54,54,0.8)',
                 },
@@ -28,16 +24,10 @@ const MyAccount = (props: any) => {
                     backgroundColor: 'rgba(55,54,54,0.8)',
                     shadowColor: 'transparent'
                 },  
-
-           
-
-
-
             })
-
         }
         else {
-            props.navigation.setOptions({ 
+            navigation.setOptions({ 
                 cardStyle: { opacity: 1 },
                 headerStyle: {
                     height: 125,
@@ -53,7 +43,6 @@ const MyAccount = (props: any) => {
 
         try {
             await Auth.signOut()
-            props.setIsLoggedIn(false)
         }
         catch(error) {
             console.log(error)

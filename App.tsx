@@ -36,7 +36,15 @@ import {
     gql
   } from "@apollo/client";
 
+
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { createAuthLink } from 'aws-appsync-auth-link';
+import { createHttpLink } from 'apollo-link-http';
+
+import { ApolloLink } from 'apollo-link';
+
+import awsmobile from './aws-exports';
+
 
 const MySectionHeader = Object.assign({}, AmplifyTheme.sectionHeader, { background: 'red' });
 const MyButton = Object.assign({}, AmplifyTheme.button, { backgroundColor: 'red' });
@@ -74,10 +82,33 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
-const client = new ApolloClient({
+const clientt = new ApolloClient({
     uri: '',
     cache: new InMemoryCache()
 });
+
+const url: any = awsmobile.graphqlEndpoint;
+const region: any = awsmobile.aws_project_region;
+
+const auth: any = {
+    type: awsmobile.authenticationType,
+    jwtToken: async () => (await Auth.currentSession()).getIdToken().getJwtToken(),
+};
+
+console.log("auth: ", auth)
+
+const link: any = ApolloLink.from([
+    createAuthLink({ url, region, auth }) as unknown as ApolloLink, 
+    createHttpLink({ uri: url })
+]);
+
+
+
+const client = new ApolloClient({
+    link,
+    cache: new InMemoryCache()
+});
+
 
 const READ_TODO = gql`
   query ReadTodo($id: ID!) {
@@ -118,27 +149,8 @@ client.writeQuery({
 
 function App() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+    const user = useCurrentUser()
 
-    /* CHECK IF USER IS SIGNED IN WITH AMPLIFY API */
-    useEffect(() => {
-        
-        const getUser = async () => {
-
-            try {
-                const user = await Auth.currentAuthenticatedUser()
-                setIsLoggedIn(true)
-            }
-            catch(error) {
-                console.log("error", error)
-            }
-
-        }
-
-        getUser()
-
-
-    }, [])
 
     let [fontsLoaded] = useFonts({
         'BioSans-Bold': require('./assets/fonts/BioSans-Bold.otf'),
@@ -160,15 +172,15 @@ function App() {
     return (
         <ApolloProvider client={client}>
             <NavigationContainer theme={MyTheme}>
-                {isLoggedIn ?
-                    <BottomTabs setIsLoggedIn={setIsLoggedIn}/>
+                {!!user ?
+                    <BottomTabs/>
                     :
                     <Authenticator 
                         hideDefault={true} 
                         theme={MyTheme}
                         /* https://github.com/aws-amplify/amplify-js/issues/4549#issuecomment-612591809 */
                         container={() => (
-                            <Authentication setIsLoggedIn={setIsLoggedIn} />
+                            <Authentication/>
                         )}
                     >
                     </Authenticator>
@@ -183,7 +195,7 @@ export default App;
 
 
 
-const BottomTabs = (props: {setIsLoggedIn: Function}) => {
+const BottomTabs = () => {
     return(
         <Tab.Navigator
             screenOptions={
@@ -257,7 +269,7 @@ const BottomTabs = (props: {setIsLoggedIn: Function}) => {
             <Tab.Screen 
                 name="MyAccount"
                 /* PASS THE COMPONENT AS CHILDREN TO BE ABLE TO PASS PROPS TO IT */
-                children={() => <MyAccountStackNavigator setIsLoggedIn={props.setIsLoggedIn} />} 
+                children={() => <MyAccountStackNavigator/>} 
                 options={{
                     title: 'MY ACCOUNT',
                     tabBarLabel: 'Activity',
@@ -349,9 +361,11 @@ const MyCoachStackNavigator = () => {
                     },
 
                     headerBackImage: () => (
-                        <Image 
-                            source={require('./assets/transparent-back.png')} 
-                            style={{ width: 13, height: 21, marginLeft: 24 }}
+                        <MaterialIcons 
+                            name="keyboard-arrow-left" 
+                            size={40} 
+                            color="white" 
+                            style={{ marginLeft: 10 }}
                         />
                     ), 
                     headerBackTitleVisible: false,
@@ -415,14 +429,13 @@ const MyCoachStackNavigator = () => {
 }
 
 
-const MyAccountStackNavigator = (props: {setIsLoggedIn: Function}) => {
+const MyAccountStackNavigator = () => {
     return(
         <Stack.Navigator>
        
             <Stack.Screen 
                 name="MyAccount" 
-                /* THIS WAY SO THE NAVIGATION PROP IS PASSED CORRECTLY */
-                children={myAccountProps => <MyAccount setIsLoggedIn={props.setIsLoggedIn} {...myAccountProps}   />}                
+                children={MyAccount}                
                 options={{
                     title: 'MY ACCOUNT',
                     headerStyle: {

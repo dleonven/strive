@@ -12,6 +12,8 @@ import {
     useQuery,
     gql
   } from "@apollo/client";
+  import useCurrentUser from '../../useCurrentUser';
+
 const HEADER_HEIGHT = 66
 const TABS_DATA = [
     {
@@ -30,23 +32,37 @@ const TABS_DATA = [
 
 const SPECIALTIES_DATA = ['Shooting', 'Fundamentals', 'Scoring', 'Coaching']
 const READ_TODO = gql`
-  query ReadTodo($id: ID!) {
-    todo(id: $id) {
-      id
-      text
-      completed
+    query ReadTodo($id: ID!) {
+        todo(id: $id) {
+            id
+            text
+            completed
+        }
     }
-  }
 `;
 
+
+const GET_SERIES = gql`
+    query GetSeries($id: String!) {
+        getSeries(id: $id) {
+            name
+        }
+    }
+`;
+
+
+
 const MyCoach = () => {
-    
-    const [activeTab, setActiveTab] = useState('Series')
-    const { loading, error, data } = useQuery(READ_TODO, {
-        variables: { id: 5 },
+
+    const { loading, error, data } = useQuery(GET_SERIES, {
+        variables: { id: '123' }
     });
+
+    const [activeTab, setActiveTab] = useState('Series')
+
     
     console.log("data: ", data)
+
 
 
     const renderActiveTab = () => {
